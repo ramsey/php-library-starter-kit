@@ -26,4 +26,4 @@ script:
   - composer run test-ci
 
 after_success:
-  - travis_retry php vendor/bin/php-coveralls -v
+  - travis_retry php app/vendor/bin/php-coveralls -v
