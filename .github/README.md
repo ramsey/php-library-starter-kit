@@ -31,6 +31,10 @@ Here's how do this, using [Composer][]:
 composer create-project ramsey/php-library-skeleton target-directory
 ```
 
+You will be walked through a series of questions, and your PHP library source
+files will be located in `target-directory`, when completed. Change to that
+directory, `git init`, and off you go!
+
 
 ## Why did you include *x* and not *y*?
 

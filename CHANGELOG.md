@@ -21,14 +21,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
-## [1.0.0] - YYYY-MM-DD
+## [1.0.0] - 2019-01-02
 
 ### Added
 
-* Feature A description
-* Feature B description
-* Feature C description
+This is the initial release of ramsey/php-library-skeleton, with the ability to
+quickly generate a PHP library including all the starting files that I
+([@ramsey][]) prefer to have in my projects. Future versions of this project may
+expand on this and allow for more generic options.
+
+To create the starting point for a PHP library using this project, run the
+following:
+
+``` bash
+composer create-project ramsey/php-library-skeleton target-directory
+```
+
+You will be walked through a series of questions, and your PHP library source
+files will be located in `target-directory`, when completed. Change to that
+directory, `git init`, and off you go!
 
 
 [Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...HEAD
 [1.0.0]: https://github.com/ramsey/php-library-skeleton/commits/1.0.0
+[@ramsey]: https://github.com/ramsey
