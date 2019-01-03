@@ -21,6 +21,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.0.2] - 2019-01-03
+
+### Fixed
+
+* The `.gitattributes` file continues to be problematic when using the zip
+  distribution, so this release removes the file entirely.
+
+
 ## [1.0.1] - 2019-01-03
 
 ### Fixed
