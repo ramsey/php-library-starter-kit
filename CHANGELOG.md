@@ -21,6 +21,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.0.1] - 2019-01-03
+
+### Fixed
+
+* Fixed a problem where using `composer create-project` was not properly
+  creating a project from the 1.0.0 release because the `.gitattributes` file
+  was too liberal, failing to include important skeleton files in the release
+  zip bundle.
+
+
 ## [1.0.0] - 2019-01-02
 
 ### Added
@@ -42,6 +52,7 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/ramsey/php-library-skeleton/commits/1.0.0
 [@ramsey]: https://github.com/ramsey
