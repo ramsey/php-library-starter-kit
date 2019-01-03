@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./app/vendor/autoload.php" colors="true" verbose="true">
+    <testsuites>
+        <testsuite name="ramsey/php-library-skeleton unit tests">
+            <directory>./app/tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app/src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

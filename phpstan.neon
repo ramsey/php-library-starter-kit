@@ -1,0 +1,2 @@
+includes:
+	- app/vendor/phpstan/phpstan-mockery/extension.neon

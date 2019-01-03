@@ -1,0 +1,80 @@
+{
+    "name": "ramsey/php-library-skeleton",
+    "description": "A skeleton to quickly set up the base files of a PHP library package.",
+    "type": "project",
+    "keywords": ["skeleton", "package", "library"],
+    "homepage": "https://github.com/ramsey/php-library-skeleton",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Ramsey",
+            "email": "ben@benramsey.com",
+            "homepage": "https://benramsey.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ramsey/php-library-skeleton/issues",
+        "rss": "https://github.com/ramsey/php-library-skeleton/releases.atom",
+        "source": "https://github.com/ramsey/php-library-skeleton.git"
+    },
+    "require": {
+        "php": "^7.2",
+        "symfony/filesystem": "^4.2",
+        "symfony/finder": "^4.2",
+        "twig/twig": "^2.6"
+    },
+    "require-dev": {
+        "composer/composer": "^1.8",
+        "jakub-onderka/php-parallel-lint": "^1",
+        "mockery/mockery": "^1",
+        "phpstan/phpstan": "^0.10",
+        "phpstan/phpstan-mockery": "^0.10",
+        "phpunit/phpunit": "^7",
+        "squizlabs/php_codesniffer": "^3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ramsey\\Skeleton\\": "app/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ramsey\\Skeleton\\Test\\": "app/tests/"
+        },
+        "files": [
+            "app/vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+        ]
+    },
+    "scripts": {
+        "lint": "parallel-lint app/src app/tests",
+        "phpcs": "phpcs app/src app/tests --standard=psr12 -sp --colors",
+        "phpstan": [
+            "phpstan analyse app/src -c phpstan.neon --level max --no-progress",
+            "phpstan analyse app/tests -c phpstan.neon --level 4 --no-progress"
+        ],
+        "phpunit": "phpunit --verbose --colors=always",
+        "phpunit-ci": "phpunit --verbose --coverage-clover build/logs/clover.xml",
+        "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
+        "post-create-project-cmd": [
+            "Ramsey\\Skeleton\\Setup::wizard",
+            "@composer install --ansi",
+            "@composer test"
+        ],
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpstan",
+            "@phpunit"
+        ],
+        "test-ci": [
+            "@lint",
+            "@phpcs",
+            "@phpstan",
+            "@phpunit-ci"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "vendor-dir": "app/vendor"
+    }
+}
