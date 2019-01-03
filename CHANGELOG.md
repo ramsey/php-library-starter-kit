@@ -60,7 +60,8 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/ramsey/php-library-skeleton/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/ramsey/php-library-skeleton/commits/1.0.0
 [@ramsey]: https://github.com/ramsey
