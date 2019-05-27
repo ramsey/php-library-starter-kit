@@ -1,4 +1,5 @@
+.phpunit.result.cache
+/app/vendor/
 /build/
 /composer.lock
 /phpunit.xml
-/app/vendor/
