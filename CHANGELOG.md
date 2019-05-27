@@ -21,6 +21,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.1.0] - 2019-05-27
+
+### Changed
+
+* Moved the `README.md` file to the project root to support packages that will
+  not be placed on GitHub.
+* Upgraded to the latest versions of dev tools:
+  * PHPStan `^0.11`
+  * PHPUnit `^8`
+* Now using `--no-suggest` when installing packages after finishing the wizard.
+
 ## [1.0.2] - 2019-01-03
 
 ### Fixed
@@ -52,7 +63,7 @@ To create the starting point for a PHP library using this project, run the
 following:
 
 ``` bash
-composer create-project ramsey/php-library-skeleton target-directory
+composer create-project --remove-vcs ramsey/php-library-skeleton target-directory
 ```
 
 You will be walked through a series of questions, and your PHP library source
@@ -60,7 +71,8 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.0.2...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/ramsey/php-library-skeleton/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/ramsey/php-library-skeleton/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/ramsey/php-library-skeleton/commits/1.0.0
