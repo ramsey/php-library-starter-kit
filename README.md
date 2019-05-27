@@ -28,7 +28,7 @@ use this package as a starting part for developing your own PHP library.
 Here's how do this, using [Composer][]:
 
 ```bash
-composer create-project ramsey/php-library-skeleton target-directory
+composer create-project --remove-vcs ramsey/php-library-skeleton target-directory
 ```
 
 You will be walked through a series of questions, and your PHP library source

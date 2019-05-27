@@ -57,7 +57,7 @@
         "phpunit-coverage": "phpunit --verbose --colors=always --coverage-html build/coverage",
         "post-create-project-cmd": [
             "Ramsey\\Skeleton\\Setup::wizard",
-            "@composer install --ansi --no-suggest",
+            "@composer install --ansi --no-suggest --no-progress",
             "@composer test"
         ],
         "test": [
