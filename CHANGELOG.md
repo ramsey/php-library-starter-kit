@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [1.1.1] - 2019-10-23
+
+### Fixed
+
+* Fixed PSR-12 coding standards violations.
+
+
 ## [1.1.0] - 2019-05-27
 
 ### Changed
@@ -31,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   * PHPStan `^0.11`
   * PHPUnit `^8`
 * Now using `--no-suggest` when installing packages after finishing the wizard.
+
 
 ## [1.0.2] - 2019-01-03
 
@@ -71,7 +79,8 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/1.1.1...HEAD
+[1.1.1]: https://github.com/ramsey/php-library-skeleton/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/ramsey/php-library-skeleton/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/ramsey/php-library-skeleton/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/ramsey/php-library-skeleton/compare/1.0.0...1.0.1
