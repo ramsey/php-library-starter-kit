@@ -20,8 +20,11 @@ class SetupTest extends TestCase
             'packageName' => 'foo/bar',
         ];
 
+        $extension = \Mockery::mock(\Twig_Extension::class);
+        $extension->expects()->setEscaper('json', anInstanceOf(\Closure::class));
+
         $twig = \Mockery::mock(\Twig_Environment::class, [
-            'addFilter' => null,
+            'getExtension' => $extension,
         ]);
 
         $prompt = \Mockery::mock(Prompt::class, [

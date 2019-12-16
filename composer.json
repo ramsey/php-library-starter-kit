@@ -19,6 +19,7 @@
     },
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "symfony/filesystem": "^4.2",
         "symfony/finder": "^4.2",
         "twig/twig": "^2.10"
