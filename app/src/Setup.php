@@ -23,8 +23,8 @@ use Ramsey\Skeleton\Task\Questions;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Twig_Environment;
+use Twig_Extension_Escaper;
 use Twig_Loader_Filesystem;
-use Twig_SimpleFilter;
 
 /**
  * `Setup` is a static class for use with the Composer post-create-project event.
@@ -43,7 +43,13 @@ class Setup
         $finder = new Finder();
 
         $twig = static::getTwigEnvironment();
-        $twig->addFilter(new Twig_SimpleFilter('addslashes', 'addslashes'));
+        /** @var Twig_Extension_Escaper $extension */
+        $extension = $twig->getExtension(Twig_Extension_Escaper::class);
+        $extension->setEscaper('json', static function ($env, string $string) {
+            $encoded = json_encode($string, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            return $encoded ? substr($encoded, 1, -1) : '';
+        });
 
         $prompt = static::getPrompt($io, $filesystem, $finder);
         $prompt->setQuestions(new Questions\InstallQuestions());

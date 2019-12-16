@@ -1,23 +1,23 @@
 {
-    "name": "{{ packageName|escape('js') }}",
-    "description": "{{ packageDescription|escape('js') }}",
+    "name": "{{ packageName|escape('json') }}",
+    "description": "{{ packageDescription|escape('json') }}",
     "type": "library",
-    "keywords": [{% for keyword in keywords|split(',') %}"{{ keyword|trim|escape('js') }}"{% if not loop.last %}, {% endif %}{% endfor %}],
-    "homepage": "https://github.com/{{ githubUsername|escape('js') }}/{{ githubProject|escape('js') }}",
+    "keywords": [{% for keyword in keywords|split(',') %}"{{ keyword|trim|escape('json') }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+    "homepage": "https://github.com/{{ githubUsername|escape('json') }}/{{ githubProject|escape('json') }}",
     "license": "MIT",
     "authors": [
         {
-            "name": "{{ authorName|escape('js') }}",
-            "email": "{{ authorEmail|escape('js') }}",
-            "homepage": "{{ authorUrl|escape('js') }}"
+            "name": "{{ authorName|escape('json') }}",
+            "email": "{{ authorEmail|escape('json') }}",
+            "homepage": "{{ authorUrl|escape('json') }}"
         }
     ],
     "support": {
-        "docs": "https://{{ githubUsername|escape('js') }}.github.io/{{ githubProject|escape('js') }}/",
-        "issues": "https://github.com/{{ githubUsername|escape('js') }}/{{ githubProject|escape('js') }}/issues",
-        "rss": "https://github.com/{{ githubUsername|escape('js') }}/{{ githubProject|escape('js') }}/releases.atom",
-        "source": "https://github.com/{{ githubUsername|escape('js') }}/{{ githubProject|escape('js') }}.git",
-        "wiki": "https://github.com/{{ githubUsername|escape('js') }}/{{ githubProject|escape('js') }}/wiki"
+        "docs": "https://{{ githubUsername|escape('json') }}.github.io/{{ githubProject|escape('json') }}/",
+        "issues": "https://github.com/{{ githubUsername|escape('json') }}/{{ githubProject|escape('json') }}/issues",
+        "rss": "https://github.com/{{ githubUsername|escape('json') }}/{{ githubProject|escape('json') }}/releases.atom",
+        "source": "https://github.com/{{ githubUsername|escape('json') }}/{{ githubProject|escape('json') }}.git",
+        "wiki": "https://github.com/{{ githubUsername|escape('json') }}/{{ githubProject|escape('json') }}/wiki"
     },
     "require": {
         "php": "^7.2"
@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "{{ namespace|escape('js') }}\\": "src/"
+            "{{ namespace|escape('json') }}\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "{{ namespace|escape('js') }}\\Test\\": "tests/"
+            "{{ namespace|escape('json') }}\\Test\\": "tests/"
         }
     },
     "scripts": {
