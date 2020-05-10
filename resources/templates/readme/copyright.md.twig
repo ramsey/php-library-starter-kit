@@ -1,0 +1,48 @@
+{% set copyright %}{% if copyrightUrl %}[{{ copyrightHolder }}]({{ copyrightUrl }}){% elseif copyrightEmail %}[{{ copyrightHolder }}](mailto:{{ copyrightEmail }}){% else %}{{ copyrightHolder }}{% endif %}{% endset %}
+
+{% set licenseStatement %}
+{% if license == 'AGPL-3.0-or-later' %}
+GNU Affero General Public License (AGPL-3.0-or-later) as published by the Free
+Software Foundation. Please see [COPYING](COPYING) and [NOTICE](NOTICE) for more
+information.
+{% elseif license == 'Apache-2.0' %}
+Apache License, Version 2.0 (Apache-2.0). Please see [LICENSE](LICENSE) and
+[NOTICE](NOTICE) for more information.
+{% elseif license == 'BSD-2-Clause' %}
+BSD 2-Clause "Simplified" License (BSD-2-Clause). Please see [LICENSE](LICENSE)
+for more information.
+{% elseif license == 'BSD-3-Clause' %}
+BSD 3-Clause "New" or "Revised" License (BSD-3-Clause). Please see
+[LICENSE](LICENSE) for more information.
+{% elseif license == 'GPL-3.0-or-later' %}
+GNU General Public License (GPL-3.0-or-later) as published by the Free Software
+Foundation. Please see [COPYING](COPYING) and [NOTICE](NOTICE) for more
+information.
+{% elseif license == 'LGPL-3.0-or-later' %}
+GNU Lesser General Public License (LGPL-3.0-or-later) as published by the Free
+Software Foundation. Please see [COPYING.LESSER](COPYING.LESSER),
+[COPYING](COPYING), and [NOTICE](NOTICE) for more information.
+{% elseif license == 'MIT' %}
+MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
+{% elseif license == 'MIT-0' %}
+MIT No Attribution (MIT-0) license. Please see [LICENSE](LICENSE) for more
+information.
+{% elseif license == 'MPL-2.0' %}
+Mozilla Public License 2.0 (MPL-2.0). Please see [LICENSE](LICENSE) and
+[NOTICE](NOTICE) for more information.
+{% endif %}
+{% endset %}
+
+## Copyright and License
+
+{% if license == 'Unlicense' %}
+The {{ packageName }} library is free and unencumbered software released into the
+public domain. Please see [UNLICENSE](UNLICENSE) for more information.
+{%  elseif license == 'Proprietary' %}
+The {{ packageName }} library is copyright © {{ copyright }}.
+All rights reserved.
+{% else %}
+The {{ packageName }} library is copyright © {{ copyright }}
+and licensed for use under the terms of the
+{{ licenseStatement }}
+{% endif %}

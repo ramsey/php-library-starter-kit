@@ -1,5 +1,7 @@
-.phpunit.result.cache
-/app/vendor/
-/build/
-/composer.lock
-/phpunit.xml
+composer.lock
+node_modules/
+package-lock.json
+phpcs.xml
+phpunit.xml
+vendor/
+yarn.lock
