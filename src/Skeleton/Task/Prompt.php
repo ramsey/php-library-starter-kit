@@ -22,6 +22,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Skeleton\Task;
 
+/**
+ * Represents a user prompt
+ */
 class Prompt extends Task
 {
     /** @psalm-suppress PropertyNotSetInConstructor */
@@ -30,6 +33,9 @@ class Prompt extends Task
     /** @psalm-suppress PropertyNotSetInConstructor */
     private InstallQuestions $questions;
 
+    /**
+     * Sets the questions with which to prompt the user
+     */
     public function setQuestions(InstallQuestions $questions): self
     {
         $this->questions = $questions;
@@ -37,11 +43,17 @@ class Prompt extends Task
         return $this;
     }
 
+    /**
+     * Returns the questions
+     */
     public function getQuestions(): InstallQuestions
     {
         return $this->questions;
     }
 
+    /**
+     * Sets the instance to use for capturing user responses
+     */
     public function setAnswers(Answers $answers): self
     {
         $this->answers = $answers;
@@ -49,11 +61,17 @@ class Prompt extends Task
         return $this;
     }
 
+    /**
+     * Returns user responses
+     */
     public function getAnswers(): Answers
     {
         return $this->answers;
     }
 
+    /**
+     * Executes the prompt, asking the user each question
+     */
     public function run(): void
     {
         $questions = $this->getQuestions();

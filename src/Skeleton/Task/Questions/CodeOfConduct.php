@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Question;
 
 use const PHP_EOL;
 
+/**
+ * Asks for the creator to select a code of conduct for the project
+ */
 class CodeOfConduct extends Question
 {
     public const CHOICES = [

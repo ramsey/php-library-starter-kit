@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+/**
+ * Updates the CONTRIBUTING.md file based on responses to setup questions
+ */
 class UpdateContributing extends Builder
 {
     public function build(): void

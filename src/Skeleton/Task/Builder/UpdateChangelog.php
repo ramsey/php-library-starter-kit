@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+/**
+ * Updates the project's CHANGELOG using the CHANGELOG template
+ */
 class UpdateChangelog extends Builder
 {
     public function build(): void

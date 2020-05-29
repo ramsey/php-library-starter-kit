@@ -28,6 +28,9 @@ use Ramsey\Skeleton\Task\Question;
 use function preg_match;
 use function strtolower;
 
+/**
+ * Asks for the vendor name to use for this package
+ */
 class VendorName extends Question
 {
     private const VALID_PATTERN = '/^[a-z0-9]([_.-]?[a-z0-9]+)*$/';

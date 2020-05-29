@@ -25,6 +25,13 @@ namespace Vendor\Console;
 use Psy\Configuration;
 use Psy\Shell;
 
+/**
+ * A REPL (read-eval-print loop) for use with development
+ *
+ * This REPL uses PsySH. To use it, enter `./bin/repl` at your command prompt.
+ *
+ * @link https://psysh.org PsySH
+ */
 class Repl
 {
     public static function start(): void

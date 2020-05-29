@@ -41,6 +41,9 @@ use Ramsey\Skeleton\Task\Builder\UpdateReadme;
 use Ramsey\Skeleton\Task\Builder\UpdateSourceFileHeaders;
 use Twig\Environment as TwigEnvironment;
 
+/**
+ * The Build task executes all the builders used to build the library
+ */
 class Build extends Task
 {
     /** @psalm-suppress PropertyNotSetInConstructor */
@@ -49,6 +52,9 @@ class Build extends Task
     /** @psalm-suppress PropertyNotSetInConstructor */
     private TwigEnvironment $twig;
 
+    /**
+     * Sets the Answers instance to use for storing user answers
+     */
     public function setAnswers(Answers $answers): self
     {
         $this->answers = $answers;
@@ -56,11 +62,17 @@ class Build extends Task
         return $this;
     }
 
+    /**
+     * Returns the user answers
+     */
     public function getAnswers(): Answers
     {
         return $this->answers;
     }
 
+    /**
+     * Sets the Twig environment instance to use for rendering Twig templates
+     */
     public function setTwigEnvironment(TwigEnvironment $twig): self
     {
         $this->twig = $twig;
@@ -68,11 +80,17 @@ class Build extends Task
         return $this;
     }
 
+    /**
+     * Returns the Twig environment instance
+     */
     public function getTwigEnvironment(): TwigEnvironment
     {
         return $this->twig;
     }
 
+    /**
+     * Executes each builder
+     */
     public function run(): void
     {
         foreach ($this->getBuilders() as $builder) {
@@ -81,6 +99,8 @@ class Build extends Task
     }
 
     /**
+     * Returns a list of builders to use for creating a library
+     *
      * @return list<Builder>
      */
     public function getBuilders(): array

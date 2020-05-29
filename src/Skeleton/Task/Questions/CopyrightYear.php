@@ -27,6 +27,9 @@ use Ramsey\Skeleton\Task\Question;
 
 use function date;
 
+/**
+ * Asks for the initial copyright year
+ */
 class CopyrightYear extends Question
 {
     public function getName(): string

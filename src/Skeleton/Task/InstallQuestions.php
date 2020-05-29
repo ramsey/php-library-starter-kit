@@ -45,6 +45,9 @@ use Ramsey\Skeleton\Task\Questions\PackageName;
 use Ramsey\Skeleton\Task\Questions\PackageNamespace;
 use Ramsey\Skeleton\Task\Questions\VendorName;
 
+/**
+ * A list of questions to ask the user upon installation
+ */
 class InstallQuestions
 {
     private string $projectName;

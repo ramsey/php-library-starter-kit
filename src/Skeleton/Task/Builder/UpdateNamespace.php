@@ -27,6 +27,9 @@ use Symfony\Component\Finder\SplFileInfo;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Updates the namespace according to the one provided during project setup
+ */
 class UpdateNamespace extends Builder
 {
     public function build(): void

@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the email address of the library author
+ */
 class AuthorEmail extends Question
 {
     use EmailValidator;

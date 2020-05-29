@@ -34,6 +34,9 @@ use function trim;
 
 use const PHP_EOL;
 
+/**
+ * Represents a question asked of the user setting up a project
+ */
 abstract class Question
 {
     private IOInterface $io;
@@ -45,10 +48,19 @@ abstract class Question
         $this->answers = $answers;
     }
 
+    /**
+     * Returns the name of the answer property associated with this question
+     */
     abstract public function getName(): string;
 
+    /**
+     * Returns the actual question to prompt the user
+     */
     abstract public function getQuestion(): string;
 
+    /**
+     * Asks the user the question and saves the answer they provide
+     */
     public function ask(): void
     {
         if ($this->shouldSkip()) {
@@ -66,6 +78,9 @@ abstract class Question
         $this->getAnswers()->{$this->getName()} = $answer;
     }
 
+    /**
+     * Returns a prompt used to preset the user with a question
+     */
     public function getPrompt(): string
     {
         $prompt = PHP_EOL;
@@ -85,11 +100,17 @@ abstract class Question
         return $prompt;
     }
 
+    /**
+     * Returns the default answer value or null if there isn't a default
+     */
     public function getDefault(): ?string
     {
         return null;
     }
 
+    /**
+     * Returns a validation callable
+     */
     public function getValidator(): callable
     {
         return function (string $data): string {
@@ -105,26 +126,41 @@ abstract class Question
         };
     }
 
+    /**
+     * Returns true if the question should be skipped (based on previous answers)
+     */
     public function shouldSkip(): bool
     {
         return false;
     }
 
+    /**
+     * Returns true if the answer is optional
+     */
     public function isOptional(): bool
     {
         return false;
     }
 
+    /**
+     * Returns the IO instance for use with this question
+     */
     final public function getIO(): IOInterface
     {
         return $this->io;
     }
 
+    /**
+     * Returns the Answers instance for use with this question
+     */
     final public function getAnswers(): Answers
     {
         return $this->answers;
     }
 
+    /**
+     * Replaces tokens in the given value with previously captured answers
+     */
     final public function replaceTokens(string $value): string
     {
         $tokens = array_map(function ($key): string {

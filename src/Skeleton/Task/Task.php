@@ -30,6 +30,9 @@ use Symfony\Component\Process\Process;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Represents a skeleton task
+ */
 abstract class Task
 {
     private string $appPath;
@@ -51,27 +54,41 @@ abstract class Task
         $this->io = $io;
     }
 
+    /**
+     * Returns the absolute path to the directory for the application
+     */
     public function getAppPath(): string
     {
         return $this->appPath;
     }
 
+    /**
+     * Returns the IO object for this task
+     */
     public function getIO(): IOInterface
     {
         return $this->io;
     }
 
+    /**
+     * Returns a filesystem object to use when executing filesystem commands
+     */
     public function getFilesystem(): Filesystem
     {
         return $this->filesystem;
     }
 
+    /**
+     * Returns an object used to search for files or directories
+     */
     public function getFinder(): Finder
     {
         return clone $this->finder;
     }
 
     /**
+     * Returns an instance used for executing a system command
+     *
      * @param list<string> $command
      */
     public function getProcess(array $command): Process
@@ -91,11 +108,18 @@ abstract class Task
         return new Process($command, $this->getAppPath());
     }
 
+    /**
+     * Given a project-relative directory or filename, constructs an absolute path
+     */
     public function path(string $fileName): string
     {
         return $this->appPath . DIRECTORY_SEPARATOR . $fileName;
     }
 
+    /**
+     * Returns a callback that may be used by the IO instance to stream process
+     * output to stdout or stderr
+     */
     public function streamProcessOutput(): callable
     {
         return function (string $type, string $buffer): void {

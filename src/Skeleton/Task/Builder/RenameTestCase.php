@@ -31,6 +31,9 @@ use function str_replace;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Renames the test case class and file, for the new project
+ */
 class RenameTestCase extends Builder
 {
     public function build(): void

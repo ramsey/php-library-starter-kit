@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the URL of the library author
+ */
 class AuthorUrl extends Question
 {
     use UrlValidator;

@@ -35,6 +35,11 @@ use Twig\Loader\FilesystemLoader;
 
 use const PHP_EOL;
 
+/**
+ * Composer's post-create-project-cmd uses Setup::wizard() to walk you through
+ * a series of questions to set up a repository to use for developing a PHP
+ * library
+ */
 class Setup
 {
     private Event $event;
@@ -59,36 +64,57 @@ class Setup
         $this->projectName = $projectName;
     }
 
+    /**
+     * Returns the absolute path to the directory for the application
+     */
     public function getAppPath(): string
     {
         return $this->appPath;
     }
 
+    /**
+     * Returns the Composer event that triggered this action
+     */
     public function getEvent(): Event
     {
         return $this->event;
     }
 
+    /**
+     * Returns the IO object from the event triggering this action
+     */
     public function getIO(): IOInterface
     {
         return $this->io;
     }
 
+    /**
+     * Returns a filesystem object to use when executing filesystem commands
+     */
     public function getFilesystem(): Filesystem
     {
         return $this->filesystem;
     }
 
+    /**
+     * Returns an object used to search for files or directories
+     */
     public function getFinder(): Finder
     {
         return $this->finder;
     }
 
+    /**
+     * Returns the project name, based on the directory name
+     */
     public function getProjectName(): string
     {
         return $this->projectName;
     }
 
+    /**
+     * Returns a prompt to ask the user a question for input
+     */
     public function getPrompt(Answers $answers): Prompt
     {
         $prompt = new Prompt(
@@ -107,6 +133,9 @@ class Setup
         return $prompt;
     }
 
+    /**
+     * Returns a Build object used to process all the user inputs
+     */
     public function getBuild(Answers $answers): Build
     {
         $build = new Build(
@@ -122,6 +151,9 @@ class Setup
         return $build;
     }
 
+    /**
+     * Returns a Twig environment object for rendering Twig templates
+     */
     public function getTwigEnvironment(): TwigEnvironment
     {
         $twig = new TwigEnvironment(
@@ -136,6 +168,9 @@ class Setup
         return $twig;
     }
 
+    /**
+     * Runs the steps to set up the project
+     */
     public function run(Answers $answers): void
     {
         $this->getIO()->write('');
@@ -171,6 +206,9 @@ class Setup
         $this->getIO()->write('');
     }
 
+    /**
+     * Executes the setup wizard
+     */
     public static function wizard(Event $event): void
     {
         $appPath = dirname((string) $event->getComposer()->getConfig()->get('vendor-dir'));
@@ -187,6 +225,9 @@ class Setup
         $setup->run(new Answers());
     }
 
+    /**
+     * Returns a new Setup instance
+     */
     public static function newSelf(
         string $projectName,
         string $appPath,

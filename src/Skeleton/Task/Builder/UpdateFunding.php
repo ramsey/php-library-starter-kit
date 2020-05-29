@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+/**
+ * Replaces this project's FUNDING.yml file with an empty one for the new project
+ */
 class UpdateFunding extends Builder
 {
     public function build(): void

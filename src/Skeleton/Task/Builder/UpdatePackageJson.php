@@ -31,6 +31,9 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 
+/**
+ * Updates the package.json file based on responses from the project setup
+ */
 class UpdatePackageJson extends Builder
 {
     private const JSON_OPTIONS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;

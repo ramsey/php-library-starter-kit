@@ -30,6 +30,9 @@ use function trim;
 
 use const FILTER_VALIDATE_URL;
 
+/**
+ * Common URL validation functionality
+ */
 trait UrlValidator
 {
     abstract public function isOptional(): bool;

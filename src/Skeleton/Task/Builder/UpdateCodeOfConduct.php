@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Builder;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Updates the project's Code of Conduct using the one selected during setup
+ */
 class UpdateCodeOfConduct extends Builder
 {
     public function build(): void

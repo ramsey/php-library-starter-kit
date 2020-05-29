@@ -30,6 +30,9 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 
+/**
+ * Updates values in the composer.json file
+ */
 class UpdateComposerJson extends Builder
 {
     private const WHITELIST_REQUIRE = [

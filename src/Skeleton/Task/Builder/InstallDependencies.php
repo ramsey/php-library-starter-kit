@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+/**
+ * Installs project dependencies after building a new library
+ */
 class InstallDependencies extends Builder
 {
     public const COMPOSER_REMOVE_PACKAGES = [

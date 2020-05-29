@@ -28,6 +28,9 @@ use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
+/**
+ * Updates the README.md file based on answers obtained during project setup
+ */
 class UpdateReadme extends Builder
 {
     public function build(): void

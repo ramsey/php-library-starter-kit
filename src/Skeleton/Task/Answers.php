@@ -27,6 +27,9 @@ use ReflectionProperty;
 
 use function array_combine;
 
+/**
+ * Answers to questions prompted to the user building a library
+ */
 final class Answers
 {
     public ?string $authorEmail = null;
@@ -56,6 +59,8 @@ final class Answers
     public ?string $vendorName = null;
 
     /**
+     * Returns the property names a tokens to use in templates
+     *
      * @return list<string>
      */
     public function getTokens(): array
@@ -71,6 +76,8 @@ final class Answers
     }
 
     /**
+     * Returns the property values to replace tokens in template
+     *
      * @return list<mixed>
      */
     public function getValues(): array
@@ -87,6 +94,8 @@ final class Answers
     }
 
     /**
+     * Returns an array of key-value pairs of token names and values
+     *
      * @return array<string, mixed>
      */
     public function getArrayCopy(): array

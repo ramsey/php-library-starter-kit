@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks whether the author is the same person as the copyright holder
+ */
 class AuthorHoldsCopyright extends Question
 {
     public function getName(): string

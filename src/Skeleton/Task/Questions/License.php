@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Question;
 
 use const PHP_EOL;
 
+/**
+ * Asks the user what license they wish to use for this project
+ */
 class License extends Question
 {
     public const CHOICES = [

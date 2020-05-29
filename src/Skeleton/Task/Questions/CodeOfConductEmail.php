@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the email address to which code of conduct issues should be submitted
+ */
 class CodeOfConductEmail extends Question
 {
     use EmailValidator;

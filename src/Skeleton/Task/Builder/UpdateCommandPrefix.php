@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Builder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+/**
+ * Updates the Composer command prefix for custom commands
+ */
 class UpdateCommandPrefix extends Builder
 {
     public const DEFAULT = 'vnd';

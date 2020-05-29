@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for a URL that describes guidelines for reporting code of conduct issues
+ */
 class CodeOfConductReportingUrl extends Question
 {
     use UrlValidator;

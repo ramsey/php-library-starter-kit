@@ -27,6 +27,9 @@ use Ramsey\Skeleton\Task\Question;
 
 use function preg_match;
 
+/**
+ * Asks for the namespace to use for this package
+ */
 class PackageNamespace extends Question
 {
     private const VALID_PATTERN = '/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/';

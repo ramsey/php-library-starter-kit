@@ -29,6 +29,9 @@ use function preg_match;
 
 use const PHP_EOL;
 
+/**
+ * Asks for a prefix to use for custom Composer commands
+ */
 class CommandPrefix extends Question
 {
     private const VALID_PATTERN = '/^[a-zA-Z0-9_\x80-\xff]{1,16}$/';

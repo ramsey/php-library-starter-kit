@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for a brief description of the library
+ */
 class PackageDescription extends Question
 {
     public function getName(): string

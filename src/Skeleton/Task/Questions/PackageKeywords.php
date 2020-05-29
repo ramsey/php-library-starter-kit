@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for keywords to associate with the library
+ */
 class PackageKeywords extends Question
 {
     public function getName(): string

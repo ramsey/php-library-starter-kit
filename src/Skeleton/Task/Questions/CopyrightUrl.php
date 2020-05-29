@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the URL of the copyright holder
+ */
 class CopyrightUrl extends Question
 {
     use UrlValidator;

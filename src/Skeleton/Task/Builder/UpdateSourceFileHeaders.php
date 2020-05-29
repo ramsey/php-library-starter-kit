@@ -28,6 +28,10 @@ use Symfony\Component\Finder\SplFileInfo;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Updates the source file headers to include license information, based on
+ * responses received during project setup
+ */
 class UpdateSourceFileHeaders extends Builder
 {
     private const HEADER_PATTERN = '%/\*\*.* \*/%sU';

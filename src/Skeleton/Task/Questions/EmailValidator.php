@@ -30,6 +30,9 @@ use function trim;
 
 use const FILTER_VALIDATE_EMAIL;
 
+/**
+ * Common email validation functionality
+ */
 trait EmailValidator
 {
     abstract public function isOptional(): bool;

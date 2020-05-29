@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the name of the committee responsible for handling code of conduct issues
+ */
 class CodeOfConductCommittee extends Question
 {
     public function getName(): string

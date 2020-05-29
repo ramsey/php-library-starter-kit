@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Builder;
 
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * Updates the license files with those chosen during the project setup
+ */
 class UpdateLicense extends Builder
 {
     public function build(): void

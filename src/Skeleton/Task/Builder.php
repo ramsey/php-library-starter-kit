@@ -22,6 +22,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Skeleton\Task;
 
+/**
+ * Represents a builder that uses user responses to build some part of a library
+ */
 abstract class Builder
 {
     private Build $buildTask;
@@ -31,8 +34,14 @@ abstract class Builder
         $this->buildTask = $buildTask;
     }
 
+    /**
+     * Executes the build action for this particular builder
+     */
     abstract public function build(): void;
 
+    /**
+     * Returns the build task for this builder
+     */
     public function getBuildTask(): Build
     {
         return $this->buildTask;

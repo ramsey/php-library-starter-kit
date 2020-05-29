@@ -24,6 +24,9 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+/**
+ * Asks for the GitHub username or org name of the project owner
+ */
 class GithubUsername extends Question
 {
     public function getName(): string
