@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [2.1.1] - 2020-05-29
+
+### Fixed
+
+* Fix links to code of conduct and contributing guide
+
+
 ## [2.1.0] - 2020-05-29
 
 ### Changed
@@ -100,7 +107,8 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/ramsey/php-library-skeleton/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/ramsey/php-library-skeleton/compare/2.0.1...2.1.0
 [2.0.1]: https://github.com/ramsey/php-library-skeleton/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/ramsey/php-library-skeleton/compare/1.1.1...2.0.0
