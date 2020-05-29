@@ -131,6 +131,7 @@ abstract class Question
             return "{{ {$key} }}";
         }, $this->getAnswers()->getTokens());
 
+        /** @var string[] $replacements */
         $replacements = $this->getAnswers()->getValues();
 
         /**

@@ -46,9 +46,15 @@ class UpdateReadme extends Builder
             '/<!-- COPYRIGHT_START -->(.*)<!-- COPYRIGHT_END -->/s' => $this->getCopyright(),
         ];
 
+        /** @var string[] $searches */
+        $searches = array_keys($replacements);
+
+        /** @var string[] $replaces */
+        $replaces = array_values($replacements);
+
         $readme = (string) preg_replace(
-            array_keys($replacements),
-            array_values($replacements),
+            $searches,
+            $replaces,
             $readmeContents
         );
 
