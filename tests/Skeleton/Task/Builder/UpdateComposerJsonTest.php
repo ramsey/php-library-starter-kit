@@ -270,7 +270,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                   "@vnd:analyze:phpstan",
                   "@vnd:analyze:psalm"
                 ],
-                "vnd:analyze:phpstan": "phpstan analyse -c phpstan.neon --no-progress",
+                "vnd:analyze:phpstan": "phpstan analyse --no-progress",
                 "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
                 "vnd:build:clean": "git clean -fX build/.",
                 "vnd:build:clear-cache": "git clean -fX build/cache/.",
@@ -370,7 +370,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                   "@vnd:analyze:phpstan",
                   "@vnd:analyze:psalm"
                 ],
-                "vnd:analyze:phpstan": "phpstan analyse -c phpstan.neon --no-progress",
+                "vnd:analyze:phpstan": "phpstan analyse --no-progress",
                 "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
                 "vnd:build:clean": "git clean -fX build/.",
                 "vnd:build:clear-cache": "git clean -fX build/cache/.",
