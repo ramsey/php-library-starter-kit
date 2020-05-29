@@ -140,7 +140,7 @@ composer vnd:lint:fix
 
 This project uses a combination of [PHPStan](https://github.com/phpstan/phpstan)
 and [Psalm](https://github.com/vimeo/psalm) to provide static analysis of PHP
-code. Configurations for these are in `phpstan.neon` and `psalm.xml`,
+code. Configurations for these are in `phpstan.neon.dist` and `psalm.xml`,
 respectively.
 
 lint-staged will run PHPStan and Psalm before committing. The pre-commit hook
