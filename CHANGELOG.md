@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Security
 
 
+## [2.1.0] - 2020-05-29
+
+### Changed
+
+* Rename phpstan.neon to phpstan.neon.dist
+
+
 ## [2.0.1] - 2020-05-29
 
 ### Fixed
@@ -93,7 +100,8 @@ files will be located in `target-directory`, when completed. Change to that
 directory, `git init`, and off you go!
 
 
-[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/ramsey/php-library-skeleton/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/ramsey/php-library-skeleton/compare/2.0.1...2.1.0
 [2.0.1]: https://github.com/ramsey/php-library-skeleton/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/ramsey/php-library-skeleton/compare/1.1.1...2.0.0
 [1.1.1]: https://github.com/ramsey/php-library-skeleton/compare/1.1.0...1.1.1
