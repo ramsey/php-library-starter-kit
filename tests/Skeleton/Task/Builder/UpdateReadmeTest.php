@@ -229,7 +229,7 @@ class UpdateReadmeTest extends SkeletonTestCase
             <!-- DESC_END -->
 
             <!-- COC_START -->
-            This project adheres to a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
+            This project adheres to a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
             By participating in this project and its community, you are expected to uphold
             this code.
             <!-- COC_END -->
@@ -245,7 +245,7 @@ class UpdateReadmeTest extends SkeletonTestCase
             ## Contributing
 
             Contributions are welcome! Before contributing to this project, familiarize
-            yourself with [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+            yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
             <!-- FAQ_START -->
             ## FAQs
@@ -281,7 +281,7 @@ class UpdateReadmeTest extends SkeletonTestCase
             ## Contributing
 
             Contributions are welcome! Before contributing to this project, familiarize
-            yourself with [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+            yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
             
 
@@ -305,7 +305,7 @@ class UpdateReadmeTest extends SkeletonTestCase
             ## Contributing
 
             Contributions are welcome! Before contributing to this project, familiarize
-            yourself with [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+            yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
             
 
