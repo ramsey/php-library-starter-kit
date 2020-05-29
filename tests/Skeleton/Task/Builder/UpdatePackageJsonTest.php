@@ -18,7 +18,10 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class UpdatePackageJsonTest extends SkeletonTestCase
 {
-    public function testBuild(): void
+    /**
+     * @dataProvider provideLicenses
+     */
+    public function testBuild(string $license, string $licenseExpected): void
     {
         $io = $this->mockery(ConsoleIO::class);
         $io->expects()->write('<info>Updating package.json</info>');
@@ -27,10 +30,10 @@ class UpdatePackageJsonTest extends SkeletonTestCase
         $filesystem
             ->shouldReceive('dumpFile')
             ->once()
-            ->withArgs(function (string $path, string $contents) {
+            ->withArgs(function (string $path, string $contents) use ($licenseExpected) {
                 $this->assertSame('/path/to/app/package.json', $path);
                 $this->assertJsonStringEqualsJsonString(
-                    $this->packageContentsExpected(),
+                    $this->packageContentsExpected($licenseExpected),
                     $contents
                 );
 
@@ -56,6 +59,7 @@ class UpdatePackageJsonTest extends SkeletonTestCase
         $answers->authorName = 'Jane Doe';
         $answers->authorEmail = 'jdoe@example.com';
         $answers->authorUrl = 'https://example.com/jane';
+        $answers->license = $license;
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -73,6 +77,27 @@ class UpdatePackageJsonTest extends SkeletonTestCase
         $builder = new UpdatePackageJson($task);
 
         $builder->build();
+    }
+
+    /**
+     * @return list<array<string, string>>
+     */
+    public function provideLicenses(): array
+    {
+        return [
+            [
+                'license' => 'Apache-2.0',
+                'licenseExpected' => 'Apache-2.0',
+            ],
+            [
+                'license' => 'MIT',
+                'licenseExpected' => 'MIT',
+            ],
+            [
+                'license' => 'Proprietary',
+                'licenseExpected' => 'UNLICENSED',
+            ],
+        ];
     }
 
     public function testBuildThrowsExceptionWhenPackageJsonContainsInvalidJson(): void
@@ -198,14 +223,14 @@ class UpdatePackageJsonTest extends SkeletonTestCase
         EOD;
     }
 
-    private function packageContentsExpected(): string
+    private function packageContentsExpected(string $license): string
     {
-        return <<<'EOD'
+        return <<<EOD
             {
               "name": "@a-vendor/package-name",
               "version": "1.0.0",
               "description": "This is a test package.",
-              "license": "MIT",
+              "license": "{$license}",
               "author": {
                 "name": "Jane Doe",
                 "email": "jdoe@example.com",

@@ -53,8 +53,14 @@ class UpdatePackageJson extends Builder
             throw new RuntimeException('Unable to decode contents of package.json');
         }
 
+        $license = (string) $this->getBuildTask()->getAnswers()->license;
+        if ($license === 'Proprietary') {
+            $license = 'UNLICENSED';
+        }
+
         $package->name = '@' . (string) $this->getBuildTask()->getAnswers()->packageName;
         $package->description = (string) $this->getBuildTask()->getAnswers()->packageDescription;
+        $package->license = $license;
 
         $this->buildAuthor($package);
 
