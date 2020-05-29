@@ -1,10 +1,9 @@
 # Contributing
 
-Contributions are welcome. I accept pull requests on [GitHub][].
+Contributions are welcome. This project accepts pull requests on [GitHub][].
 
-This project adheres to a [Contributor Code of Conduct][]. By participating in
+This project adheres to a [code of conduct][]. By participating in
 this project and its community, you are expected to uphold this code.
-
 
 ## Communication Channels
 
@@ -32,7 +31,7 @@ your bug report and sample code.**
 
 ## Fixing Bugs
 
-I welcome pull requests to fix bugs!
+This project welcomes pull requests to fix bugs!
 
 If you see a bug report that you'd like to fix, please feel free to do so.
 Following the directions and guidelines described in the "Adding New Features"
@@ -45,14 +44,14 @@ If you have an idea for a new feature, it's a good idea to check out the
 [issues][] or active [pull requests][] first to see if the feature is already
 being worked on. If not, feel free to submit an issue first, asking whether the
 feature is beneficial to the project. This will save you from doing a lot of
-development work only to have your feature rejected. I don't enjoy rejecting
-your hard work, but some features just don't fit with the goals of the project.
+development work only to have your feature rejected. We don't enjoy rejecting
+your hard work, but some features don't fit with the goals of the project.
 
 When you do begin working on your feature, here are some guidelines to consider:
 
 * Your pull request description should clearly detail the changes you have made.
-  I will use this description to update the CHANGELOG. If there is no
-  description or it does not adequately describe your feature, I will ask you
+  We will use this description to update the CHANGELOG. If there is no
+  description or it does not adequately describe your feature, we may ask you
   to update the description.
 * ramsey/php-library-skeleton follows the **[PSR-12 coding standard][psr-12]**. Please
   ensure your code does, too.
@@ -73,23 +72,22 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Running Tests
 
-The following must pass before I will accept a pull request. If this does not
+The following must pass before we will accept a pull request. If this does not
 pass, it will result in a complete build failure. Before you can run this, be
-sure to `composer install`.
+sure to `composer install` and `yarn install`.
 
 To run all the tests and coding standards checks, execute the following from the
-command line, while in the project root directory (the same place as the
-`composer.json` file):
+command line, while in the project root directory:
 
 ```
-composer run test
+composer vnd:test:all
 ```
 
 
 [github]: https://github.com/ramsey/php-library-skeleton
-[contributor code of conduct]: https://github.com/ramsey/php-library-skeleton/blob/master/.github/CODE_OF_CONDUCT.md
+[code of conduct]: CODE_OF_CONDUCT.md
 [issues]: https://github.com/ramsey/php-library-skeleton/issues
 [pull requests]: https://github.com/ramsey/php-library-skeleton/pulls
-[psr-12]: https://github.com/php-fig/fig-standards/blob/master/proposed/extended-coding-style-guide.md
+[psr-12]: https://www.php-fig.org/psr/psr-12/
 [gh-flow]: https://guides.github.com/introduction/flow/
 [git-commit]: https://chris.beams.io/posts/git-commit/
