@@ -1,7 +1,7 @@
 ---
 name: Feature Request
 about: Suggest a feature for this project
-labels: feature
+labels: enhancement
 assignees:
 ---
 <!--- Provide a general summary of your feature request in the title above. -->
