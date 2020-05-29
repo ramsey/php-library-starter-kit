@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0] - 2020-05-29
 
-## Changed
+### Changed
 
 * Pretty much a full re-write
 
