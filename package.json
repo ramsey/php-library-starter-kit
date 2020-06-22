@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^9.0.1",
     "add-newlines": "^0.2.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.2.0",
