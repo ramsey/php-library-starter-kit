@@ -40,7 +40,7 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
+    "@commitlint/cli": "^9.0.1",
     "@commitlint/config-conventional": "^9.0.1",
     "add-newlines": "^0.2.0",
     "commitizen": "^4.1.2",
