@@ -25,7 +25,7 @@
   },
   "require-dev": {
     "composer/composer": "^1.10",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "ergebnis/composer-normalize": "^2.5",
     "hamcrest/hamcrest-php": "^2",
     "mockery/mockery": "^1.3",
