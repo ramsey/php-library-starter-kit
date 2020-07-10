@@ -52,7 +52,6 @@ class RenameTemplates extends Builder
             ->exclude(
                 [
                     'build',
-                    'node_modules',
                     'vendor',
                 ]
             )

@@ -27,7 +27,7 @@ class SetupRepositoryTest extends SkeletonTestCase
         $processMustRun->expects()->mustRun()->times(3);
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(4);
+        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(3);
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -55,11 +55,6 @@ class SetupRepositoryTest extends SkeletonTestCase
             ->expects()
             ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
             ->andReturn($processMustRun);
-
-        $task
-            ->expects()
-            ->getProcess(['yarn', 'add', 'husky'])
-            ->andReturn($processMustRunWithCallable);
 
         $task
             ->expects()
@@ -87,7 +82,7 @@ class SetupRepositoryTest extends SkeletonTestCase
         $processMustRun->expects()->mustRun()->once();
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(4);
+        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(3);
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -115,11 +110,6 @@ class SetupRepositoryTest extends SkeletonTestCase
             ->expects()
             ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
             ->never();
-
-        $task
-            ->expects()
-            ->getProcess(['yarn', 'add', 'husky'])
-            ->andReturn($processMustRunWithCallable);
 
         $task
             ->expects()

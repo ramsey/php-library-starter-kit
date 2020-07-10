@@ -1,7 +1,5 @@
 composer.lock
-node_modules/
 package-lock.json
 phpcs.xml
 phpunit.xml
 vendor/
-yarn.lock

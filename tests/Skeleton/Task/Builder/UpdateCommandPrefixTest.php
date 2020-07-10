@@ -66,7 +66,6 @@ class UpdateCommandPrefixTest extends SkeletonTestCase
         $finder->expects()->exclude(
             [
                 'build',
-                'node_modules',
                 'resources/templates',
                 'src/Skeleton',
                 'tests/Skeleton',

@@ -60,16 +60,14 @@ composer create-project ramsey/php-library-skeleton YOUR-PROJECT-NAME
 Contributions are welcome! Before contributing to this project, familiarize
 yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
-To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater,
-[Composer](https://getcomposer.org), [Node.js](https://nodejs.org/), and
-[Yarn](https://yarnpkg.com).
+To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater
+and [Composer](https://getcomposer.org).
 
 After cloning this repository locally, execute the following commands:
 
 ``` bash
 cd /path/to/repository
 composer install
-yarn install
 ```
 
 Now, you are ready to develop!

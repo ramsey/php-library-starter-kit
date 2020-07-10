@@ -74,7 +74,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 The following must pass before we will accept a pull request. If this does not
 pass, it will result in a complete build failure. Before you can run this, be
-sure to `composer install` and `yarn install`.
+sure to `composer install`.
 
 To run all the tests and coding standards checks, execute the following from the
 command line, while in the project root directory:

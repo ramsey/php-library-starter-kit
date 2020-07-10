@@ -54,7 +54,7 @@ class BuildTest extends SkeletonTestCase
         $builders = $this->build->getBuilders();
 
         $this->assertContainsOnlyInstancesOf(Builder::class, $builders);
-        $this->assertCount(17, $builders);
+        $this->assertCount(16, $builders);
     }
 
     public function testRun(): void

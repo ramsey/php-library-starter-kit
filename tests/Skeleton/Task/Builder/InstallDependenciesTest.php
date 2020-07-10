@@ -25,8 +25,6 @@ class InstallDependenciesTest extends SkeletonTestCase
         $filesystem->expects()->remove(
             [
                 '/path/to/app' . DIRECTORY_SEPARATOR . 'composer.lock',
-                '/path/to/app' . DIRECTORY_SEPARATOR . 'yarn.lock',
-                '/path/to/app' . DIRECTORY_SEPARATOR . 'node_modules',
                 '/path/to/app' . DIRECTORY_SEPARATOR . 'vendor',
             ]
         );
@@ -36,9 +34,6 @@ class InstallDependenciesTest extends SkeletonTestCase
 
         $process2 = $this->mockery(Process::class);
         $process2->expects()->mustRun(callableValue());
-
-        $process3 = $this->mockery(Process::class);
-        $process3->expects()->mustRun(callableValue());
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -80,16 +75,6 @@ class InstallDependenciesTest extends SkeletonTestCase
                 ]
             )
             ->andReturn($process2);
-
-        $task
-            ->expects()
-            ->getProcess(
-                [
-                    'yarn',
-                    'install',
-                ]
-            )
-            ->andReturn($process3);
 
         $builder = new InstallDependencies($task);
 

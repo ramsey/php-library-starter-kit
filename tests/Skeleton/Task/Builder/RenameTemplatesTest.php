@@ -53,7 +53,7 @@ class RenameTemplatesTest extends SkeletonTestCase
         ]);
 
         $finder->expects()->ignoreDotFiles(false)->andReturnSelf();
-        $finder->expects()->exclude(['build', 'node_modules', 'vendor'])->andReturnSelf();
+        $finder->expects()->exclude(['build', 'vendor'])->andReturnSelf();
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->name('*.template')->andReturnSelf();
         $finder->expects()->name('.*.template');

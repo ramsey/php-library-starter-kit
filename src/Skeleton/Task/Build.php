@@ -36,7 +36,6 @@ use Ramsey\Skeleton\Task\Builder\UpdateContributing;
 use Ramsey\Skeleton\Task\Builder\UpdateFunding;
 use Ramsey\Skeleton\Task\Builder\UpdateLicense;
 use Ramsey\Skeleton\Task\Builder\UpdateNamespace;
-use Ramsey\Skeleton\Task\Builder\UpdatePackageJson;
 use Ramsey\Skeleton\Task\Builder\UpdateReadme;
 use Ramsey\Skeleton\Task\Builder\UpdateSourceFileHeaders;
 use Twig\Environment as TwigEnvironment;
@@ -108,7 +107,6 @@ class Build extends Task
         return [
             new RenameTemplates($this),
             new UpdateComposerJson($this),
-            new UpdatePackageJson($this),
             new UpdateReadme($this),
             new UpdateLicense($this),
             new UpdateSourceFileHeaders($this),

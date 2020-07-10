@@ -41,15 +41,12 @@ class InstallDependencies extends Builder
         $this->getBuildTask()->getFilesystem()->remove(
             [
                 $this->getBuildTask()->path('composer.lock'),
-                $this->getBuildTask()->path('yarn.lock'),
-                $this->getBuildTask()->path('node_modules'),
                 $this->getBuildTask()->path('vendor'),
             ]
         );
 
         $this->composerRemoveDevelopmentPackages();
         $this->composerInstall();
-        $this->yarnInstall();
     }
 
     protected function composerRemoveDevelopmentPackages(): void
@@ -79,18 +76,6 @@ class InstallDependencies extends Builder
                 '--ansi',
                 '--no-progress',
                 '--no-suggest',
-            ]
-        );
-
-        $process->mustRun($this->getBuildTask()->streamProcessOutput());
-    }
-
-    protected function yarnInstall(): void
-    {
-        $process = $this->getBuildTask()->getProcess(
-            [
-                'yarn',
-                'install',
             ]
         );
 

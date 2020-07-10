@@ -39,7 +39,6 @@ class SetupRepository extends Builder
             ->initializeRepository()
             ->cleanBuildDir()
             ->configureAuthor()
-            ->yarnAddHusky()
             ->gitAddAllFiles()
             ->gitInitialCommit();
     }
@@ -85,23 +84,6 @@ class SetupRepository extends Builder
                 ->getProcess(['git', 'config', 'user.email', $authorEmail])
                 ->mustRun();
         }
-
-        return $this;
-    }
-
-    /**
-     * Uses Yarn to add Husky
-     *
-     * Husky is already included in package.json as a dependency, but Husky's
-     * Git hooks are only installed properly when Husky is added *after*
-     * initializing a repository, so we must add Husky at this point.
-     */
-    private function yarnAddHusky(): self
-    {
-        $this
-            ->getBuildTask()
-            ->getProcess(['yarn', 'add', 'husky'])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
 
         return $this;
     }
