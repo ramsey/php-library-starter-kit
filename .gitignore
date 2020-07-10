@@ -1,6 +1,5 @@
 captainhook.config.json
 composer.lock
-package-lock.json
 phpcs.xml
 phpunit.xml
 vendor/
