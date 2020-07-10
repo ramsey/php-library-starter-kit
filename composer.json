@@ -61,10 +61,10 @@
     },
     "scripts": {
         "post-autoload-dump": "captainhook install --ansi -f -s",
+        "post-root-package-install": "git init",
         "post-create-project-cmd": [
             "Ramsey\\Skeleton\\Setup::wizard"
         ],
-        "post-root-package-install": "git init",
         "pre-commit": [
             "@vnd:lint:fix",
             "@vnd:lint",

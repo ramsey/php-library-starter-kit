@@ -27,6 +27,9 @@
             },
             {
                 "action": "composer pre-commit {$STAGED_FILES|of-type:php}"
+            },
+            {
+                "action": "git add {$STAGED_FILES}"
             }
         ]
     },
