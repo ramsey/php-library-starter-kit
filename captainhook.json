@@ -1,0 +1,73 @@
+{
+    "config": {
+        "verbosity": "normal"
+    },
+    "commit-msg": {
+        "enabled": true,
+        "actions": [
+        ]
+    },
+    "pre-push": {
+        "enabled": false,
+        "actions": []
+    },
+    "pre-commit": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer normalize",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+                        "args": [
+                            ["composer.json"]
+                        ]
+                    }
+                ]
+            },
+            {
+                "action": "composer pre-commit {$STAGED_FILES|of-type:php}"
+            }
+        ]
+    },
+    "prepare-commit-msg": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-commit": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-merge": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer install",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
+                        "args": [
+                            ["composer.json", "composer.lock"]
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "post-checkout": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer install",
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
+                        "args": [
+                            ["composer.json", "composer.lock"]
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

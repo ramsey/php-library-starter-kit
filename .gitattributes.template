@@ -9,6 +9,7 @@ bin/lint-fix.sh       export-ignore
 bin/repl              export-ignore
 bin/repl.php          export-ignore
 build/                export-ignore
+captainhook.json      export-ignore
 commitlint.config.js  export-ignore
 docs/                 export-ignore
 phpcs.xml.dist        export-ignore

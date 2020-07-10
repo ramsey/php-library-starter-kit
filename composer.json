@@ -24,6 +24,8 @@
     "twig/twig": "^3"
   },
   "require-dev": {
+    "captainhook/captainhook": "^5.3",
+    "captainhook/plugin-composer": "^5.2",
     "composer/composer": "^1.10",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "ergebnis/composer-normalize": "^2.6",
@@ -63,11 +65,17 @@
     "post-create-project-cmd": [
       "Ramsey\\Skeleton\\Setup::wizard"
     ],
+    "pre-commit": [
+      "@vnd:lint:fix",
+      "@vnd:lint",
+      "@vnd:analyze"
+    ],
+    "test": "@vnd:test:all",
     "vnd:analyze": [
       "@vnd:analyze:phpstan",
       "@vnd:analyze:psalm"
     ],
-    "vnd:analyze:phpstan": "phpstan analyse --no-progress",
+    "vnd:analyze:phpstan": "phpstan analyse",
     "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
     "vnd:build:clean": "git clean -fX build/.",
     "vnd:build:clear-cache": "git clean -fX build/cache/.",
@@ -89,6 +97,8 @@
     "vnd:test:coverage:html": "phpunit --coverage-html build/coverage"
   },
   "scripts-descriptions": {
+    "pre-commit": "These commands are run as part of a Git pre-commit hook installed using captainhook/captainhook. Each command should be prepared to accept a list of space-separated staged files.",
+    "test": "Shortcut to run the full test suite.",
     "vnd:analyze": "Performs static analysis on the code base.",
     "vnd:analyze:phpstan": "Runs the PHPStan static analyzer.",
     "vnd:analyze:psalm": "Runs the Psalm static analyzer.",
