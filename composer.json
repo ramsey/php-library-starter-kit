@@ -1,111 +1,111 @@
 {
-  "name": "ramsey/php-library-skeleton",
-  "type": "project",
-  "description": "A tool to quickly set up the base files of a PHP library package.",
-  "keywords": [
-    "skeleton",
-    "package",
-    "library"
-  ],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Ben Ramsey",
-      "email": "ben@benramsey.com",
-      "homepage": "https://benramsey.com"
-    }
-  ],
-  "require": {
-    "php": "^7.4",
-    "ext-json": "*",
-    "symfony/filesystem": "^5",
-    "symfony/finder": "^5",
-    "symfony/process": "^5",
-    "twig/twig": "^3"
-  },
-  "require-dev": {
-    "captainhook/captainhook": "^5.3",
-    "captainhook/plugin-composer": "^5.2",
-    "composer/composer": "^1.10",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-    "ergebnis/composer-normalize": "^2.6",
-    "hamcrest/hamcrest-php": "^2",
-    "mockery/mockery": "^1.4",
-    "phpstan/extension-installer": "^1",
-    "phpstan/phpstan": "^0.12.32",
-    "phpstan/phpstan-mockery": "^0.12.5",
-    "phpstan/phpstan-phpunit": "^0.12.11",
-    "phpunit/phpunit": "^9.2",
-    "psy/psysh": "^0.10.4",
-    "slevomat/coding-standard": "^6.3",
-    "squizlabs/php_codesniffer": "^3.5",
-    "vimeo/psalm": "^3.12.2"
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "autoload": {
-    "psr-4": {
-      "Ramsey\\Skeleton\\": "src/Skeleton/",
-      "Vendor\\SubNamespace\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Ramsey\\Test\\Skeleton\\": "tests/Skeleton/",
-      "Vendor\\Console\\": "resources/console/",
-      "Vendor\\Test\\SubNamespace\\": "tests/"
+    "name": "ramsey/php-library-skeleton",
+    "type": "project",
+    "description": "A tool to quickly set up the base files of a PHP library package.",
+    "keywords": [
+        "skeleton",
+        "package",
+        "library"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Ramsey",
+            "email": "ben@benramsey.com",
+            "homepage": "https://benramsey.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "symfony/filesystem": "^5",
+        "symfony/finder": "^5",
+        "symfony/process": "^5",
+        "twig/twig": "^3"
     },
-    "files": [
-      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-    ]
-  },
-  "scripts": {
-    "post-create-project-cmd": [
-      "Ramsey\\Skeleton\\Setup::wizard"
-    ],
-    "pre-commit": [
-      "@vnd:lint:fix",
-      "@vnd:lint",
-      "@vnd:analyze"
-    ],
-    "test": "@vnd:test:all",
-    "vnd:analyze": [
-      "@vnd:analyze:phpstan",
-      "@vnd:analyze:psalm"
-    ],
-    "vnd:analyze:phpstan": "phpstan analyse",
-    "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
-    "vnd:build:clean": "git clean -fX build/.",
-    "vnd:build:clear-cache": "git clean -fX build/cache/.",
-    "vnd:lint": "phpcs --cache=build/cache/phpcs.cache",
-    "vnd:lint:fix": "./bin/lint-fix.sh",
-    "vnd:repl": [
-      "echo ; echo 'Type ./bin/repl to start the REPL.'"
-    ],
-    "vnd:test": "phpunit",
-    "vnd:test:all": [
-      "@vnd:lint",
-      "@vnd:analyze",
-      "@vnd:test"
-    ],
-    "vnd:test:coverage:ci": "phpunit --coverage-clover build/logs/clover.xml",
-    "vnd:test:coverage:html": "phpunit --coverage-html build/coverage"
-  },
-  "scripts-descriptions": {
-    "pre-commit": "These commands are run as part of a Git pre-commit hook installed using captainhook/captainhook. Each command should be prepared to accept a list of space-separated staged files.",
-    "test": "Shortcut to run the full test suite.",
-    "vnd:analyze": "Performs static analysis on the code base.",
-    "vnd:analyze:phpstan": "Runs the PHPStan static analyzer.",
-    "vnd:analyze:psalm": "Runs the Psalm static analyzer.",
-    "vnd:build:clean": "Removes everything not under version control from the build directory.",
-    "vnd:build:clear-cache": "Removes everything not under version control from build/cache/.",
-    "vnd:lint": "Checks all source code for coding standards issues.",
-    "vnd:lint:fix": "Checks source code for coding standards issues and fixes them, if possible.",
-    "vnd:repl": "Note: Use ./bin/repl to run the REPL.",
-    "vnd:test": "Runs the full unit test suite.",
-    "vnd:test:all": "Runs linting, static analysis, and unit tests.",
-    "vnd:test:coverage:ci": "Runs the unit test suite and generates a Clover coverage report.",
-    "vnd:test:coverage:html": "Runs the unit tests suite and generates an HTML coverage report."
-  }
+    "require-dev": {
+        "captainhook/captainhook": "^5.3",
+        "captainhook/plugin-composer": "^5.2",
+        "composer/composer": "^1.10",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+        "ergebnis/composer-normalize": "^2.6",
+        "hamcrest/hamcrest-php": "^2",
+        "mockery/mockery": "^1.4",
+        "phpstan/extension-installer": "^1",
+        "phpstan/phpstan": "^0.12.32",
+        "phpstan/phpstan-mockery": "^0.12.5",
+        "phpstan/phpstan-phpunit": "^0.12.11",
+        "phpunit/phpunit": "^9.2",
+        "psy/psysh": "^0.10.4",
+        "slevomat/coding-standard": "^6.3",
+        "squizlabs/php_codesniffer": "^3.5",
+        "vimeo/psalm": "^3.12.2"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Ramsey\\Skeleton\\": "src/Skeleton/",
+            "Vendor\\SubNamespace\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ramsey\\Test\\Skeleton\\": "tests/Skeleton/",
+            "Vendor\\Console\\": "resources/console/",
+            "Vendor\\Test\\SubNamespace\\": "tests/"
+        },
+        "files": [
+            "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+        ]
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "Ramsey\\Skeleton\\Setup::wizard"
+        ],
+        "pre-commit": [
+            "@vnd:lint:fix",
+            "@vnd:lint",
+            "@vnd:analyze"
+        ],
+        "test": "@vnd:test:all",
+        "vnd:analyze": [
+            "@vnd:analyze:phpstan",
+            "@vnd:analyze:psalm"
+        ],
+        "vnd:analyze:phpstan": "phpstan analyse",
+        "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
+        "vnd:build:clean": "git clean -fX build/.",
+        "vnd:build:clear-cache": "git clean -fX build/cache/.",
+        "vnd:lint": "phpcs --cache=build/cache/phpcs.cache",
+        "vnd:lint:fix": "./bin/lint-fix.sh",
+        "vnd:repl": [
+            "echo ; echo 'Type ./bin/repl to start the REPL.'"
+        ],
+        "vnd:test": "phpunit",
+        "vnd:test:all": [
+            "@vnd:lint",
+            "@vnd:analyze",
+            "@vnd:test"
+        ],
+        "vnd:test:coverage:ci": "phpunit --coverage-clover build/logs/clover.xml",
+        "vnd:test:coverage:html": "phpunit --coverage-html build/coverage"
+    },
+    "scripts-descriptions": {
+        "pre-commit": "These commands are run as part of a Git pre-commit hook installed using captainhook/captainhook. Each command should be prepared to accept a list of space-separated staged files.",
+        "test": "Shortcut to run the full test suite.",
+        "vnd:analyze": "Performs static analysis on the code base.",
+        "vnd:analyze:phpstan": "Runs the PHPStan static analyzer.",
+        "vnd:analyze:psalm": "Runs the Psalm static analyzer.",
+        "vnd:build:clean": "Removes everything not under version control from the build directory.",
+        "vnd:build:clear-cache": "Removes everything not under version control from build/cache/.",
+        "vnd:lint": "Checks all source code for coding standards issues.",
+        "vnd:lint:fix": "Checks source code for coding standards issues and fixes them, if possible.",
+        "vnd:repl": "Note: Use ./bin/repl to run the REPL.",
+        "vnd:test": "Runs the full unit test suite.",
+        "vnd:test:all": "Runs linting, static analysis, and unit tests.",
+        "vnd:test:coverage:ci": "Runs the unit test suite and generates a Clover coverage report.",
+        "vnd:test:coverage:html": "Runs the unit tests suite and generates an HTML coverage report."
+    }
 }
