@@ -31,7 +31,6 @@
     "ergebnis/composer-normalize": "^2.6",
     "hamcrest/hamcrest-php": "^2",
     "mockery/mockery": "^1.4",
-    "php-parallel-lint/php-parallel-lint": "^1.2",
     "phpstan/extension-installer": "^1",
     "phpstan/phpstan": "^0.12.32",
     "phpstan/phpstan-mockery": "^0.12.5",
@@ -79,10 +78,7 @@
     "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
     "vnd:build:clean": "git clean -fX build/.",
     "vnd:build:clear-cache": "git clean -fX build/cache/.",
-    "vnd:lint": [
-      "parallel-lint src tests",
-      "phpcs --cache=build/cache/phpcs.cache"
-    ],
+    "vnd:lint": "phpcs --cache=build/cache/phpcs.cache",
     "vnd:lint:fix": "./bin/lint-fix.sh",
     "vnd:repl": [
       "echo ; echo 'Type ./bin/repl to start the REPL.'"
