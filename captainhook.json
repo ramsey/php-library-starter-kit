@@ -15,7 +15,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "composer normalize --indent-size=4 --indent-style=space",
+                "action": "composer normalize --indent-size=4 --indent-style=space --ansi",
                 "conditions": [
                     {
                         "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
@@ -42,7 +42,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "composer install",
+                "action": "composer install --ansi",
                 "conditions": [
                     {
                         "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
@@ -58,7 +58,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "composer install",
+                "action": "composer install --ansi",
                 "conditions": [
                     {
                         "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileChanged\\Any",
