@@ -27,7 +27,7 @@ class SetupRepositoryTest extends SkeletonTestCase
         $processMustRun->expects()->mustRun()->times(3);
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(3);
+        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(4);
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -39,6 +39,11 @@ class SetupRepositoryTest extends SkeletonTestCase
         $task
             ->expects()
             ->getProcess(['git', 'init'])
+            ->andReturn($processMustRunWithCallable);
+
+        $task
+            ->expects()
+            ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
             ->andReturn($processMustRunWithCallable);
 
         $task
@@ -82,7 +87,7 @@ class SetupRepositoryTest extends SkeletonTestCase
         $processMustRun->expects()->mustRun()->once();
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(3);
+        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(4);
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
@@ -94,6 +99,11 @@ class SetupRepositoryTest extends SkeletonTestCase
         $task
             ->expects()
             ->getProcess(['git', 'init'])
+            ->andReturn($processMustRunWithCallable);
+
+        $task
+            ->expects()
+            ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
             ->andReturn($processMustRunWithCallable);
 
         $task

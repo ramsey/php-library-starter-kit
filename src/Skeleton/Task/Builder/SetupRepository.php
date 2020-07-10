@@ -37,6 +37,7 @@ class SetupRepository extends Builder
 
         $this
             ->initializeRepository()
+            ->installHooks()
             ->cleanBuildDir()
             ->configureAuthor()
             ->gitAddAllFiles()
@@ -48,6 +49,16 @@ class SetupRepository extends Builder
         $this
             ->getBuildTask()
             ->getProcess(['git', 'init'])
+            ->mustRun($this->getBuildTask()->streamProcessOutput());
+
+        return $this;
+    }
+
+    private function installHooks(): self
+    {
+        $this
+            ->getBuildTask()
+            ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
             ->mustRun($this->getBuildTask()->streamProcessOutput());
 
         return $this;

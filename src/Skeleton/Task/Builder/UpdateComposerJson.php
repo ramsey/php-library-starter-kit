@@ -77,6 +77,7 @@ class UpdateComposerJson extends Builder
             /** @var array<string, mixed> $scripts */
             $scripts = &$composer['scripts'];
             unset($scripts['post-create-project-cmd']);
+            unset($scripts['post-root-package-install']);
         }
 
         $this->getBuildTask()->getFilesystem()->dumpFile(

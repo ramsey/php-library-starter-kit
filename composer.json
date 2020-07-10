@@ -25,7 +25,6 @@
     },
     "require-dev": {
         "captainhook/captainhook": "^5.3",
-        "captainhook/plugin-composer": "^5.2",
         "composer/composer": "^1.10",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "ergebnis/composer-normalize": "^2.6",
@@ -61,9 +60,11 @@
         ]
     },
     "scripts": {
+        "post-autoload-dump": "captainhook install --ansi -f -s",
         "post-create-project-cmd": [
             "Ramsey\\Skeleton\\Setup::wizard"
         ],
+        "post-root-package-install": "git init",
         "pre-commit": [
             "@vnd:lint:fix",
             "@vnd:lint",

@@ -266,6 +266,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                   "Ramsey\\Skeleton\\Setup::wizard",
                   "@vnd:test:all"
                 ],
+                "post-root-package-install": "git init",
                 "vnd:analyze": [
                   "@vnd:analyze:phpstan",
                   "@vnd:analyze:psalm"
