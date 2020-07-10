@@ -2,29 +2,29 @@ language: php
 os: linux
 
 cache:
-  directories:
-    - /home/travis/.composer/cache/
+    directories:
+        - /home/travis/.composer/cache/
 
 jobs:
-  fast_finish: true
-  include:
-    - php: 7.4
-    - php: nightly
-      env: COMPOSER_OPTIONS=--ignore-platform-reqs
-  allow_failures:
-    - php: nightly
+    fast_finish: true
+    include:
+        - php: 7.4
+        - php: nightly
+          env: COMPOSER_OPTIONS=--ignore-platform-reqs
+    allow_failures:
+        - php: nightly
 
 before_install:
-  - travis_retry composer self-update
+    - travis_retry composer self-update
 
 install:
-  - travis_retry composer require --no-update php-coveralls/php-coveralls:^2
-  - travis_retry composer install --no-interaction --prefer-dist --no-progress --no-suggest $COMPOSER_OPTIONS
+    - travis_retry composer require --no-update php-coveralls/php-coveralls:^2
+    - travis_retry composer install --no-interaction --prefer-dist --no-progress --no-suggest $COMPOSER_OPTIONS
 
 script:
-  - composer vnd:lint
-  - composer vnd:analyze
-  - composer vnd:test:coverage:ci
+    - composer vnd:lint
+    - composer vnd:analyze
+    - composer vnd:test:coverage:ci
 
 after_success:
-  - travis_retry php vendor/bin/php-coveralls -v
+    - travis_retry php vendor/bin/php-coveralls -v
