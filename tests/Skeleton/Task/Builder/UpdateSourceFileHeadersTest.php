@@ -51,7 +51,7 @@ class UpdateSourceFileHeadersTest extends SkeletonTestCase
             [
                 '/path/to/app/src',
                 '/path/to/app/resources' . DIRECTORY_SEPARATOR . 'console',
-            ]
+            ],
         )->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
         $finder->expects()->name('*.php')->andReturnSelf();

@@ -72,7 +72,7 @@ abstract class Question
             $this->replaceTokens($this->getPrompt()),
             $this->getValidator(),
             null,
-            $this->replaceTokens((string) $this->getDefault())
+            $this->replaceTokens((string) $this->getDefault()),
         );
 
         $this->getAnswers()->{$this->getName()} = $answer;
@@ -163,9 +163,7 @@ abstract class Question
      */
     final public function replaceTokens(string $value): string
     {
-        $tokens = array_map(function ($key): string {
-            return "{{ {$key} }}";
-        }, $this->getAnswers()->getTokens());
+        $tokens = array_map(fn ($key): string => "{{ {$key} }}", $this->getAnswers()->getTokens());
 
         /** @var string[] $replacements */
         $replacements = $this->getAnswers()->getValues();

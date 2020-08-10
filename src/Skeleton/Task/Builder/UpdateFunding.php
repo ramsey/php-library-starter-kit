@@ -35,12 +35,12 @@ class UpdateFunding extends Builder
 
         $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
             'FUNDING.yml.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('.github/FUNDING.yml'),
-            $changelog
+            $changelog,
         );
     }
 }

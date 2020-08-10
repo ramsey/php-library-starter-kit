@@ -42,7 +42,7 @@ class QuestionTest extends SkeletonTestCase
 
         $this->assertSame(
             'A string with "example/package"',
-            $question->replaceTokens('A string with "{{ packageName }}"')
+            $question->replaceTokens('A string with "{{ packageName }}"'),
         );
     }
 

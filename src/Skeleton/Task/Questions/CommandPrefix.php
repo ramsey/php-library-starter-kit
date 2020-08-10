@@ -69,7 +69,7 @@ class CommandPrefix extends Question
         return function (string $data): string {
             if (!preg_match(self::VALID_PATTERN, $data)) {
                 throw new InvalidArgumentException(
-                    'You must enter a valid command prefix.'
+                    'You must enter a valid command prefix.',
                 );
             }
 

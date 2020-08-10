@@ -48,7 +48,7 @@ class AuthorHoldsCopyright extends Question
     {
         $answer = $this->getIO()->askConfirmation(
             $this->replaceTokens($this->getPrompt()),
-            true
+            true,
         );
 
         $this->getAnswers()->authorHoldsCopyright = $answer;

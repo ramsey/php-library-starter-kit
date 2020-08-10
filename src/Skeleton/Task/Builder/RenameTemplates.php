@@ -53,7 +53,7 @@ class RenameTemplates extends Builder
                 [
                     'build',
                     'vendor',
-                ]
+                ],
             )
             ->in($this->getBuildTask()->getAppPath())
             ->name('*.template')
@@ -73,8 +73,8 @@ class RenameTemplates extends Builder
             sprintf(
                 '<comment>Renaming \'%s\' to \'%s\'.</comment>',
                 $path,
-                $newPath
-            )
+                $newPath,
+            ),
         );
 
         $this->getBuildTask()->getFilesystem()->rename($path, $newPath);

@@ -43,7 +43,7 @@ class SetupTest extends SkeletonTestCase
             $appPath,
             $event,
             $filesystem,
-            $finder
+            $finder,
         );
     }
 
@@ -116,7 +116,7 @@ class SetupTest extends SkeletonTestCase
             . 'about the library you are creating. When it is finished,' . PHP_EOL
             . 'it will set up a repository with an initial set of files' . PHP_EOL
             . 'that you may customize to suit your needs.'
-            . '</comment>'
+            . '</comment>',
         );
 
         $prompt = $this->mockery(Prompt::class);

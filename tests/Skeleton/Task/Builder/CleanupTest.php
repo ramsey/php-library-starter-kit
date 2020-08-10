@@ -20,16 +20,16 @@ class CleanupTest extends SkeletonTestCase
         $io = $this->mockery(ConsoleIO::class);
         $io->expects()->write('<info>Cleaning up...</info>');
         $io->expects()->write(
-            '<comment>  - Deleted \'/path/to/app/resources' . DIRECTORY_SEPARATOR . 'templates\'.</comment>'
+            '<comment>  - Deleted \'/path/to/app/resources' . DIRECTORY_SEPARATOR . 'templates\'.</comment>',
         );
         $io->expects()->write(
-            '<comment>  - Deleted \'/path/to/app/src' . DIRECTORY_SEPARATOR . 'Skeleton\'.</comment>'
+            '<comment>  - Deleted \'/path/to/app/src' . DIRECTORY_SEPARATOR . 'Skeleton\'.</comment>',
         );
         $io->expects()->write(
-            '<comment>  - Deleted \'/path/to/app/tests' . DIRECTORY_SEPARATOR . 'Skeleton\'.</comment>'
+            '<comment>  - Deleted \'/path/to/app/tests' . DIRECTORY_SEPARATOR . 'Skeleton\'.</comment>',
         );
         $io->expects()->write(
-            '<comment>  - Deleted \'/path/to/app/.git\'.</comment>'
+            '<comment>  - Deleted \'/path/to/app/.git\'.</comment>',
         );
 
         $filesystem = $this->mockery(Filesystem::class);

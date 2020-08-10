@@ -21,7 +21,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'What email address should people use to report code of conduct issues?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -29,7 +29,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'codeOfConductEmail',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

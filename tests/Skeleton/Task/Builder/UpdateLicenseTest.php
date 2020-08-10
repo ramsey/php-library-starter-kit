@@ -41,7 +41,7 @@ class UpdateLicenseTest extends SkeletonTestCase
             ->expects()
             ->render(
                 'license' . DIRECTORY_SEPARATOR . $license . '.twig',
-                $answers->getArrayCopy()
+                $answers->getArrayCopy(),
             )
             ->andReturn($contents);
 
@@ -79,13 +79,13 @@ class UpdateLicenseTest extends SkeletonTestCase
                         ->expects()
                         ->render(
                             'license' . DIRECTORY_SEPARATOR . 'AGPL-3.0-or-later-NOTICE.twig',
-                            $answers->getArrayCopy()
+                            $answers->getArrayCopy(),
                         )
                         ->andReturn('AGPL-3.0-or-later notice contents');
 
                     $filesystem->expects()->dumpFile(
                         '/path/to/app/NOTICE',
-                        'AGPL-3.0-or-later notice contents'
+                        'AGPL-3.0-or-later notice contents',
                     );
                 },
             ],
@@ -110,13 +110,13 @@ class UpdateLicenseTest extends SkeletonTestCase
                         ->expects()
                         ->render(
                             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later-NOTICE.twig',
-                            $answers->getArrayCopy()
+                            $answers->getArrayCopy(),
                         )
                         ->andReturn('GPL-3.0-or-later notice contents');
 
                     $filesystem->expects()->dumpFile(
                         '/path/to/app/NOTICE',
-                        'GPL-3.0-or-later notice contents'
+                        'GPL-3.0-or-later notice contents',
                     );
                 },
             ],
@@ -129,26 +129,26 @@ class UpdateLicenseTest extends SkeletonTestCase
                         ->expects()
                         ->render(
                             'license' . DIRECTORY_SEPARATOR . 'LGPL-3.0-or-later-NOTICE.twig',
-                            $answers->getArrayCopy()
+                            $answers->getArrayCopy(),
                         )
                         ->andReturn('LGPL-3.0-or-later notice contents');
 
                     $filesystem->expects()->dumpFile(
                         '/path/to/app/NOTICE',
-                        'LGPL-3.0-or-later notice contents'
+                        'LGPL-3.0-or-later notice contents',
                     );
 
                     $twig
                         ->expects()
                         ->render(
                             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later.twig',
-                            $answers->getArrayCopy()
+                            $answers->getArrayCopy(),
                         )
                         ->andReturn('GPL-3.0-or-later license contents');
 
                     $filesystem->expects()->dumpFile(
                         '/path/to/app/COPYING',
-                        'GPL-3.0-or-later license contents'
+                        'GPL-3.0-or-later license contents',
                     );
                 },
             ],
@@ -173,13 +173,13 @@ class UpdateLicenseTest extends SkeletonTestCase
                         ->expects()
                         ->render(
                             'license' . DIRECTORY_SEPARATOR . 'MPL-2.0-NOTICE.twig',
-                            $answers->getArrayCopy()
+                            $answers->getArrayCopy(),
                         )
                         ->andReturn('MPL-2.0 notice contents');
 
                     $filesystem->expects()->dumpFile(
                         '/path/to/app/NOTICE',
-                        'MPL-2.0 notice contents'
+                        'MPL-2.0 notice contents',
                     );
                 },
             ],

@@ -36,7 +36,7 @@ class UpdateCodeOfConduct extends Builder
         if ($this->getBuildTask()->getAnswers()->codeOfConduct === null) {
             $this->getBuildTask()->getIO()->write('<info>Removing CODE_OF_CONDUCT.md</info>');
             $this->getBuildTask()->getFilesystem()->remove(
-                $this->getBuildTask()->path('CODE_OF_CONDUCT.md')
+                $this->getBuildTask()->path('CODE_OF_CONDUCT.md'),
             );
 
             return;
@@ -50,12 +50,12 @@ class UpdateCodeOfConduct extends Builder
 
         $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
             $codeOfConductTemplate,
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('CODE_OF_CONDUCT.md'),
-            $changelog
+            $changelog,
         );
     }
 }

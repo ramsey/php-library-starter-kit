@@ -70,18 +70,18 @@ class UpdateCommandPrefixTest extends SkeletonTestCase
                 'src/Skeleton',
                 'tests/Skeleton',
                 'vendor',
-            ]
+            ],
         )->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->dumpFile(
             '/path/to/app/file1',
-            $this->getFileContentsExpected('br')
+            $this->getFileContentsExpected('br'),
         );
         $filesystem->expects()->dumpFile(
             '/path/to/app/file3',
-            $this->getFileContentsExpected('br')
+            $this->getFileContentsExpected('br'),
         );
 
         /** @var Build & MockInterface $task */
@@ -100,7 +100,7 @@ class UpdateCommandPrefixTest extends SkeletonTestCase
 
     public function getFileContents(): string
     {
-        return <<<EOD
+        return <<<'EOD'
             {
               "vnd:foo": "this is a test",
               "vnd:bar": "another test",

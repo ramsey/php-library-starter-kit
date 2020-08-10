@@ -38,7 +38,7 @@ class AnswersTest extends SkeletonTestCase
                 'projectName',
                 'vendorName',
             ],
-            $answers->getTokens()
+            $answers->getTokens(),
         );
     }
 
@@ -71,7 +71,7 @@ class AnswersTest extends SkeletonTestCase
                 null,
                 null,
             ],
-            $answers->getValues()
+            $answers->getValues(),
         );
     }
 
@@ -104,7 +104,7 @@ class AnswersTest extends SkeletonTestCase
                 'projectName' => null,
                 'vendorName' => null,
             ],
-            $answers->getArrayCopy()
+            $answers->getArrayCopy(),
         );
     }
 }

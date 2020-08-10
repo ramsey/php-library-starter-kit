@@ -74,7 +74,7 @@ class PackageName extends Question
             }
 
             throw new InvalidArgumentException(
-                'You must enter a valid package name.'
+                'You must enter a valid package name.',
             );
         };
     }

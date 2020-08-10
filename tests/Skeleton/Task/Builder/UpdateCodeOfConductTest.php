@@ -29,7 +29,7 @@ class UpdateCodeOfConductTest extends SkeletonTestCase
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame(
                     '/path/to/app/CODE_OF_CONDUCT.md',
-                    $path
+                    $path,
                 );
                 $this->assertSame('codeOfConductContents', $contents);
 
@@ -45,7 +45,7 @@ class UpdateCodeOfConductTest extends SkeletonTestCase
             ->expects()
             ->render(
                 'code-of-conduct' . DIRECTORY_SEPARATOR . 'Contributor-1.4.md.twig',
-                $answers->getArrayCopy()
+                $answers->getArrayCopy(),
             )
             ->andReturn('codeOfConductContents');
 
@@ -90,12 +90,12 @@ class UpdateCodeOfConductTest extends SkeletonTestCase
                 'getFilesystem' => $filesystem,
                 'getIO' => $io,
                 'getTwigEnvironment' => $twig,
-            ]
+            ],
         );
 
         $task
             ->shouldReceive('path')
-            ->andReturnUsing(fn(string $path): string => '/path/to/app/' . $path);
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
         $builder = new UpdateCodeOfConduct($task);
 

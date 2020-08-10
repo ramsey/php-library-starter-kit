@@ -26,7 +26,7 @@ class InstallDependenciesTest extends SkeletonTestCase
             [
                 '/path/to/app' . DIRECTORY_SEPARATOR . 'composer.lock',
                 '/path/to/app' . DIRECTORY_SEPARATOR . 'vendor',
-            ]
+            ],
         );
 
         $process1 = $this->mockery(Process::class);
@@ -58,7 +58,7 @@ class InstallDependenciesTest extends SkeletonTestCase
                     '--dev',
                     '--no-update',
                     'composer/composer',
-                ]
+                ],
             )
             ->andReturn($process1);
 
@@ -72,7 +72,7 @@ class InstallDependenciesTest extends SkeletonTestCase
                     '--ansi',
                     '--no-progress',
                     '--no-suggest',
-                ]
+                ],
             )
             ->andReturn($process2);
 

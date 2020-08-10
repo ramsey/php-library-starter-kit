@@ -73,7 +73,7 @@ class PackageNamespace extends Question
             foreach ($packageNameParts as $namePart) {
                 if (!preg_match(self::VALID_PATTERN, $namePart)) {
                     throw new InvalidArgumentException(
-                        'You must enter a valid package namespace.'
+                        'You must enter a valid package namespace.',
                     );
                 }
             }

@@ -18,7 +18,7 @@ class VendorNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is your package vendor name?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -26,7 +26,7 @@ class VendorNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'vendorName',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -34,7 +34,7 @@ class VendorNameTest extends QuestionTestCase
     {
         $this->assertSame(
             '{{ githubUsername }}',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 

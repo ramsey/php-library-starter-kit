@@ -20,7 +20,7 @@ class CodeOfConductPoliciesUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'At what URL are your committee\'s governing policies described?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CodeOfConductPoliciesUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'codeOfConductPoliciesUrl',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

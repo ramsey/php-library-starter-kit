@@ -22,7 +22,7 @@ class CodeOfConductTest extends QuestionTestCase
     {
         $this->assertSame(
             'Choose a code of conduct for your project.',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -30,7 +30,7 @@ class CodeOfConductTest extends QuestionTestCase
     {
         $this->assertSame(
             'codeOfConduct',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -38,7 +38,7 @@ class CodeOfConductTest extends QuestionTestCase
     {
         $this->assertSame(
             '1',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 
@@ -123,7 +123,7 @@ class CodeOfConductTest extends QuestionTestCase
                 3 => 'Contributor Covenant Code of Conduct, version 2.0',
                 4 => 'Citizen Code of Conduct, version 2.3',
             ],
-            CodeOfConduct::CHOICES
+            CodeOfConduct::CHOICES,
         );
     }
 
@@ -136,7 +136,7 @@ class CodeOfConductTest extends QuestionTestCase
                 3 => 'Contributor-2.0',
                 4 => 'Citizen-2.3',
             ],
-            CodeOfConduct::CHOICE_IDENTIFIER_MAP
+            CodeOfConduct::CHOICE_IDENTIFIER_MAP,
         );
     }
 }

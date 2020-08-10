@@ -32,7 +32,7 @@ class RunTests extends Builder
     public function build(): void
     {
         $this->getBuildTask()->getIO()->write(
-            '<info>Running project tests...</info>'
+            '<info>Running project tests...</info>',
         );
 
         $commandPrefix = $this->getBuildTask()->getAnswers()->commandPrefix

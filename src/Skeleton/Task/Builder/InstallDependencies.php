@@ -42,7 +42,7 @@ class InstallDependencies extends Builder
             [
                 $this->getBuildTask()->path('composer.lock'),
                 $this->getBuildTask()->path('vendor'),
-            ]
+            ],
         );
 
         $this->composerRemoveDevelopmentPackages();
@@ -60,7 +60,7 @@ class InstallDependencies extends Builder
                 '--dev',
                 '--no-update',
                 ...self::COMPOSER_REMOVE_PACKAGES,
-            ]
+            ],
         );
 
         $process->mustRun();
@@ -76,7 +76,7 @@ class InstallDependencies extends Builder
                 '--ansi',
                 '--no-progress',
                 '--no-suggest',
-            ]
+            ],
         );
 
         $process->mustRun($this->getBuildTask()->streamProcessOutput());

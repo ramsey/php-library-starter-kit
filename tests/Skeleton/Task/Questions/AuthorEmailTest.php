@@ -17,7 +17,7 @@ class AuthorEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is your email address?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -25,7 +25,7 @@ class AuthorEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'authorEmail',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

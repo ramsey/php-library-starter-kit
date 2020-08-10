@@ -54,9 +54,7 @@ class PackageKeywords extends Question
 
         $answer = explode(',', $answer);
 
-        $answer = array_map(function ($value) {
-            return trim((string) $value);
-        }, $answer);
+        $answer = array_map(fn ($value) => trim((string) $value), $answer);
 
         $this->getAnswers()->packageKeywords = $answer;
     }

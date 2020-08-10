@@ -20,7 +20,7 @@ class PackageNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is your package name?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class PackageNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'packageName',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -36,7 +36,7 @@ class PackageNameTest extends QuestionTestCase
     {
         $this->assertSame(
             '{{ vendorName }}/{{ projectName }}',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 
@@ -51,7 +51,7 @@ class PackageNameTest extends QuestionTestCase
 
         $this->assertSame(
             $expectedPrompt,
-            $this->getQuestion()->getPrompt()
+            $this->getQuestion()->getPrompt(),
         );
     }
 

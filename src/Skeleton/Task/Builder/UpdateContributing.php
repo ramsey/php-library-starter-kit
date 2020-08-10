@@ -35,12 +35,12 @@ class UpdateContributing extends Builder
 
         $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
             'CONTRIBUTING.md.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('CONTRIBUTING.md'),
-            $changelog
+            $changelog,
         );
     }
 }

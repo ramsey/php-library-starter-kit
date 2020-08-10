@@ -31,7 +31,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                 $this->assertSame('/path/to/app/composer.json', $path);
                 $this->assertJsonStringEqualsJsonString(
                     $this->composerContentsExpected(),
-                    $contents
+                    $contents,
                 );
 
                 return true;
@@ -42,7 +42,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->composerContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
@@ -86,7 +86,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
             'getIterator' => new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => 'null']),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
@@ -150,7 +150,7 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                 $this->assertSame('/path/to/app/composer.json', $path);
                 $this->assertJsonStringEqualsJsonString(
                     $this->composerContentsExpectedMinimal(),
-                    $contents
+                    $contents,
                 );
 
                 return true;
@@ -163,9 +163,9 @@ class UpdateComposerJsonTest extends SkeletonTestCase
                         SplFileInfo::class,
                         [
                             'getContents' => $this->composerContentsOriginalMinimal(),
-                        ]
+                        ],
                     ),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();

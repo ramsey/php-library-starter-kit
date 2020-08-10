@@ -61,7 +61,7 @@ class RenameTestCaseTest extends SkeletonTestCase
         $filesystem->expects()->remove('/path/to/app/tests/VendorTestCase.php');
         $filesystem->expects()->dumpFile(
             '/path/to/app/tests' . DIRECTORY_SEPARATOR . 'AcmeTestCase.php',
-            $this->getVendorTestCaseFileContentsExpected('AcmeTestCase')
+            $this->getVendorTestCaseFileContentsExpected('AcmeTestCase'),
         );
         $filesystem->expects()->dumpFile(
             '/path/to/app/tests/FooTest.php',
@@ -132,7 +132,7 @@ class RenameTestCaseTest extends SkeletonTestCase
 
     private function getVendorTestCaseFileContents(): string
     {
-        return <<<EOD
+        return <<<'EOD'
             <?php
             
             /**
@@ -141,9 +141,9 @@ class RenameTestCaseTest extends SkeletonTestCase
             
             declare(strict_types=1);
             
-            namespace Foo\\Test\\Bar;
+            namespace Foo\Test\Bar;
             
-            use PHPUnit\\Framework\\TestCase;
+            use PHPUnit\Framework\TestCase;
             
             class VendorTestCase extends TestCase
             {

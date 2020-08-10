@@ -80,7 +80,7 @@ class License extends Question
         $answer = $this->getIO()->select(
             $this->replaceTokens($this->getPrompt()),
             self::CHOICES,
-            (string) $this->getDefault()
+            (string) $this->getDefault(),
         );
 
         if (is_array($answer)) {

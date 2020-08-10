@@ -17,7 +17,7 @@ class GithubUsernameTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the GitHub username or org name for your package?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -25,7 +25,7 @@ class GithubUsernameTest extends QuestionTestCase
     {
         $this->assertSame(
             'githubUsername',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 }

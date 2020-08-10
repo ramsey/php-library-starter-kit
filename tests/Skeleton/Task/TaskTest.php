@@ -69,7 +69,7 @@ class TaskTest extends SkeletonTestCase
 
         $this->assertSame(
             '/path/to/app' . DIRECTORY_SEPARATOR . 'someFile.twig',
-            $task->path('someFile.twig')
+            $task->path('someFile.twig'),
         );
     }
 

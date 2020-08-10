@@ -20,7 +20,7 @@ class CopyrightUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the copyright holder\'s website address?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CopyrightUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'copyrightUrl',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

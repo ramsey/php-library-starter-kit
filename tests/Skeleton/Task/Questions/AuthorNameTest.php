@@ -17,7 +17,7 @@ class AuthorNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is your name?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -25,7 +25,7 @@ class AuthorNameTest extends QuestionTestCase
     {
         $this->assertSame(
             'authorName',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 }

@@ -20,7 +20,7 @@ class CopyrightEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the copyright holder\'s email address?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CopyrightEmailTest extends QuestionTestCase
     {
         $this->assertSame(
             'copyrightEmail',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

@@ -58,12 +58,12 @@ class UpdateReadme extends Builder
         $readme = (string) preg_replace(
             $searches,
             $replaces,
-            $readmeContents
+            $readmeContents,
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('README.md'),
-            $readme
+            $readme,
         );
     }
 
@@ -106,7 +106,7 @@ class UpdateReadme extends Builder
     {
         return $this->getTwig()->render(
             'readme/badges.md.twig',
-            $this->getAnswers()->getArrayCopy()
+            $this->getAnswers()->getArrayCopy(),
         );
     }
 
@@ -118,7 +118,7 @@ class UpdateReadme extends Builder
 
         return $this->getTwig()->render(
             'readme/code-of-conduct.md.twig',
-            $this->getAnswers()->getArrayCopy()
+            $this->getAnswers()->getArrayCopy(),
         );
     }
 
@@ -126,7 +126,7 @@ class UpdateReadme extends Builder
     {
         return $this->getTwig()->render(
             'readme/usage.md.twig',
-            $this->getAnswers()->getArrayCopy()
+            $this->getAnswers()->getArrayCopy(),
         );
     }
 
@@ -134,7 +134,7 @@ class UpdateReadme extends Builder
     {
         return $this->getTwig()->render(
             'readme/copyright.md.twig',
-            $this->getAnswers()->getArrayCopy()
+            $this->getAnswers()->getArrayCopy(),
         );
     }
 }

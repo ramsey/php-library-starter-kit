@@ -42,7 +42,7 @@ class RenameTestCase extends Builder
 
         $namespaceParts = explode(
             '\\',
-            (string) $this->getBuildTask()->getAnswers()->packageNamespace
+            (string) $this->getBuildTask()->getAnswers()->packageNamespace,
         );
         $vendor = array_shift($namespaceParts);
         $className = "{$vendor}TestCase";
@@ -69,7 +69,7 @@ class RenameTestCase extends Builder
         }
 
         throw new RuntimeException(
-            'Unable to get contents of tests/VendorTestCase.php'
+            'Unable to get contents of tests/VendorTestCase.php',
         );
     }
 
@@ -94,16 +94,16 @@ class RenameTestCase extends Builder
         $testCaseContents = str_replace(
             'VendorTestCase',
             $className,
-            $testCaseContents
+            $testCaseContents,
         );
 
         $this->getBuildTask()->getFilesystem()->remove((string) $testCase->getRealPath());
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path(
-                'tests' . DIRECTORY_SEPARATOR . "{$className}.php"
+                'tests' . DIRECTORY_SEPARATOR . "{$className}.php",
             ),
-            $testCaseContents
+            $testCaseContents,
         );
     }
 
@@ -114,7 +114,7 @@ class RenameTestCase extends Builder
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             (string) $file->getRealPath(),
-            $updatedContents
+            $updatedContents,
         );
     }
 }

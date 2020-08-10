@@ -82,7 +82,7 @@ class UpdateComposerJson extends Builder
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('composer.json'),
-            (string) json_encode($composer, self::JSON_OPTIONS)
+            (string) json_encode($composer, self::JSON_OPTIONS),
         );
     }
 
@@ -167,7 +167,7 @@ class UpdateComposerJson extends Builder
 
         $composer['require'] = $this->filterPropertiesByWhitelist(
             $require,
-            self::WHITELIST_REQUIRE
+            self::WHITELIST_REQUIRE,
         );
     }
 
@@ -185,7 +185,7 @@ class UpdateComposerJson extends Builder
 
         $composer['autoload']['psr-4'] = $this->filterPropertiesByWhitelist(
             $autoload,
-            self::WHITELIST_AUTOLOAD
+            self::WHITELIST_AUTOLOAD,
         );
     }
 
@@ -203,7 +203,7 @@ class UpdateComposerJson extends Builder
 
         $composer['autoload-dev']['psr-4'] = $this->filterPropertiesByWhitelist(
             $autoloadDev,
-            self::WHITELIST_AUTOLOAD_DEV
+            self::WHITELIST_AUTOLOAD_DEV,
         );
     }
 }

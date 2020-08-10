@@ -33,7 +33,7 @@ class CommandPrefixTest extends QuestionTestCase
 
         $this->assertSame(
             $question,
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -41,7 +41,7 @@ class CommandPrefixTest extends QuestionTestCase
     {
         $this->assertSame(
             'commandPrefix',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -49,7 +49,7 @@ class CommandPrefixTest extends QuestionTestCase
     {
         $this->assertSame(
             'vnd',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 

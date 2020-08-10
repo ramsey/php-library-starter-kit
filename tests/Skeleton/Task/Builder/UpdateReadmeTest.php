@@ -32,7 +32,7 @@ class UpdateReadmeTest extends SkeletonTestCase
                 $this->assertSame('/path/to/app/README.md', $path);
                 $this->assertSame(
                     $this->readmeContentsExpected(),
-                    $contents
+                    $contents,
                 );
 
                 return true;
@@ -43,7 +43,7 @@ class UpdateReadmeTest extends SkeletonTestCase
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->readmeContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
@@ -110,7 +110,7 @@ class UpdateReadmeTest extends SkeletonTestCase
                 $this->assertSame('/path/to/app/README.md', $path);
                 $this->assertSame(
                     $this->readmeContentsExpectedWithoutCodeOfConduct(),
-                    $contents
+                    $contents,
                 );
 
                 return true;
@@ -121,7 +121,7 @@ class UpdateReadmeTest extends SkeletonTestCase
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->readmeContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
@@ -184,7 +184,7 @@ class UpdateReadmeTest extends SkeletonTestCase
             'getIterator' => new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => null]),
-                ]
+                ],
             ),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();

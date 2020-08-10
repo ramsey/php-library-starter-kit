@@ -49,7 +49,7 @@ trait UrlValidator
             }
 
             throw new InvalidArgumentException(
-                'You must enter a valid URL, beginning with "http://" or "https://".'
+                'You must enter a valid URL, beginning with "http://" or "https://".',
             );
         };
     }

@@ -20,7 +20,7 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'At what URL are your code of conduct reporting guidelines described?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'codeOfConductReportingUrl',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

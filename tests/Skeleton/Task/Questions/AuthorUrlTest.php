@@ -17,7 +17,7 @@ class AuthorUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is your website address?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -25,7 +25,7 @@ class AuthorUrlTest extends QuestionTestCase
     {
         $this->assertSame(
             'authorUrl',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

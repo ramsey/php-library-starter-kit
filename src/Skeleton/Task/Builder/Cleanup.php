@@ -52,7 +52,7 @@ class Cleanup extends Builder
                 sprintf(
                     '<comment>  - Deleted \'%s\'.</comment>',
                     $this->getBuildTask()->path($file),
-                )
+                ),
             );
         }
     }

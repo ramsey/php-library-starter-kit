@@ -60,7 +60,7 @@ class VendorName extends Question
             }
 
             throw new InvalidArgumentException(
-                'You must enter a valid vendor name.'
+                'You must enter a valid vendor name.',
             );
         };
     }

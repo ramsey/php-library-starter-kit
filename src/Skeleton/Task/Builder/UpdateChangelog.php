@@ -35,12 +35,12 @@ class UpdateChangelog extends Builder
 
         $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
             'CHANGELOG.md.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('CHANGELOG.md'),
-            $changelog
+            $changelog,
         );
     }
 }

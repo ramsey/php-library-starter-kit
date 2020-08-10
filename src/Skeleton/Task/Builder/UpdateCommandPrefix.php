@@ -63,7 +63,7 @@ class UpdateCommandPrefix extends Builder
                     'src/Skeleton',
                     'tests/Skeleton',
                     'vendor',
-                ]
+                ],
             )
             ->files();
 
@@ -101,7 +101,7 @@ class UpdateCommandPrefix extends Builder
         $updatedContents = str_replace(
             $searches,
             $replaces,
-            $contents
+            $contents,
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile($path, $updatedContents);

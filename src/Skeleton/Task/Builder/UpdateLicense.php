@@ -34,7 +34,7 @@ class UpdateLicense extends Builder
     public function build(): void
     {
         $this->getBuildTask()->getIO()->write(
-            '<info>Updating license and copyright information</info>'
+            '<info>Updating license and copyright information</info>',
         );
 
         $licenseChoice = $this->getBuildTask()->getAnswers()->license ?? '';
@@ -84,12 +84,12 @@ class UpdateLicense extends Builder
     {
         $licenseContents = $this->getBuildTask()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . $license . '.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path($this->getLicenseFilename($license)),
-            $licenseContents
+            $licenseContents,
         );
 
         if (strpos($license, 'LGPL-3.0') === 0) {
@@ -101,12 +101,12 @@ class UpdateLicense extends Builder
     {
         $noticeContents = $this->getBuildTask()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . $license . '-NOTICE.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('NOTICE'),
-            $noticeContents
+            $noticeContents,
         );
     }
 
@@ -114,12 +114,12 @@ class UpdateLicense extends Builder
     {
         $gplContents = $this->getBuildTask()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile(
             $this->getBuildTask()->path('COPYING'),
-            $gplContents
+            $gplContents,
         );
     }
 }

@@ -121,7 +121,7 @@ class Setup
             $this->getAppPath(),
             $this->getIO(),
             $this->getFilesystem(),
-            $this->getFinder()
+            $this->getFinder(),
         );
 
         $prompt->setQuestions(new InstallQuestions([
@@ -142,7 +142,7 @@ class Setup
             $this->getAppPath(),
             $this->getIO(),
             $this->getFilesystem(),
-            $this->getFinder()
+            $this->getFinder(),
         );
 
         $build->setAnswers($answers);
@@ -156,16 +156,14 @@ class Setup
      */
     public function getTwigEnvironment(): TwigEnvironment
     {
-        $twig = new TwigEnvironment(
+        return new TwigEnvironment(
             new FilesystemLoader($this->getAppPath() . '/resources/templates'),
             [
                 'debug' => true,
                 'strict_variables' => true,
                 'autoescape' => false,
-            ]
+            ],
         );
-
-        return $twig;
     }
 
     /**
@@ -175,7 +173,7 @@ class Setup
     {
         $this->getIO()->write('');
         $this->getIO()->write(
-            '<info>Welcome to the ramsey/php-library-skeleton wizard!</info>'
+            '<info>Welcome to the ramsey/php-library-skeleton wizard!</info>',
         );
         $this->getIO()->write('');
         $this->getIO()->write(
@@ -184,7 +182,7 @@ class Setup
             . 'about the library you are creating. When it is finished,' . PHP_EOL
             . 'it will set up a repository with an initial set of files' . PHP_EOL
             . 'that you may customize to suit your needs.'
-            . '</comment>'
+            . '</comment>',
         );
 
         $this->getPrompt($answers)->run();
@@ -192,12 +190,12 @@ class Setup
 
         $successMessage = sprintf(
             '<info>Congratulations! Your project, %s, is ready!</info>',
-            (string) $answers->packageName
+            (string) $answers->packageName,
         );
 
         $locationMessage = sprintf(
             '<comment>Your project is available at %s.</comment>',
-            $this->getAppPath()
+            $this->getAppPath(),
         );
 
         $this->getIO()->write('');
@@ -219,7 +217,7 @@ class Setup
         $setup = static::newSelf(
             (string) $projectName,
             (string) $appPath,
-            $event
+            $event,
         );
 
         $setup->run(new Answers());

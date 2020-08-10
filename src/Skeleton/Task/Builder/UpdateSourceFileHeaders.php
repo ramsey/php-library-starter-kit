@@ -42,7 +42,7 @@ class UpdateSourceFileHeaders extends Builder
 
         $newFileHeader = $this->getBuildTask()->getTwigEnvironment()->render(
             'source-file-header.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy()
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
         );
 
         $headerLines = explode("\n", $newFileHeader);
@@ -65,7 +65,7 @@ class UpdateSourceFileHeaders extends Builder
                 [
                     $this->getBuildTask()->path('src'),
                     $this->getBuildTask()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
-                ]
+                ],
             )
             ->files()
             ->name('*.php');
@@ -82,7 +82,7 @@ class UpdateSourceFileHeaders extends Builder
             self::HEADER_PATTERN,
             $newFileHeader,
             $contents,
-            1
+            1,
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile($path, $updatedContents);

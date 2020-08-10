@@ -18,7 +18,7 @@ class PackageNamespaceTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the package\'s root namespace? (e.g., Foo\\Bar\\Baz)',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -26,7 +26,7 @@ class PackageNamespaceTest extends QuestionTestCase
     {
         $this->assertSame(
             'packageNamespace',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

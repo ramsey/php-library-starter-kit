@@ -20,7 +20,7 @@ class CopyrightYearTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the copyright year?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CopyrightYearTest extends QuestionTestCase
     {
         $this->assertSame(
             'copyrightYear',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -36,7 +36,7 @@ class CopyrightYearTest extends QuestionTestCase
     {
         $this->assertSame(
             date('Y'),
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 

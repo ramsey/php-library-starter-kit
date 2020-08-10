@@ -20,7 +20,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     {
         $this->assertSame(
             'What is the name of your group or committee who oversees code of conduct issues?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -28,7 +28,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     {
         $this->assertSame(
             'codeOfConductCommittee',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

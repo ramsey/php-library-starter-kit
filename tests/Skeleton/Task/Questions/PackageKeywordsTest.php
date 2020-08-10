@@ -22,7 +22,7 @@ class PackageKeywordsTest extends QuestionTestCase
     {
         $this->assertSame(
             'Enter a set of comma-separated keywords describing your library.',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -30,7 +30,7 @@ class PackageKeywordsTest extends QuestionTestCase
     {
         $this->assertSame(
             'packageKeywords',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

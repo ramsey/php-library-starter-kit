@@ -22,7 +22,7 @@ class LicenseTest extends QuestionTestCase
     {
         $this->assertSame(
             'Choose a license for your project.',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -30,7 +30,7 @@ class LicenseTest extends QuestionTestCase
     {
         $this->assertSame(
             'license',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -38,7 +38,7 @@ class LicenseTest extends QuestionTestCase
     {
         $this->assertSame(
             '1',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 
@@ -130,7 +130,7 @@ class LicenseTest extends QuestionTestCase
                 10 => 'Mozilla Public License 2.0',
                 11 => 'Unlicense',
             ],
-            License::CHOICES
+            License::CHOICES,
         );
     }
 
@@ -150,7 +150,7 @@ class LicenseTest extends QuestionTestCase
                 10 => 'MPL-2.0',
                 11 => 'Unlicense',
             ],
-            License::CHOICE_IDENTIFIER_MAP
+            License::CHOICE_IDENTIFIER_MAP,
         );
     }
 }

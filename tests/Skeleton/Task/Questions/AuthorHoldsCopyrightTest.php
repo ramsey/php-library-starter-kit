@@ -22,7 +22,7 @@ class AuthorHoldsCopyrightTest extends QuestionTestCase
     {
         $this->assertSame(
             'Are you the copyright holder?',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -30,7 +30,7 @@ class AuthorHoldsCopyrightTest extends QuestionTestCase
     {
         $this->assertSame(
             'authorHoldsCopyright',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 
@@ -38,7 +38,7 @@ class AuthorHoldsCopyrightTest extends QuestionTestCase
     {
         $this->assertSame(
             'Y/n',
-            $this->getQuestion()->getDefault()
+            $this->getQuestion()->getDefault(),
         );
     }
 

@@ -60,7 +60,7 @@ class UpdateNamespaceTest extends SkeletonTestCase
                 '/path/to/app/src',
                 '/path/to/app/tests',
                 '/path/to/app/resources' . DIRECTORY_SEPARATOR . 'console',
-            ]
+            ],
         )->andReturnSelf();
         $finder1->expects()->files()->andReturnSelf();
         $finder1->expects()->name('*.php')->andReturnSelf();
@@ -79,21 +79,21 @@ class UpdateNamespaceTest extends SkeletonTestCase
             ->expects()
             ->dumpFile(
                 '/path/to/app/src/Foo.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace)
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
             );
 
         $filesystem
             ->expects()
             ->dumpFile(
                 '/path/to/app/src/Bar.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace)
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
             );
 
         $filesystem
             ->expects()
             ->dumpFile(
                 '/path/to/app/composer.json',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace)
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
             );
 
         /** @var Build & MockInterface $task */
@@ -147,7 +147,7 @@ class UpdateNamespaceTest extends SkeletonTestCase
 
     private function getFileContents(): string
     {
-        return <<<EOD
+        return <<<'EOD'
             <?php
             
             /**
@@ -156,17 +156,17 @@ class UpdateNamespaceTest extends SkeletonTestCase
             
             declare(strict_types=1);
             
-            namespace Vendor\\SubNamespace;
+            namespace Vendor\SubNamespace;
             
-            use Vendor\\Test\\SubNamespace\\Bar;
-            use Vendor\\Console\\Baz;
+            use Vendor\Test\SubNamespace\Bar;
+            use Vendor\Console\Baz;
             
             class Foo
             {
                 public const CLASS_NAMES = [
-                    'Vendor\\\\SubNamespace',
-                    'Vendor\\\\Test\\\\SubNamespace',
-                    'Vendor\\\\Console',
+                    'Vendor\\SubNamespace',
+                    'Vendor\\Test\\SubNamespace',
+                    'Vendor\\Console',
                 ];
             }
             EOD;

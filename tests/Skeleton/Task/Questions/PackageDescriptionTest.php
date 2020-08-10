@@ -17,7 +17,7 @@ class PackageDescriptionTest extends QuestionTestCase
     {
         $this->assertSame(
             'Enter a brief description of your library.',
-            $this->getQuestion()->getQuestion()
+            $this->getQuestion()->getQuestion(),
         );
     }
 
@@ -25,7 +25,7 @@ class PackageDescriptionTest extends QuestionTestCase
     {
         $this->assertSame(
             'packageDescription',
-            $this->getQuestion()->getName()
+            $this->getQuestion()->getName(),
         );
     }
 

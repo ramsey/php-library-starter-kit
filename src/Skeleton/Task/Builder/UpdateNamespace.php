@@ -39,7 +39,7 @@ class UpdateNamespace extends Builder
         $packageName = (string) $this->getBuildTask()->getAnswers()->packageName;
         $namespaceParts = explode(
             '\\',
-            (string) $this->getBuildTask()->getAnswers()->packageNamespace
+            (string) $this->getBuildTask()->getAnswers()->packageNamespace,
         );
         $vendor = array_shift($namespaceParts);
         $subNamespace = implode('\\', $namespaceParts);
@@ -79,7 +79,7 @@ class UpdateNamespace extends Builder
                     $this->getBuildTask()->path('src'),
                     $this->getBuildTask()->path('tests'),
                     $this->getBuildTask()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
-                ]
+                ],
             )
             ->files()
             ->name('*.php');
@@ -116,7 +116,7 @@ class UpdateNamespace extends Builder
         $updatedContents = str_replace(
             array_keys($replacements),
             array_values($replacements),
-            $contents
+            $contents,
         );
 
         $this->getBuildTask()->getFilesystem()->dumpFile($path, $updatedContents);
