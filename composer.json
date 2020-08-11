@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8",
         "ext-json": "*",
         "symfony/filesystem": "^5",
         "symfony/finder": "^5",
