@@ -8,7 +8,7 @@
 <p align="center">
     <a href="https://github.com/ramsey/php-library-skeleton"><img src="http://img.shields.io/badge/source-ramsey/php--library--skeleton-blue.svg?style=flat-square" alt="Source Code"></a>
     <a href="https://packagist.org/packages/ramsey/php-library-skeleton"><img src="https://img.shields.io/packagist/v/ramsey/php-library-skeleton.svg?style=flat-square&label=release" alt="Download Package"></a>
-    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square" alt="PHP Programming Language"></a>
+    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square&colorB=%238892BF" alt="PHP Programming Language"></a>
     <br>
     <a href="https://github.com/ramsey/php-library-skeleton/actions?query=workflow%3Amain"><img src="https://img.shields.io/github/workflow/status/ramsey/php-library-skeleton/main?logo=github&style=flat-square" alt="Build Status"></a>
     <a href="https://codeclimate.com/github/ramsey/php-library-skeleton"><img src="https://img.shields.io/codeclimate/coverage/ramsey/php-library-skeleton?logo=Code%20Climate&style=flat-square" alt="Code Coverage"></a>
