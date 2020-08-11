@@ -45,7 +45,7 @@ class InstallDependenciesTest extends SkeletonTestCase
 
         $task
             ->shouldReceive('path')
-            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+            ->andReturnUsing(fn (string $path): string => '/path/to/app' . DIRECTORY_SEPARATOR . $path);
 
         $task
             ->expects()
