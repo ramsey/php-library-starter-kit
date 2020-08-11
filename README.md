@@ -2,6 +2,10 @@
 
 <!-- BADGES_START -->
 <p align="center">
+    <strong>A tool to quickly set up the base files of a PHP library package.</strong>
+</p>
+
+<p align="center">
     <a href="https://github.com/ramsey/php-library-skeleton"><img src="http://img.shields.io/badge/source-ramsey/php--library--skeleton-blue.svg?style=flat-square" alt="Source Code"></a>
     <a href="https://packagist.org/packages/ramsey/php-library-skeleton"><img src="https://img.shields.io/packagist/v/ramsey/php-library-skeleton.svg?style=flat-square&label=release" alt="Download Package"></a>
     <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square" alt="PHP Programming Language"></a>
@@ -17,10 +21,6 @@
 <!-- BADGES_END -->
 
 <!-- DESC_START -->
-<p align="center">
-    <strong>A tool to quickly set up the base files of a PHP library package.</strong>
-</p>
-
 ## About
 
 ramsey/php-library-skeleton is a package that may be used to generate a basic
