@@ -21,6 +21,8 @@
     <strong>A tool to quickly set up the base files of a PHP library package.</strong>
 </p>
 
+## About
+
 ramsey/php-library-skeleton is a package that may be used to generate a basic
 PHP library project directory structure, complete with many of the starting
 files (i.e. README, LICENSE, GitHub issue templates, PHPUnit configuration,
