@@ -34,7 +34,7 @@ jobs:
                   php-version: ${{ matrix.php }}
                   extensions: json
                   tools: composer:v2
-                  coverage: pcov
+                  coverage: xdebug
 
             - name: Get Composer cache directory
               id: composercache
@@ -48,19 +48,17 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
 
             - name: Install dependencies
-              run: |
-                  composer require --no-update php-coveralls/php-coveralls:^2
-                  composer install --no-interaction --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
+              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
 
-            - name: Run tests
+            - name: Analyze code
               run: |
                   composer vnd:lint
                   composer vnd:analyze
-                  composer vnd:test:coverage:ci
 
-            - name: Report coverage
-              continue-on-error: true
-              run: php vendor/bin/php-coveralls -v
+            - name: Test & publish code coverage
+              uses: paambaati/codeclimate-action@v2.6.0 # https://github.com/paambaati/codeclimate-action
+              with:
+                  coverageCommand: composer vnd:test:coverage:ci
+                  coverageLocations: ${{github.workspace}}/build/logs/clover.xml:clover
               env:
-                  COVERALLS_RUN_LOCALLY: 1
-                  COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+                  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

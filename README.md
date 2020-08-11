@@ -6,7 +6,8 @@
 [![Software License][badge-license]][license]
 [![PHP Version][badge-php]][php]
 [![Build Status][badge-build]][build]
-[![Coverage Status][badge-coverage]][coverage]
+[![Coverage Status][badge-coverage]][codeclimate]
+[![Maintainability Grade][badge-maintainability]][codeclimate]
 [![Total Downloads][badge-downloads]][downloads]
 
 [badge-source]: http://img.shields.io/badge/source-ramsey/php--library--skeleton-blue.svg?style=flat-square
@@ -14,7 +15,8 @@
 [badge-license]: https://img.shields.io/packagist/l/ramsey/php-library-skeleton.svg?style=flat-square
 [badge-php]: https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square
 [badge-build]: https://img.shields.io/github/workflow/status/ramsey/php-library-skeleton/main?logo=github&style=flat-square
-[badge-coverage]: https://img.shields.io/coveralls/github/ramsey/php-library-skeleton/master.svg?style=flat-square
+[badge-coverage]: https://img.shields.io/codeclimate/coverage/ramsey/php-library-skeleton?logo=Code%20Climate&style=flat-square
+[badge-maintainability]: https://img.shields.io/codeclimate/coverage-letter/ramsey/php-library-skeleton?label=maintainability&logo=Code%20Climate&style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/ramsey/php-library-skeleton.svg?style=flat-square&colorB=mediumvioletred
 
 [source]: https://github.com/ramsey/php-library-skeleton
@@ -22,7 +24,7 @@
 [license]: https://github.com/ramsey/php-library-skeleton/blob/master/LICENSE
 [php]: https://php.net
 [build]: https://github.com/ramsey/php-library-skeleton/actions?query=workflow%3Amain
-[coverage]: https://coveralls.io/github/ramsey/php-library-skeleton?branch=master
+[codeclimate]: https://codeclimate.com/github/ramsey/php-library-skeleton
 [downloads]: https://packagist.org/packages/ramsey/php-library-skeleton
 <!-- BADGES_END -->
 
