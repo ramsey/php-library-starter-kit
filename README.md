@@ -1,34 +1,26 @@
-# <!-- NAME_START -->ramsey/php-library-skeleton<!-- NAME_END -->
+<h1 align="center"><!-- NAME_START -->ramsey/php-library-skeleton<!-- NAME_END --></h1>
 
 <!-- BADGES_START -->
-[![Source Code][badge-source]][source]
-[![Latest Version][badge-release]][packagist]
-[![Software License][badge-license]][license]
-[![PHP Version][badge-php]][php]
-[![Build Status][badge-build]][build]
-[![Coverage Status][badge-coverage]][codeclimate]
-[![Maintainability Grade][badge-maintainability]][codeclimate]
-[![Total Downloads][badge-downloads]][downloads]
-
-[badge-source]: http://img.shields.io/badge/source-ramsey/php--library--skeleton-blue.svg?style=flat-square
-[badge-release]: https://img.shields.io/packagist/v/ramsey/php-library-skeleton.svg?style=flat-square&label=release
-[badge-license]: https://img.shields.io/packagist/l/ramsey/php-library-skeleton.svg?style=flat-square
-[badge-php]: https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square
-[badge-build]: https://img.shields.io/github/workflow/status/ramsey/php-library-skeleton/main?logo=github&style=flat-square
-[badge-coverage]: https://img.shields.io/codeclimate/coverage/ramsey/php-library-skeleton?logo=Code%20Climate&style=flat-square
-[badge-maintainability]: https://img.shields.io/codeclimate/coverage-letter/ramsey/php-library-skeleton?label=maintainability&logo=Code%20Climate&style=flat-square
-[badge-downloads]: https://img.shields.io/packagist/dt/ramsey/php-library-skeleton.svg?style=flat-square&colorB=mediumvioletred
-
-[source]: https://github.com/ramsey/php-library-skeleton
-[packagist]: https://packagist.org/packages/ramsey/php-library-skeleton
-[license]: https://github.com/ramsey/php-library-skeleton/blob/master/LICENSE
-[php]: https://php.net
-[build]: https://github.com/ramsey/php-library-skeleton/actions?query=workflow%3Amain
-[codeclimate]: https://codeclimate.com/github/ramsey/php-library-skeleton
-[downloads]: https://packagist.org/packages/ramsey/php-library-skeleton
+<p align="center">
+    <a href="https://github.com/ramsey/php-library-skeleton"><img src="http://img.shields.io/badge/source-ramsey/php--library--skeleton-blue.svg?style=flat-square" alt="Source Code"></a>
+    <a href="https://packagist.org/packages/ramsey/php-library-skeleton"><img src="https://img.shields.io/packagist/v/ramsey/php-library-skeleton.svg?style=flat-square&label=release" alt="Download Package"></a>
+    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square" alt="PHP Programming Language"></a>
+    <br>
+    <a href="https://github.com/ramsey/php-library-skeleton/actions?query=workflow%3Amain"><img src="https://img.shields.io/github/workflow/status/ramsey/php-library-skeleton/main?logo=github&style=flat-square" alt="Build Status"></a>
+    <a href="https://codeclimate.com/github/ramsey/php-library-skeleton"><img src="https://img.shields.io/codeclimate/coverage/ramsey/php-library-skeleton?logo=Code%20Climate&style=flat-square" alt="Code Coverage"></a>
+    <a href="https://codeclimate.com/github/ramsey/php-library-skeleton"><img src="https://img.shields.io/codeclimate/coverage-letter/ramsey/php-library-skeleton?label=maintainability&logo=Code%20Climate&style=flat-square" alt="Maintainability"></a>
+    <br>
+    <a href="https://github.com/ramsey/php-library-skeleton/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-skeleton.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
+    <a href="https://packagist.org/packages/ramsey/php-library-skeleton/stats"><img src="https://img.shields.io/packagist/dt/ramsey/php-library-skeleton.svg?style=flat-square&colorB=darkmagenta" alt="Package downloads on Packagist"></a>
+    <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
+</p>
 <!-- BADGES_END -->
 
 <!-- DESC_START -->
+<p align="center">
+    <strong>A tool to quickly set up the base files of a PHP library package.</strong>
+</p>
+
 ramsey/php-library-skeleton is a package that may be used to generate a basic
 PHP library project directory structure, complete with many of the starting
 files (i.e. README, LICENSE, GitHub issue templates, PHPUnit configuration,

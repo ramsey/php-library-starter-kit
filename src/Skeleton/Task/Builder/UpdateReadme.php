@@ -42,7 +42,7 @@ class UpdateReadme extends Builder
         $replacements = [
             '/<!-- NAME_START -->(.*)<!-- NAME_END -->/s' => $this->getAnswers()->packageName,
             '/<!-- BADGES_START -->(.*)<!-- BADGES_END -->/s' => $this->getBadges(),
-            '/<!-- DESC_START -->(.*)<!-- DESC_END -->/s' => $this->getAnswers()->packageDescription,
+            '/<!-- DESC_START -->(.*)<!-- DESC_END -->/s' => $this->getDescription(),
             '/<!-- COC_START -->(.*)<!-- COC_END -->/s' => $this->getCodeOfConduct(),
             '/<!-- USAGE_START -->(.*)<!-- USAGE_END -->/s' => $this->getUsage(),
             '/<!-- FAQ_START -->(.*)<!-- FAQ_END -->/s' => '',
@@ -106,6 +106,14 @@ class UpdateReadme extends Builder
     {
         return $this->getTwig()->render(
             'readme/badges.md.twig',
+            $this->getAnswers()->getArrayCopy(),
+        );
+    }
+
+    private function getDescription(): string
+    {
+        return $this->getTwig()->render(
+            'readme/description.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
     }

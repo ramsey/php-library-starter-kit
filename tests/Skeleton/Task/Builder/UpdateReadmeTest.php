@@ -65,6 +65,11 @@ class UpdateReadmeTest extends SkeletonTestCase
 
         $twig
             ->expects()
+            ->render('readme/description.md.twig', $answers->getArrayCopy())
+            ->andReturn('descriptionInfo');
+
+        $twig
+            ->expects()
             ->render('readme/code-of-conduct.md.twig', $answers->getArrayCopy())
             ->andReturn('codeOfConductInfo');
 
@@ -140,6 +145,11 @@ class UpdateReadmeTest extends SkeletonTestCase
             ->expects()
             ->render('readme/badges.md.twig', $answers->getArrayCopy())
             ->andReturn('badgesInfo');
+
+        $twig
+            ->expects()
+            ->render('readme/description.md.twig', $answers->getArrayCopy())
+            ->andReturn('descriptionInfo');
 
         $twig
             ->expects()
@@ -272,7 +282,7 @@ class UpdateReadmeTest extends SkeletonTestCase
 
             badgesInfo
 
-            This is a test package.
+            descriptionInfo
 
             codeOfConductInfo
 
@@ -296,7 +306,7 @@ class UpdateReadmeTest extends SkeletonTestCase
 
             badgesInfo
 
-            This is a test package.
+            descriptionInfo
 
             
 
