@@ -13,7 +13,7 @@
 [badge-release]: https://img.shields.io/packagist/v/ramsey/php-library-skeleton.svg?style=flat-square&label=release
 [badge-license]: https://img.shields.io/packagist/l/ramsey/php-library-skeleton.svg?style=flat-square
 [badge-php]: https://img.shields.io/packagist/php-v/ramsey/php-library-skeleton.svg?style=flat-square
-[badge-build]: https://img.shields.io/travis/ramsey/php-library-skeleton/master.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/workflow/status/ramsey/php-library-skeleton/main?logo=github&style=flat-square
 [badge-coverage]: https://img.shields.io/coveralls/github/ramsey/php-library-skeleton/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/ramsey/php-library-skeleton.svg?style=flat-square&colorB=mediumvioletred
 
@@ -21,8 +21,8 @@
 [packagist]: https://packagist.org/packages/ramsey/php-library-skeleton
 [license]: https://github.com/ramsey/php-library-skeleton/blob/master/LICENSE
 [php]: https://php.net
-[build]: https://travis-ci.org/ramsey/php-library-skeleton
-[coverage]: https://coveralls.io/r/ramsey/php-library-skeleton?branch=master
+[build]: https://github.com/ramsey/php-library-skeleton/actions?query=workflow%3Amain
+[coverage]: https://coveralls.io/github/ramsey/php-library-skeleton?branch=master
 [downloads]: https://packagist.org/packages/ramsey/php-library-skeleton
 <!-- BADGES_END -->
 

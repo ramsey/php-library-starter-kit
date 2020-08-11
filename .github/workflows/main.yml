@@ -7,7 +7,6 @@ jobs:
     build:
 
         runs-on: ${{ matrix.os }}
-        continue-on-error: true
 
         strategy:
             fail-fast: false
@@ -60,6 +59,7 @@ jobs:
                   composer vnd:test:coverage:ci
 
             - name: Report coverage
+              continue-on-error: true
               run: php vendor/bin/php-coveralls -v
               env:
                   COVERALLS_RUN_LOCALLY: 1
