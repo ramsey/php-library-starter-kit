@@ -50,15 +50,18 @@ jobs:
             - name: Install dependencies
               run: composer install --no-interaction --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
 
-            - name: Analyze code
+            - name: Analyze & test
               run: |
                   composer vnd:lint
                   composer vnd:analyze
+                  composer vnd:test:coverage:ci -- --coverage-text
 
-            - name: Test & publish code coverage
+            - name: Publish code coverage
               uses: paambaati/codeclimate-action@v2.6.0 # https://github.com/paambaati/codeclimate-action
               with:
-                  coverageCommand: composer vnd:test:coverage:ci
+                  # Action requires coverageCommand, but we ran it in the previous step.
+                  coverageCommand: echo "Sending coverage to Code Climate"
                   coverageLocations: ${{github.workspace}}/build/logs/clover.xml:clover
               env:
                   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+              continue-on-error: true
