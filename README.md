@@ -17,6 +17,10 @@
     <a href="https://github.com/ramsey/php-library-skeleton/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-skeleton.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
     <a href="https://packagist.org/packages/ramsey/php-library-skeleton/stats"><img src="https://img.shields.io/packagist/dt/ramsey/php-library-skeleton.svg?style=flat-square&colorB=darkmagenta" alt="Package downloads on Packagist"></a>
     <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
+    <br>
+    <a href="https://codecov.io/gh/ramsey/php-library-skeleton">
+        <img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-skeleton?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage" />
+    </a>
 </p>
 <!-- BADGES_END -->
 

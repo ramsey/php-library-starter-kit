@@ -65,3 +65,5 @@ jobs:
               env:
                   CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
               continue-on-error: true
+            - name: Codecov
+              uses: codecov/codecov-action@v1
