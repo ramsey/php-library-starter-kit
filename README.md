@@ -19,7 +19,7 @@
     <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
     <br>
     <a href="https://codecov.io/gh/ramsey/php-library-skeleton">
-        <img src="https://codecov.io/gh/ramsey/php-library-skeleton/branch/master/graph/badge.svg" alt="Codecov Code Coverage" />
+        <img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-skeleton?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage" />
     </a>
 </p>
 <!-- BADGES_END -->
