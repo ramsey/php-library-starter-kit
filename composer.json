@@ -36,6 +36,7 @@
         "phpstan/phpstan-phpunit": "^0.12.11",
         "phpunit/phpunit": "^9.3",
         "psy/psysh": "^0.10.4",
+        "ramsey/conventional-commits": "^1.0",
         "slevomat/coding-standard": "^6.3",
         "squizlabs/php_codesniffer": "^3.5",
         "vimeo/psalm": "^3.12.2"
@@ -75,7 +76,7 @@
             "@vnd:analyze:phpstan",
             "@vnd:analyze:psalm"
         ],
-        "vnd:analyze:phpstan": "phpstan analyse",
+        "vnd:analyze:phpstan": "phpstan analyse --memory-limit=1G",
         "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
         "vnd:build:clean": "git clean -fX build/.",
         "vnd:build:clear-cache": "git clean -fX build/cache/.",
