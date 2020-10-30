@@ -39,7 +39,7 @@
         "ramsey/conventional-commits": "^1.0",
         "slevomat/coding-standard": "^6.3",
         "squizlabs/php_codesniffer": "^3.5",
-        "vimeo/psalm": "^3.12.2"
+        "vimeo/psalm": "^4.1.0"
     },
     "config": {
         "sort-packages": true
