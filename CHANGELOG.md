@@ -1,4 +1,4 @@
-# ramsey/php-library-skeleton Changelog
+# ramsey/php-library-starter-kit Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -275,7 +275,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 1.0.0 - 2019-01-02
 
-This is the initial release of ramsey/php-library-skeleton, with the ability to
+This is the initial release of ramsey/php-library-starter-kit, with the ability to
 quickly generate a PHP library including all the starting files that I
 ([@ramsey][]) prefer to have in my projects. Future versions of this project may
 expand on this and allow for more generic options.
@@ -284,7 +284,7 @@ To create the starting point for a PHP library using this project, run the
 following:
 
 ``` bash
-composer create-project --remove-vcs ramsey/php-library-skeleton target-directory
+composer create-project --remove-vcs ramsey/php-library-starter-kit target-directory
 ```
 
 You will be walked through a series of questions, and your PHP library source

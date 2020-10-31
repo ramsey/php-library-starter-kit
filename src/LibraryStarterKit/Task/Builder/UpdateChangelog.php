@@ -20,18 +20,27 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Updates the project's CHANGELOG using the CHANGELOG template
  */
-class Example
+class UpdateChangelog extends Builder
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function build(): void
     {
-        return "Hello, {$name}!";
+        $this->getBuildTask()->getIO()->write('<info>Updating CHANGELOG.md</info>');
+
+        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+            'CHANGELOG.md.twig',
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+        );
+
+        $this->getBuildTask()->getFilesystem()->dumpFile(
+            $this->getBuildTask()->path('CHANGELOG.md'),
+            $changelog,
+        );
     }
 }

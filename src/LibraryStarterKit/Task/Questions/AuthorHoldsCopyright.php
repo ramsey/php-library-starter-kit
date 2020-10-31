@@ -20,18 +20,37 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks whether the author is the same person as the copyright holder
  */
-class Example
+class AuthorHoldsCopyright extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'authorHoldsCopyright';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'Are you the copyright holder?';
+    }
+
+    public function getDefault(): ?string
+    {
+        return 'Y/n';
+    }
+
+    public function ask(): void
+    {
+        $answer = $this->getIO()->askConfirmation(
+            $this->replaceTokens($this->getPrompt()),
+            true,
+        );
+
+        $this->getAnswers()->authorHoldsCopyright = $answer;
     }
 }

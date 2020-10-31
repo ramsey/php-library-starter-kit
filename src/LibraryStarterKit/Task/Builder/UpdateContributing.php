@@ -20,18 +20,27 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Updates the CONTRIBUTING.md file based on responses to setup questions
  */
-class Example
+class UpdateContributing extends Builder
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function build(): void
     {
-        return "Hello, {$name}!";
+        $this->getBuildTask()->getIO()->write('<info>Updating CONTRIBUTING.md</info>');
+
+        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+            'CONTRIBUTING.md.twig',
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+        );
+
+        $this->getBuildTask()->getFilesystem()->dumpFile(
+            $this->getBuildTask()->path('CONTRIBUTING.md'),
+            $changelog,
+        );
     }
 }

@@ -20,18 +20,27 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Runs all tests for the newly-created project
  */
-class Example
+class RunTests extends Builder
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function build(): void
     {
-        return "Hello, {$name}!";
+        $this->getBuildTask()->getIO()->write(
+            '<info>Running project tests...</info>',
+        );
+
+        $commandPrefix = $this->getBuildTask()->getAnswers()->commandPrefix
+            ?? UpdateCommandPrefix::DEFAULT;
+
+        $this
+            ->getBuildTask()
+            ->getProcess(['composer', 'run-script', "{$commandPrefix}:test:all"])
+            ->mustRun($this->getBuildTask()->streamProcessOutput());
     }
 }

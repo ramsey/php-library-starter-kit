@@ -20,18 +20,35 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use InvalidArgumentException;
+
+use function filter_var;
+use function strlen;
+use function trim;
+
+use const FILTER_VALIDATE_EMAIL;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Common email validation functionality
  */
-class Example
+trait EmailValidator
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    abstract public function isOptional(): bool;
+
+    public function getValidator(): callable
     {
-        return "Hello, {$name}!";
+        return function (string $data): string {
+            if ($this->isOptional() && strlen(trim((string) $data)) === 0) {
+                return $data;
+            }
+
+            if (filter_var($data, FILTER_VALIDATE_EMAIL)) {
+                return $data;
+            }
+
+            throw new InvalidArgumentException('You must enter a valid email address.');
+        };
     }
 }

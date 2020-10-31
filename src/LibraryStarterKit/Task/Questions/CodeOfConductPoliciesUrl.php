@@ -20,18 +20,35 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks for a URL that describes governing policies for the code of conduct
  */
-class Example
+class CodeOfConductPoliciesUrl extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    use UrlValidator;
+
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'codeOfConductPoliciesUrl';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'At what URL are your committee\'s governing policies described?';
+    }
+
+    public function shouldSkip(): bool
+    {
+        // This question is only applicable for the Citizen-2.3 code of conduct.
+        return $this->getAnswers()->codeOfConduct !== CodeOfConduct::CHOICE_IDENTIFIER_MAP[4];
+    }
+
+    public function isOptional(): bool
+    {
+        return true;
     }
 }

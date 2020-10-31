@@ -20,18 +20,33 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks for the name of the committee responsible for handling code of conduct issues
  */
-class Example
+class CodeOfConductCommittee extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'codeOfConductCommittee';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'What is the name of your group or committee who oversees code of conduct issues?';
+    }
+
+    public function shouldSkip(): bool
+    {
+        // This question is only applicable for the Citizen-2.3 code of conduct.
+        return $this->getAnswers()->codeOfConduct !== CodeOfConduct::CHOICE_IDENTIFIER_MAP[4];
+    }
+
+    public function isOptional(): bool
+    {
+        return true;
     }
 }

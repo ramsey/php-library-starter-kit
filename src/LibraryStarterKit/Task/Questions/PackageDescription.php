@@ -20,18 +20,27 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks for a brief description of the library
  */
-class Example
+class PackageDescription extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'packageDescription';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'Enter a brief description of your library.';
+    }
+
+    public function isOptional(): bool
+    {
+        return true;
     }
 }

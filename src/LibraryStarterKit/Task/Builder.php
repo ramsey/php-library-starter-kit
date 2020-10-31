@@ -20,18 +20,30 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Represents a builder that uses user responses to build some part of a library
  */
-class Example
+abstract class Builder
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    private Build $buildTask;
+
+    public function __construct(Build $buildTask)
     {
-        return "Hello, {$name}!";
+        $this->buildTask = $buildTask;
+    }
+
+    /**
+     * Executes the build action for this particular builder
+     */
+    abstract public function build(): void;
+
+    /**
+     * Returns the build task for this builder
+     */
+    public function getBuildTask(): Build
+    {
+        return $this->buildTask;
     }
 }

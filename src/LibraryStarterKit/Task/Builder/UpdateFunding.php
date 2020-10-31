@@ -20,18 +20,27 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Replaces this project's FUNDING.yml file with an empty one for the new project
  */
-class Example
+class UpdateFunding extends Builder
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    public function build(): void
     {
-        return "Hello, {$name}!";
+        $this->getBuildTask()->getIO()->write('<info>Updating .github/FUNDING.yml</info>');
+
+        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+            'FUNDING.yml.twig',
+            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+        );
+
+        $this->getBuildTask()->getFilesystem()->dumpFile(
+            $this->getBuildTask()->path('.github/FUNDING.yml'),
+            $changelog,
+        );
     }
 }

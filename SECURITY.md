@@ -15,7 +15,7 @@ this repository, we encourage you to notify us.
 
 | Version | In scope | Source code |
 | :-----: | :------: | :---------- |
-| latest  | ✅        | https://github.com/ramsey/php-library-skeleton |
+| latest  | ✅        | https://github.com/ramsey/php-library-starter-kit |
 
 ## How to Submit a Report
 

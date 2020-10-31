@@ -20,18 +20,40 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks for the URL of the copyright holder
  */
-class Example
+class CopyrightUrl extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    use UrlValidator;
+
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'copyrightUrl';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'What is the copyright holder\'s website address?';
+    }
+
+    public function shouldSkip(): bool
+    {
+        if ($this->getAnswers()->authorHoldsCopyright === true) {
+            $this->getAnswers()->copyrightUrl = $this->getAnswers()->authorUrl;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isOptional(): bool
+    {
+        return true;
     }
 }

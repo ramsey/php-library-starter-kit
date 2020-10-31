@@ -20,18 +20,30 @@
 
 declare(strict_types=1);
 
-namespace Vendor\SubNamespace;
+namespace Ramsey\Dev\LibraryStarterKit\Task\Questions;
+
+use Ramsey\Dev\LibraryStarterKit\Task\Question;
 
 /**
- * An example class to act as a starting point for developing your library
+ * Asks for the email address to which code of conduct issues should be submitted
  */
-class Example
+class CodeOfConductEmail extends Question
 {
-    /**
-     * Returns a greeting statement using the provided name
-     */
-    public function greet(string $name = 'World'): string
+    use EmailValidator;
+
+    public function getName(): string
     {
-        return "Hello, {$name}!";
+        return 'codeOfConductEmail';
+    }
+
+    public function getQuestion(): string
+    {
+        return 'What email address should people use to report code of conduct issues?';
+    }
+
+    public function shouldSkip(): bool
+    {
+        // Skip if codeOfConduct is `null` ("None").
+        return $this->getAnswers()->codeOfConduct === CodeOfConduct::CHOICE_IDENTIFIER_MAP[1];
     }
 }
