@@ -30,6 +30,9 @@
         "sort-packages": true
     },
     "extra": {
+        "ramsey/conventional-commits": {
+            "configFile": "conventional-commits.json"
+        },
         "ramsey/devtools": {
             "command-prefix": "dev"
         }
