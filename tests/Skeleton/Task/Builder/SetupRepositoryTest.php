@@ -12,6 +12,8 @@ use Ramsey\Skeleton\Task\Builder\SetupRepository;
 use Ramsey\Test\Skeleton\SkeletonTestCase;
 use Symfony\Component\Process\Process;
 
+use function callableValue;
+
 class SetupRepositoryTest extends SkeletonTestCase
 {
     public function testBuild(): void

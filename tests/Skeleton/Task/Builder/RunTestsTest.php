@@ -12,6 +12,8 @@ use Ramsey\Skeleton\Task\Builder\RunTests;
 use Ramsey\Test\Skeleton\SkeletonTestCase;
 use Symfony\Component\Process\Process;
 
+use function callableValue;
+
 class RunTestsTest extends SkeletonTestCase
 {
     public function testBuild(): void

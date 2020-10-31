@@ -26,6 +26,9 @@ use Ramsey\Skeleton\Task\Builder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function str_replace;
+use function strpos;
+
 /**
  * Updates the Composer command prefix for custom commands
  */

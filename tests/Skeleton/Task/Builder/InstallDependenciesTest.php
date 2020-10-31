@@ -12,6 +12,8 @@ use Ramsey\Test\Skeleton\SkeletonTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
+use function callableValue;
+
 use const DIRECTORY_SEPARATOR;
 
 class InstallDependenciesTest extends SkeletonTestCase

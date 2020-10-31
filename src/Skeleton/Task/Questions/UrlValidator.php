@@ -26,6 +26,7 @@ use InvalidArgumentException;
 
 use function filter_var;
 use function strlen;
+use function strpos;
 use function trim;
 
 use const FILTER_VALIDATE_URL;

@@ -17,6 +17,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Twig\Environment as TwigEnvironment;
 
+use function anInstanceOf;
+use function dirname;
+
 use const PHP_EOL;
 
 class SetupTest extends SkeletonTestCase

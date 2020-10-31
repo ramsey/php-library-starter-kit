@@ -24,6 +24,8 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+use function sprintf;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

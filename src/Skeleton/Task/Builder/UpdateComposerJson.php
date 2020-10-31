@@ -26,6 +26,11 @@ use Ramsey\Skeleton\Task\Builder;
 use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function in_array;
+use function json_decode;
+use function json_encode;
+use function trim;
+
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;

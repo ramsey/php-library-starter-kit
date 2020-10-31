@@ -27,6 +27,8 @@ use RuntimeException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function array_shift;
+use function explode;
 use function str_replace;
 
 use const DIRECTORY_SEPARATOR;

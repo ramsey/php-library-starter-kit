@@ -24,6 +24,10 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+use function array_map;
+use function explode;
+use function trim;
+
 /**
  * Asks for keywords to associate with the library
  */
@@ -46,15 +50,13 @@ class PackageKeywords extends Question
 
     public function ask(): void
     {
-        $answer = $this->getIO()->ask($this->getPrompt());
+        $answer = (string) $this->getIO()->ask($this->getPrompt());
 
-        if (trim((string) $answer) === '') {
+        if (trim($answer) === '') {
             return;
         }
 
-        $answer = explode(',', $answer);
-
-        $answer = array_map(fn ($value) => trim((string) $value), $answer);
+        $answer = array_map(fn ($value) => trim((string) $value), explode(',', $answer));
 
         $this->getAnswers()->packageKeywords = $answer;
     }

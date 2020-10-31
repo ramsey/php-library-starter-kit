@@ -25,6 +25,15 @@ namespace Ramsey\Skeleton\Task\Builder;
 use Ramsey\Skeleton\Task\Builder;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function array_filter;
+use function array_keys;
+use function array_shift;
+use function array_values;
+use function explode;
+use function implode;
+use function iterator_to_array;
+use function str_replace;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

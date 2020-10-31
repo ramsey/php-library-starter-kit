@@ -25,7 +25,15 @@ namespace Ramsey\Skeleton\Task\Questions;
 use InvalidArgumentException;
 use Ramsey\Skeleton\Task\Question;
 
+use function array_map;
+use function explode;
+use function implode;
 use function preg_match;
+use function preg_replace;
+use function str_replace;
+use function substr;
+use function trim;
+use function ucwords;
 
 /**
  * Asks for the namespace to use for this package

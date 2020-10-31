@@ -24,6 +24,8 @@ namespace Ramsey\Skeleton\Task\Builder;
 
 use Ramsey\Skeleton\Task\Builder;
 
+use function trim;
+
 /**
  * Initializes a local Git repository for the newly-created project
  */

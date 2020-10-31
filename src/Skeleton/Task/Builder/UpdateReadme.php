@@ -28,6 +28,10 @@ use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
+use function array_keys;
+use function array_values;
+use function preg_replace;
+
 /**
  * Updates the README.md file based on answers obtained during project setup
  */

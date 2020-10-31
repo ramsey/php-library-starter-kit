@@ -26,6 +26,11 @@ use Ramsey\Skeleton\Task\Builder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function array_filter;
+use function explode;
+use function implode;
+use function preg_replace;
+
 use const DIRECTORY_SEPARATOR;
 
 /**

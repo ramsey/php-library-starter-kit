@@ -26,6 +26,8 @@ use InvalidArgumentException;
 use Ramsey\Skeleton\Task\Question;
 
 use function date;
+use function preg_match;
+use function trim;
 
 /**
  * Asks for the initial copyright year

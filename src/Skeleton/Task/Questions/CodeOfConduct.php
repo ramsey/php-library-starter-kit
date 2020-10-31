@@ -24,6 +24,8 @@ namespace Ramsey\Skeleton\Task\Questions;
 
 use Ramsey\Skeleton\Task\Question;
 
+use function is_array;
+
 use const PHP_EOL;
 
 /**

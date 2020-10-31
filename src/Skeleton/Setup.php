@@ -33,6 +33,13 @@ use Symfony\Component\Finder\Finder;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
 
+use function basename;
+use function dirname;
+use function preg_replace;
+use function realpath;
+use function sprintf;
+use function strtolower;
+
 use const PHP_EOL;
 
 /**
