@@ -50,7 +50,7 @@ final class Answers
     public ?string $license = null;
     public ?string $packageDescription = null;
 
-    /** @var list<string> */
+    /** @var string[] */
     public array $packageKeywords = [];
 
     public ?string $packageName = null;
@@ -61,7 +61,7 @@ final class Answers
     /**
      * Returns the property names a tokens to use in templates
      *
-     * @return list<string>
+     * @return string[]
      */
     public function getTokens(): array
     {
@@ -78,7 +78,7 @@ final class Answers
     /**
      * Returns the property values to replace tokens in template
      *
-     * @return list<mixed>
+     * @return mixed[]
      */
     public function getValues(): array
     {

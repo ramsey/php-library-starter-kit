@@ -4,60 +4,33 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
 
-use Composer\IO\IOInterface;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Task\Prompt;
-use Ramsey\Dev\LibraryStarterKit\Task\Question;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Finder\Finder;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PromptTest extends TestCase
 {
-    private Prompt $prompt;
-
-    public function setUp(): void
-    {
-        /** @var IOInterface & MockInterface $io */
-        $io = $this->mockery(IOInterface::class);
-
-        /** @var Filesystem & MockInterface $filesystem */
-        $filesystem = $this->mockery(Filesystem::class);
-
-        /** @var Finder & MockInterface $finder */
-        $finder = $this->mockery(Finder::class);
-
-        $this->prompt = new Prompt('/path/to/app', $io, $filesystem, $finder);
-    }
-
-    public function testSetQuestions(): void
-    {
-        $questions = new InstallQuestions([]);
-
-        $this->assertSame($this->prompt, $this->prompt->setQuestions($questions));
-        $this->assertSame($questions, $this->prompt->getQuestions());
-    }
-
-    public function testSetAnswers(): void
-    {
-        $answers = new Answers();
-
-        $this->assertSame($this->prompt, $this->prompt->setAnswers($answers));
-        $this->assertSame($answers, $this->prompt->getAnswers());
-    }
-
     public function testRun(): void
     {
-        $question1 = $this->mockery(Question::class);
-        $question1->expects()->ask();
+        /** @var StarterKitQuestion & Question & MockInterface $question1 */
+        $question1 = $this->mockery(Question::class, [
+            'getName' => 'authorName',
+        ]);
 
-        $question2 = $this->mockery(Question::class);
-        $question2->expects()->ask();
+        /** @var StarterKitQuestion & Question & MockInterface $question2 */
+        $question2 = $this->mockery(Question::class, [
+            'getName' => 'authorEmail',
+        ]);
 
-        $question3 = $this->mockery(Question::class);
-        $question3->expects()->ask();
+        /** @var StarterKitQuestion & Question & MockInterface $question3 */
+        $question3 = $this->mockery(Question::class, [
+            'getName' => 'packageNamespace',
+        ]);
 
         /** @var InstallQuestions & MockInterface $questions */
         $questions = $this->mockery(InstallQuestions::class, [
@@ -68,9 +41,19 @@ class PromptTest extends TestCase
             ],
         ]);
 
-        $this->prompt->setQuestions($questions);
-        $this->prompt->setAnswers(new Answers());
+        /** @var SymfonyStyle & MockInterface $console */
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->askQuestion($question1)->andReturn('Frodo Baggins');
+        $console->expects()->askQuestion($question2)->andReturn('frodo@example.com');
+        $console->expects()->askQuestion($question3)->andReturn('Fellowship\\Ring');
 
-        $this->prompt->run();
+        $answers = new Answers();
+        $prompt = new Prompt($questions, $answers);
+
+        $prompt->run($console);
+
+        $this->assertSame('Frodo Baggins', $answers->authorName);
+        $this->assertSame('frodo@example.com', $answers->authorEmail);
+        $this->assertSame('Fellowship\\Ring', $answers->packageNamespace);
     }
 }

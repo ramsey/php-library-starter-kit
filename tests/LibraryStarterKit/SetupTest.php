@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit;
 
-use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
-use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Task\Prompt;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Twig\Environment as TwigEnvironment;
 
-use function anInstanceOf;
 use function dirname;
-
-use const PHP_EOL;
 
 class SetupTest extends TestCase
 {
@@ -41,9 +38,10 @@ class SetupTest extends TestCase
         /** @var Finder & MockInterface $finder */
         $finder = $this->mockery(Finder::class);
 
+        $project = new Project('a-project-name', $appPath);
+
         $this->setup = new Setup(
-            'a-project-name',
-            $appPath,
+            $project,
             $event,
             $filesystem,
             $finder,
@@ -82,10 +80,7 @@ class SetupTest extends TestCase
 
     public function testGetPrompt(): void
     {
-        $prompt = $this->setup->getPrompt(new Answers());
-
-        $this->assertInstanceOf(InstallQuestions::class, $prompt->getQuestions());
-        $this->assertInstanceOf(Answers::class, $prompt->getAnswers());
+        $this->assertInstanceOf(Prompt::class, $this->setup->getPrompt(new Answers()));
     }
 
     public function testGetBuild(): void
@@ -106,75 +101,29 @@ class SetupTest extends TestCase
     public function testRun(): void
     {
         $answers = new Answers();
+        $answers->projectName = 'project-name';
         $answers->packageName = 'vendor/package-name';
 
+        /** @var SymfonyStyle & MockInterface $console */
+        $console = $this->mockery(SymfonyStyle::class);
+
         $io = $this->mockery(IOInterface::class);
-        $io->expects()->write('')->times(4);
-        $io->expects()->write('<info>Welcome to the ramsey/php-library-starter-kit wizard!</info>');
-        $io->expects()->write('<info>Congratulations! Your project, vendor/package-name, is ready!</info>');
-        $io->expects()->write('<comment>Your project is available at /path/to/app.</comment>');
-        $io->expects()->write(
-            '<comment>'
-            . 'This wizard will take you through a series of questions' . PHP_EOL
-            . 'about the library you are creating. When it is finished,' . PHP_EOL
-            . 'it will set up a repository with an initial set of files' . PHP_EOL
-            . 'that you may customize to suit your needs.'
-            . '</comment>',
-        );
 
         $prompt = $this->mockery(Prompt::class);
-        $prompt->expects()->run();
+        $prompt->expects()->run($console);
 
         $build = $this->mockery(Build::class);
         $build->expects()->run();
 
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class, [
-            'getAppPath' => '/path/to/app',
             'getIO' => $io,
             'getPrompt' => $prompt,
             'getBuild' => $build,
+            'getProject' => new Project('project-name', '/path/to/app'),
         ]);
         $setup->shouldReceive('run')->passthru();
 
-        $setup->run($answers);
-    }
-
-    public function testNewSelf(): void
-    {
-        /** @var Event & MockInterface $event */
-        $event = $this->mockery(Event::class, [
-            'getIO' => $this->mockery(IOInterface::class),
-        ]);
-
-        $setup = Setup::newSelf('a-project-name', '/path/to/project', $event);
-
-        $this->assertInstanceOf(Setup::class, $setup);
-    }
-
-    public function testWizard(): void
-    {
-        $vendorDir = dirname(dirname(dirname(__FILE__))) . '/vendor';
-        $appPath = dirname($vendorDir);
-
-        $config = $this->mockery(Config::class);
-        $config->expects()->get('vendor-dir')->andReturn($vendorDir);
-
-        /** @var Event & MockInterface $event */
-        $event = $this->mockery(Event::class);
-        $event->shouldReceive('getComposer->getConfig')->andReturn($config);
-
-        /** @var Setup & MockInterface $setup */
-        $setup = $this->mockery(Setup::class);
-        $setup->shouldReceive('wizard')->passthru();
-
-        $setup
-            ->expects()
-            ->newSelf('php-library-starter-kit', $appPath, $event)
-            ->andReturn($setup);
-
-        $setup->expects()->run(anInstanceOf(Answers::class));
-
-        $setup::wizard($event);
+        $setup->run($console, $answers);
     }
 }

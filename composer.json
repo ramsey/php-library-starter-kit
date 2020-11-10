@@ -4,14 +4,9 @@
     "description": "A starter kit for quickly setting up a new PHP library package.",
     "keywords": [
         "builder",
-        "development",
-        "dx",
-        "experience",
-        "kit",
         "library",
         "package",
         "skeleton",
-        "starter",
         "template"
     ],
     "license": "MIT",
@@ -25,10 +20,11 @@
     "require": {
         "php": "^7.4 || ^8",
         "ext-json": "*",
-        "symfony/filesystem": "^5",
-        "symfony/finder": "^5",
-        "symfony/process": "^5",
-        "twig/twig": "^3"
+        "symfony/console": "^5.1",
+        "symfony/filesystem": "^5.1",
+        "symfony/finder": "^5.1",
+        "symfony/process": "^5.1",
+        "twig/twig": "^3.1"
     },
     "require-dev": {
         "ramsey/devtools": "^1.5"
@@ -57,5 +53,13 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "post-root-package-install": "git init",
+        "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
+        "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start"
+    },
+    "scripts-descriptions": {
+        "starter-kit": "Runs the PHP Library Starter Kit wizard."
+    }
 }

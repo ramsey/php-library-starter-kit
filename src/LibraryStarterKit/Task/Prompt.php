@@ -22,67 +22,41 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
 /**
  * Represents a user prompt
  */
-class Prompt extends Task
+class Prompt
 {
-    /** @psalm-suppress PropertyNotSetInConstructor */
     private Answers $answers;
-
-    /** @psalm-suppress PropertyNotSetInConstructor */
     private InstallQuestions $questions;
 
-    /**
-     * Sets the questions with which to prompt the user
-     */
-    public function setQuestions(InstallQuestions $questions): self
+    public function __construct(InstallQuestions $questions, Answers $answers)
     {
         $this->questions = $questions;
-
-        return $this;
-    }
-
-    /**
-     * Returns the questions
-     */
-    public function getQuestions(): InstallQuestions
-    {
-        return $this->questions;
-    }
-
-    /**
-     * Sets the instance to use for capturing user responses
-     */
-    public function setAnswers(Answers $answers): self
-    {
         $this->answers = $answers;
-
-        return $this;
-    }
-
-    /**
-     * Returns user responses
-     */
-    public function getAnswers(): Answers
-    {
-        return $this->answers;
     }
 
     /**
      * Executes the prompt, asking the user each question
      */
-    public function run(): void
+    public function run(SymfonyStyle $console): void
     {
-        $questions = $this->getQuestions();
-        $answers = $this->getAnswers();
-        $io = $this->getIO();
-
         /**
-         * @var Question $question
+         * @var Question & StarterKitQuestion $question
          */
-        foreach ($questions->getQuestions($io, $answers) as $question) {
-            $question->ask();
+        foreach ($this->questions->getQuestions($this->answers) as $question) {
+            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
+                $this->answers->{$question->getName()} = $question->getDefault();
+
+                continue;
+            }
+
+            $this->answers->{$question->getName()} = $console->askQuestion($question);
         }
     }
 }
