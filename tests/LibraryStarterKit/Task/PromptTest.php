@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
 
+use Mockery;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
@@ -32,12 +34,27 @@ class PromptTest extends TestCase
             'getName' => 'packageNamespace',
         ]);
 
+        /** @var StarterKitQuestion & SkippableQuestion & Question & MockInterface $question4 */
+        $question4 = Mockery::mock(Question::class . ',' . SkippableQuestion::class, [
+            'getName' => 'copyrightHolder',
+            'shouldSkip' => true,
+            'getDefault' => 'Default Holder',
+        ]);
+
+        /** @var StarterKitQuestion & SkippableQuestion & Question & MockInterface $question5 */
+        $question5 = Mockery::mock(Question::class . ',' . SkippableQuestion::class, [
+            'getName' => 'copyrightEmail',
+            'shouldSkip' => false,
+        ]);
+
         /** @var InstallQuestions & MockInterface $questions */
         $questions = $this->mockery(InstallQuestions::class, [
             'getQuestions' => [
                 $question1,
                 $question2,
                 $question3,
+                $question4,
+                $question5,
             ],
         ]);
 
@@ -46,6 +63,7 @@ class PromptTest extends TestCase
         $console->expects()->askQuestion($question1)->andReturn('Frodo Baggins');
         $console->expects()->askQuestion($question2)->andReturn('frodo@example.com');
         $console->expects()->askQuestion($question3)->andReturn('Fellowship\\Ring');
+        $console->expects()->askQuestion($question5)->andReturn('copyright@example.com');
 
         $answers = new Answers();
         $prompt = new Prompt($questions, $answers);
@@ -55,5 +73,7 @@ class PromptTest extends TestCase
         $this->assertSame('Frodo Baggins', $answers->authorName);
         $this->assertSame('frodo@example.com', $answers->authorEmail);
         $this->assertSame('Fellowship\\Ring', $answers->packageNamespace);
+        $this->assertSame('Default Holder', $answers->copyrightHolder);
+        $this->assertSame('copyright@example.com', $answers->copyrightEmail);
     }
 }

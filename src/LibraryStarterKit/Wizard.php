@@ -43,6 +43,8 @@ use function strtolower;
 
 class Wizard extends Command
 {
+    public static ?Application $application = null;
+
     private Setup $setup;
     private SymfonyStyleFactory $styleFactory;
 
@@ -52,6 +54,11 @@ class Wizard extends Command
 
         $this->setup = $setup;
         $this->styleFactory = $styleFactory ?? new SymfonyStyleFactory();
+    }
+
+    public function getSetup(): Setup
+    {
+        return $this->setup;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -69,8 +76,8 @@ class Wizard extends Command
             return 0;
         }
 
-        $answers =  new Answers();
-        $answers->projectName =  $this->setup->getProject()->getName();
+        $answers = new Answers();
+        $answers->projectName = $this->setup->getProject()->getName();
 
         $this->setup->run($console, $answers);
 
@@ -107,6 +114,11 @@ class Wizard extends Command
         return false;
     }
 
+    public static function newApplication(): Application
+    {
+        return self::$application ?? new Application();
+    }
+
     public static function start(Event $event): void
     {
         $appPath = dirname((string) $event->getComposer()->getConfig()->get('vendor-dir'));
@@ -119,7 +131,7 @@ class Wizard extends Command
 
         $command = new self($setup);
 
-        $application = new Application();
+        $application = self::newApplication();
         $application->add($command);
         $application->setDefaultCommand((string) $command->getName(), true);
 
