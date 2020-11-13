@@ -11,7 +11,6 @@ use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
-use Ramsey\Dev\LibraryStarterKit\Task\Prompt;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -78,11 +77,6 @@ class SetupTest extends TestCase
         $this->assertSame('a-project-name', $this->setup->getProjectName());
     }
 
-    public function testGetPrompt(): void
-    {
-        $this->assertInstanceOf(Prompt::class, $this->setup->getPrompt(new Answers()));
-    }
-
     public function testGetBuild(): void
     {
         $answers = new Answers();
@@ -109,16 +103,12 @@ class SetupTest extends TestCase
 
         $io = $this->mockery(IOInterface::class);
 
-        $prompt = $this->mockery(Prompt::class);
-        $prompt->expects()->run($console);
-
         $build = $this->mockery(Build::class);
         $build->expects()->run();
 
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class, [
             'getIO' => $io,
-            'getPrompt' => $prompt,
             'getBuild' => $build,
             'getProject' => new Project('project-name', '/path/to/app'),
         ]);

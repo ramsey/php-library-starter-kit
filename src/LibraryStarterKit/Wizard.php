@@ -23,12 +23,16 @@ declare(strict_types=1);
 namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
+use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -78,6 +82,7 @@ class Wizard extends Command
         $answers = new Answers();
         $answers->projectName = $this->setup->getProject()->getName();
 
+        $this->askQuestions($console, $answers);
         $this->setup->run($console, $answers);
 
         $console->success([
@@ -111,6 +116,22 @@ class Wizard extends Command
         $console->newLine();
 
         return false;
+    }
+
+    private function askQuestions(SymfonyStyle $console, Answers $answers): void
+    {
+        /**
+         * @var Question & StarterKitQuestion $question
+         */
+        foreach ((new InstallQuestions())->getQuestions($answers) as $question) {
+            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
+                $answers->{$question->getName()} = $question->getDefault();
+
+                continue;
+            }
+
+            $answers->{$question->getName()} = $console->askQuestion($question);
+        }
     }
 
     public static function newApplication(): Application

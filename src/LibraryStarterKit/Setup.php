@@ -25,8 +25,6 @@ namespace Ramsey\Dev\LibraryStarterKit;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
-use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
-use Ramsey\Dev\LibraryStarterKit\Task\Prompt;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -109,17 +107,6 @@ class Setup
     }
 
     /**
-     * Returns a prompt to ask the user a question for input
-     */
-    public function getPrompt(Answers $answers): Prompt
-    {
-        return new Prompt(
-            new InstallQuestions(),
-            $answers,
-        );
-    }
-
-    /**
      * Returns a Build object used to process all the user inputs
      */
     public function getBuild(Answers $answers): Build
@@ -157,7 +144,6 @@ class Setup
      */
     public function run(SymfonyStyle $console, Answers $answers): void
     {
-        $this->getPrompt($answers)->run($console);
         $this->getBuild($answers)->run();
     }
 }

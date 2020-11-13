@@ -7,14 +7,18 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 use Composer\Script\Event;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
+use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function dirname;
@@ -106,9 +110,23 @@ class WizardTest extends TestCase
         ]);
 
         $console
-            ->shouldReceive('askQuestion')
-            ->with(anInstanceOf(ConfirmationQuestion::class))
+            ->expects()
+            ->askQuestion(anInstanceOf(ConfirmationQuestion::class))
             ->andReturnTrue();
+
+        $defaultAnswers = new Answers();
+
+        /** @var Question & StarterKitQuestion $question */
+        foreach ((new InstallQuestions())->getQuestions($defaultAnswers) as $question) {
+            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
+                continue;
+            }
+
+            $console
+                ->expects()
+                ->askQuestion(anInstanceOf($question))
+                ->andReturn($defaultAnswers->{$question->getName()});
+        }
 
         $wizard = new Wizard($setup, $styleFactory);
 
