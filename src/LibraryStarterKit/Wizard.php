@@ -23,10 +23,10 @@ declare(strict_types=1);
 namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
+use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
-use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

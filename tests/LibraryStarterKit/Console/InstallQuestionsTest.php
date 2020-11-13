@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
+namespace Ramsey\Test\Dev\LibraryStarterKit\Console;
 
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
-use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Question\Question;
 
