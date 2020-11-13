@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightHolder;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 
 class CopyrightHolderTest extends QuestionTestCase
 {

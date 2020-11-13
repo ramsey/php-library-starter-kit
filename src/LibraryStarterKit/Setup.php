@@ -24,7 +24,6 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Task\Prompt;

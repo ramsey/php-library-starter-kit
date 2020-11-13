@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
+namespace Ramsey\Test\Dev\LibraryStarterKit;
 
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
-use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 
 class AnswersTest extends TestCase
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\InstallQuestions;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Question\Question;

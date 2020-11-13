@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;

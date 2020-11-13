@@ -24,7 +24,6 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -6,7 +6,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;

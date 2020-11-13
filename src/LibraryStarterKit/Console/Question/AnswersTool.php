@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 
 trait AnswersTool
 {

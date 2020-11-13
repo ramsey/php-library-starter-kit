@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 
 abstract class QuestionTestCase extends TestCase

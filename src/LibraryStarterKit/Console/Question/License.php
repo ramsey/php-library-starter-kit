@@ -22,8 +22,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Console\Question;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 use function array_combine;

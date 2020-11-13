@@ -6,10 +6,10 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;

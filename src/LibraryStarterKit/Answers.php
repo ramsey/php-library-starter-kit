@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace Ramsey\Dev\LibraryStarterKit\Task;
+namespace Ramsey\Dev\LibraryStarterKit;
 
 use ReflectionObject;
 use ReflectionProperty;

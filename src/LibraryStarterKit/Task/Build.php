@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\Cleanup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTemplates;

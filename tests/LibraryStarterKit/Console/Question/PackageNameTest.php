@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
-use Ramsey\Dev\LibraryStarterKit\Task\Answers;
 
 class PackageNameTest extends QuestionTestCase
 {
