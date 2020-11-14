@@ -31,15 +31,15 @@ class UpdateChangelog extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating CHANGELOG.md</info>');
+        $this->getConsole()->note('Updating CHANGELOG.md');
 
-        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+        $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'CHANGELOG.md.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('CHANGELOG.md'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('CHANGELOG.md'),
             $changelog,
         );
     }

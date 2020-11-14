@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
@@ -20,65 +21,45 @@ class InstallDependenciesTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Installing dependencies</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Installing dependencies');
 
         $filesystem = $this->mockery(Filesystem::class);
-        $filesystem->expects()->remove(
-            [
-                '/path/to/app' . DIRECTORY_SEPARATOR . 'composer.lock',
-                '/path/to/app' . DIRECTORY_SEPARATOR . 'vendor',
-            ],
-        );
-
-        $process1 = $this->mockery(Process::class);
-        $process1->expects()->mustRun();
-
-        $process2 = $this->mockery(Process::class);
-        $process2->expects()->mustRun(callableValue());
-
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAppPath' => '/path/to/app',
-            'getFilesystem' => $filesystem,
-            'getIO' => $io,
-            'streamProcessOutput' => fn () => null,
+        $filesystem->expects()->remove([
+            '/path/to/app' . DIRECTORY_SEPARATOR . 'composer.lock',
+            '/path/to/app' . DIRECTORY_SEPARATOR . 'vendor',
         ]);
 
-        $task
+        $process = $this->mockery(Process::class);
+        $process->expects()->mustRun(callableValue());
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFileSystem' => $filesystem,
+        ]);
+
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app' . DIRECTORY_SEPARATOR . $path);
 
-        $task
+        $environment
             ->expects()
-            ->getProcess(
-                [
-                    'composer',
-                    'remove',
-                    '--no-interaction',
-                    '--ansi',
-                    '--dev',
-                    '--no-update',
-                    'composer/composer',
-                ],
-            )
-            ->andReturn($process1);
+            ->getProcess([
+                'composer',
+                'update',
+                '--no-interaction',
+                '--ansi',
+                '--no-progress',
+            ])
+            ->andReturn($process);
 
-        $task
-            ->expects()
-            ->getProcess(
-                [
-                    'composer',
-                    'install',
-                    '--no-interaction',
-                    '--ansi',
-                    '--no-progress',
-                    '--no-suggest',
-                ],
-            )
-            ->andReturn($process2);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
 
-        $builder = new InstallDependencies($task);
+        $builder = new InstallDependencies($build);
 
         $builder->build();
     }

@@ -35,14 +35,12 @@ class UpdateLicense extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write(
-            '<info>Updating license and copyright information</info>',
-        );
+        $this->getConsole()->note('Updating license and copyright information');
 
-        $licenseChoice = $this->getBuildTask()->getAnswers()->license ?? '';
+        $licenseChoice = $this->getAnswers()->license ?? '';
 
         // Remove the existing LICENSE file.
-        $this->getBuildTask()->getFilesystem()->remove('LICENSE');
+        $this->getEnvironment()->getFilesystem()->remove('LICENSE');
 
         $this->handleLicenseFile($licenseChoice);
 
@@ -84,13 +82,13 @@ class UpdateLicense extends Builder
 
     private function handleLicenseFile(string $license): void
     {
-        $licenseContents = $this->getBuildTask()->getTwigEnvironment()->render(
+        $licenseContents = $this->getEnvironment()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . $license . '.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path($this->getLicenseFilename($license)),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path($this->getLicenseFilename($license)),
             $licenseContents,
         );
 
@@ -101,26 +99,26 @@ class UpdateLicense extends Builder
 
     private function handleNoticeFile(string $license): void
     {
-        $noticeContents = $this->getBuildTask()->getTwigEnvironment()->render(
+        $noticeContents = $this->getEnvironment()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . $license . '-NOTICE.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('NOTICE'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('NOTICE'),
             $noticeContents,
         );
     }
 
     private function includeGplWithLesserGpl(): void
     {
-        $gplContents = $this->getBuildTask()->getTwigEnvironment()->render(
+        $gplContents = $this->getEnvironment()->getTwigEnvironment()->render(
             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('COPYING'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('COPYING'),
             $gplContents,
         );
     }

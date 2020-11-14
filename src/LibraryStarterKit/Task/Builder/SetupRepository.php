@@ -35,7 +35,7 @@ class SetupRepository extends Builder
 
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Setting up Git repository</info>');
+        $this->getConsole()->note('Setting up Git repository');
 
         $this
             ->initializeRepository()
@@ -49,9 +49,9 @@ class SetupRepository extends Builder
     private function initializeRepository(): self
     {
         $this
-            ->getBuildTask()
+            ->getEnvironment()
             ->getProcess(['git', 'init'])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
+            ->mustRun($this->streamProcessOutput());
 
         return $this;
     }
@@ -59,21 +59,18 @@ class SetupRepository extends Builder
     private function installHooks(): self
     {
         $this
-            ->getBuildTask()
+            ->getEnvironment()
             ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
+            ->mustRun($this->streamProcessOutput());
 
         return $this;
     }
 
     private function cleanBuildDir(): self
     {
-        $commandPrefix = $this->getBuildTask()->getAnswers()->commandPrefix
-            ?? UpdateCommandPrefix::DEFAULT;
-
         $this
-            ->getBuildTask()
-            ->getProcess(['composer', 'run-script', "{$commandPrefix}:build:clean"])
+            ->getEnvironment()
+            ->getProcess(['composer', 'run-script', 'dev:build:clean'])
             ->mustRun();
 
         return $this;
@@ -81,19 +78,19 @@ class SetupRepository extends Builder
 
     private function configureAuthor(): self
     {
-        $authorName = trim((string) $this->getBuildTask()->getAnswers()->authorName);
-        $authorEmail = trim((string) $this->getBuildTask()->getAnswers()->authorEmail);
+        $authorName = trim((string) $this->getAnswers()->authorName);
+        $authorEmail = trim((string) $this->getAnswers()->authorEmail);
 
         if ($authorName !== '') {
             $this
-                ->getBuildTask()
+                ->getEnvironment()
                 ->getProcess(['git', 'config', 'user.name', $authorName])
                 ->mustRun();
         }
 
         if ($authorEmail !== '') {
             $this
-                ->getBuildTask()
+                ->getEnvironment()
                 ->getProcess(['git', 'config', 'user.email', $authorEmail])
                 ->mustRun();
         }
@@ -104,9 +101,9 @@ class SetupRepository extends Builder
     private function gitAddAllFiles(): self
     {
         $this
-            ->getBuildTask()
+            ->getEnvironment()
             ->getProcess(['git', 'add', '--all'])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
+            ->mustRun($this->streamProcessOutput());
 
         return $this;
     }
@@ -114,9 +111,9 @@ class SetupRepository extends Builder
     private function gitInitialCommit(): self
     {
         $this
-            ->getBuildTask()
+            ->getEnvironment()
             ->getProcess(['git', 'commit', '-m', self::COMMIT_MSG])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
+            ->mustRun($this->streamProcessOutput());
 
         return $this;
     }

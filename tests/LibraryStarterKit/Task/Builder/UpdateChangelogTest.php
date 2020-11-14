@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateChangelog;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as TwigEnvironment;
 
@@ -17,8 +18,8 @@ class UpdateChangelogTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating CHANGELOG.md</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating CHANGELOG.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -39,20 +40,24 @@ class UpdateChangelogTest extends TestCase
             ->render('CHANGELOG.md.twig', $answers->getArrayCopy())
             ->andReturn('changelogContents');
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
-            'getIO' => $io,
             'getTwigEnvironment' => $twig,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
-        $builder = new UpdateChangelog($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateChangelog($build);
 
         $builder->build();
     }

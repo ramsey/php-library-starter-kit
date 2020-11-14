@@ -33,28 +33,28 @@ class UpdateCodeOfConduct extends Builder
 {
     public function build(): void
     {
-        if ($this->getBuildTask()->getAnswers()->codeOfConduct === null) {
-            $this->getBuildTask()->getIO()->write('<info>Removing CODE_OF_CONDUCT.md</info>');
-            $this->getBuildTask()->getFilesystem()->remove(
-                $this->getBuildTask()->path('CODE_OF_CONDUCT.md'),
+        if ($this->getAnswers()->codeOfConduct === null) {
+            $this->getConsole()->note('Removing CODE_OF_CONDUCT.md');
+            $this->getEnvironment()->getFilesystem()->remove(
+                $this->getEnvironment()->path('CODE_OF_CONDUCT.md'),
             );
 
             return;
         }
 
-        $this->getBuildTask()->getIO()->write('<info>Updating CODE_OF_CONDUCT.md</info>');
+        $this->getConsole()->note('Updating CODE_OF_CONDUCT.md');
 
         $codeOfConductTemplate = 'code-of-conduct' . DIRECTORY_SEPARATOR;
-        $codeOfConductTemplate .= $this->getBuildTask()->getAnswers()->codeOfConduct ?? '';
+        $codeOfConductTemplate .= $this->getAnswers()->codeOfConduct ?? '';
         $codeOfConductTemplate .= '.md.twig';
 
-        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+        $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             $codeOfConductTemplate,
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('CODE_OF_CONDUCT.md'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('CODE_OF_CONDUCT.md'),
             $changelog,
         );
     }

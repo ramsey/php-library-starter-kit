@@ -31,15 +31,15 @@ class UpdateFunding extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating .github/FUNDING.yml</info>');
+        $this->getConsole()->note('Updating .github/FUNDING.yml');
 
-        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+        $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'FUNDING.yml.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('.github/FUNDING.yml'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('.github/FUNDING.yml'),
             $changelog,
         );
     }

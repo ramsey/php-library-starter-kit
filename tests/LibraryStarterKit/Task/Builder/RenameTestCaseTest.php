@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTestCase;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use RuntimeException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -22,8 +23,8 @@ class RenameTestCaseTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Renaming VendorTestCase</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Renaming VendorTestCase');
 
         $answers = new Answers();
         $answers->packageNamespace = 'Acme\\Foo\\Bar';
@@ -72,31 +73,35 @@ class RenameTestCaseTest extends TestCase
             $this->getTestFileContentsExpected('BarTest', 'AcmeTestCase'),
         );
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
             'getFilesystem' => $filesystem,
-            'getIO' => $io,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('getFinder')
             ->twice()
             ->andReturn($finder1, $finder2);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
-        $builder = new RenameTestCase($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
+
+        $builder = new RenameTestCase($build);
 
         $builder->build();
     }
 
     public function testBuildThrowsExceptionWhenUnableToFindVendorTestCase(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Renaming VendorTestCase</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Renaming VendorTestCase');
 
         $answers = new Answers();
         $answers->packageNamespace = 'Acme\\Foo\\Bar';
@@ -107,22 +112,25 @@ class RenameTestCaseTest extends TestCase
         $finder->expects()->in(['/path/to/app/tests'])->andReturnSelf();
         $finder->expects()->name('VendorTestCase.php')->andReturnSelf();
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
-            'getIO' => $io,
-        ]);
+        $environment = $this->mockery(Setup::class);
 
-        $task
+        $environment
             ->shouldReceive('getFinder')
             ->once()
             ->andReturn($finder);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
-        $builder = new RenameTestCase($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
+
+        $builder = new RenameTestCase($build);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to get contents of tests/VendorTestCase.php');

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTemplates;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -39,9 +40,9 @@ class RenameTemplatesTest extends TestCase
         $path = implode(DIRECTORY_SEPARATOR, $pathParts);
         $expectedPath = implode(DIRECTORY_SEPARATOR, $expectedPathParts);
 
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Renaming template files</info>');
-        $io->expects()->write("<comment>Renaming '{$path}' to '{$expectedPath}'.</comment>");
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Renaming template files');
+        $console->expects()->text("<comment>Renaming '{$path}' to '{$expectedPath}'.</comment>");
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->rename($path, $expectedPath);
@@ -60,15 +61,19 @@ class RenameTemplatesTest extends TestCase
         $finder->expects()->name('*.template')->andReturnSelf();
         $finder->expects()->name('.*.template');
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
-            'getFilesystem' => $filesystem,
+            'getFileSystem' => $filesystem,
             'getFinder' => $finder,
-            'getIO' => $io,
         ]);
 
-        $renameTemplates = new RenameTemplates($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
+
+        $renameTemplates = new RenameTemplates($build);
 
         $renameTemplates->build();
     }

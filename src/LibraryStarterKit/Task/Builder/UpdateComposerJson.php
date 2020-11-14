@@ -49,7 +49,6 @@ class UpdateComposerJson extends Builder
     ];
 
     private const WHITELIST_AUTOLOAD_DEV = [
-        'Vendor\\Console\\',
         'Vendor\\Test\\SubNamespace\\',
     ];
 
@@ -57,7 +56,7 @@ class UpdateComposerJson extends Builder
 
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating composer.json</info>');
+        $this->getConsole()->note('Updating composer.json');
 
         /**
          * @var array<string, mixed>|null $composer
@@ -67,33 +66,29 @@ class UpdateComposerJson extends Builder
             throw new RuntimeException('Unable to decode contents of composer.json');
         }
 
-        $composer['name'] = (string) $this->getBuildTask()->getAnswers()->packageName;
-        $composer['description'] = (string) $this->getBuildTask()->getAnswers()->packageDescription;
+        $composer['name'] = (string) $this->getAnswers()->packageName;
+        $composer['description'] = (string) $this->getAnswers()->packageDescription;
         $composer['type'] = 'library';
-        $composer['keywords'] = $this->getBuildTask()->getAnswers()->packageKeywords;
-        $composer['license'] = $this->getBuildTask()->getAnswers()->license;
+        $composer['keywords'] = $this->getAnswers()->packageKeywords;
+        $composer['license'] = $this->getAnswers()->license;
 
         $this->buildAuthors($composer);
         $this->buildRequire($composer);
         $this->buildAutoload($composer);
         $this->buildAutoloadDev($composer);
 
-        if (isset($composer['scripts'])) {
-            /** @var array<string, mixed> $scripts */
-            $scripts = &$composer['scripts'];
-            unset($scripts['post-create-project-cmd']);
-            unset($scripts['post-root-package-install']);
-        }
+        unset($composer['scripts']);
+        unset($composer['scripts-descriptions']);
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('composer.json'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('composer.json'),
             (string) json_encode($composer, self::JSON_OPTIONS),
         );
     }
 
     /**
      * @param array<string, string> $data
-     * @param list<string> $whitelist
+     * @param string[] $whitelist
      *
      * @return array<string, string>
      */
@@ -116,9 +111,9 @@ class UpdateComposerJson extends Builder
 
     private function getComposerContents(): string
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
         $finder
-            ->in($this->getBuildTask()->getAppPath())
+            ->in($this->getEnvironment()->getAppPath())
             ->files()
             ->depth('== 0')
             ->name('composer.json');
@@ -145,14 +140,14 @@ class UpdateComposerJson extends Builder
     private function buildAuthors(array &$composer): void
     {
         $author = [];
-        $author['name'] = $this->getBuildTask()->getAnswers()->authorName;
+        $author['name'] = $this->getAnswers()->authorName;
 
-        if (trim((string) $this->getBuildTask()->getAnswers()->authorEmail) !== '') {
-            $author['email'] = $this->getBuildTask()->getAnswers()->authorEmail;
+        if (trim((string) $this->getAnswers()->authorEmail) !== '') {
+            $author['email'] = $this->getAnswers()->authorEmail;
         }
 
-        if (trim((string) $this->getBuildTask()->getAnswers()->authorUrl) !== '') {
-            $author['homepage'] = $this->getBuildTask()->getAnswers()->authorUrl;
+        if (trim((string) $this->getAnswers()->authorUrl) !== '') {
+            $author['homepage'] = $this->getAnswers()->authorUrl;
         }
 
         $composer['authors'] = [$author];

@@ -40,11 +40,11 @@ class RenameTestCase extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Renaming VendorTestCase</info>');
+        $this->getConsole()->note('Renaming VendorTestCase');
 
         $namespaceParts = explode(
             '\\',
-            (string) $this->getBuildTask()->getAnswers()->packageNamespace,
+            (string) $this->getAnswers()->packageNamespace,
         );
         $vendor = array_shift($namespaceParts);
         $className = "{$vendor}TestCase";
@@ -59,10 +59,10 @@ class RenameTestCase extends Builder
 
     private function getVendorTestCaseFile(): SplFileInfo
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
 
         $finder
-            ->in([$this->getBuildTask()->path('tests')])
+            ->in([$this->getEnvironment()->path('tests')])
             ->name('VendorTestCase.php');
 
         /** @var SplFileInfo $file */
@@ -77,11 +77,11 @@ class RenameTestCase extends Builder
 
     private function getTestFiles(): Finder
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
 
         $finder
             ->exclude(['LibraryStarterKit'])
-            ->in([$this->getBuildTask()->path('tests')])
+            ->in([$this->getEnvironment()->path('tests')])
             ->files()
             ->name('*Test.php');
 
@@ -99,10 +99,10 @@ class RenameTestCase extends Builder
             $testCaseContents,
         );
 
-        $this->getBuildTask()->getFilesystem()->remove((string) $testCase->getRealPath());
+        $this->getEnvironment()->getFilesystem()->remove((string) $testCase->getRealPath());
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path(
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path(
                 'tests' . DIRECTORY_SEPARATOR . "{$className}.php",
             ),
             $testCaseContents,
@@ -114,7 +114,7 @@ class RenameTestCase extends Builder
         $contents = $file->getContents();
         $updatedContents = str_replace('VendorTestCase', $parentClass, $contents);
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
+        $this->getEnvironment()->getFilesystem()->dumpFile(
             (string) $file->getRealPath(),
             $updatedContents,
         );

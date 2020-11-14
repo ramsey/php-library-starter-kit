@@ -43,11 +43,11 @@ class UpdateSourceFileHeaders extends Builder
 
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating source file headers</info>');
+        $this->getConsole()->note('Updating source file headers');
 
-        $newFileHeader = $this->getBuildTask()->getTwigEnvironment()->render(
+        $newFileHeader = $this->getEnvironment()->getTwigEnvironment()->render(
             'source-file-header.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
         $headerLines = explode("\n", $newFileHeader);
@@ -62,16 +62,14 @@ class UpdateSourceFileHeaders extends Builder
 
     private function getSourceFilesFinder(): Finder
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
 
         $finder
             ->exclude(['LibraryStarterKit'])
-            ->in(
-                [
-                    $this->getBuildTask()->path('src'),
-                    $this->getBuildTask()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
-                ],
-            )
+            ->in([
+                $this->getEnvironment()->path('src'),
+                $this->getEnvironment()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
+            ])
             ->files()
             ->name('*.php');
 
@@ -90,6 +88,6 @@ class UpdateSourceFileHeaders extends Builder
             1,
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile($path, $updatedContents);
+        $this->getEnvironment()->getFilesystem()->dumpFile($path, $updatedContents);
     }
 }

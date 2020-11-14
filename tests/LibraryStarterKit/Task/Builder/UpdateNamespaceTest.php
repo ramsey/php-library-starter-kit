@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateNamespace;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 use function str_replace;
-
-use const DIRECTORY_SEPARATOR;
 
 class UpdateNamespaceTest extends TestCase
 {
@@ -27,11 +26,10 @@ class UpdateNamespaceTest extends TestCase
     public function testBuild(
         string $packageName,
         string $namespace,
-        string $testNamespace,
-        string $consoleNamespace
+        string $testNamespace
     ): void {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating namespace</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating namespace');
 
         $answers = new Answers();
         $answers->packageName = $packageName;
@@ -61,7 +59,6 @@ class UpdateNamespaceTest extends TestCase
                 '/path/to/app/bin',
                 '/path/to/app/src',
                 '/path/to/app/tests',
-                '/path/to/app/resources' . DIRECTORY_SEPARATOR . 'console',
             ],
         )->andReturnSelf();
         $finder1->expects()->files()->andReturnSelf();
@@ -81,39 +78,43 @@ class UpdateNamespaceTest extends TestCase
             ->expects()
             ->dumpFile(
                 '/path/to/app/src/Foo.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
             );
 
         $filesystem
             ->expects()
             ->dumpFile(
                 '/path/to/app/src/Bar.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
             );
 
         $filesystem
             ->expects()
             ->dumpFile(
                 '/path/to/app/composer.json',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace, $consoleNamespace),
+                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
             );
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
-            'getIO' => $io,
         ]);
 
-        $task
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        $environment
             ->shouldReceive('getFinder')
             ->twice()
             ->andReturn($finder1, $finder2);
 
-        $task
-            ->shouldReceive('path')
-            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
 
         $builder = new UpdateNamespace($task);
 
@@ -121,7 +122,7 @@ class UpdateNamespaceTest extends TestCase
     }
 
     /**
-     * @return list<array<string, mixed>>
+     * @return array<array<array-key, string>>
      */
     public function provideNamespaceTestValues(): array
     {
@@ -130,19 +131,16 @@ class UpdateNamespaceTest extends TestCase
                 'packageName' => 'acme/foo-bar',
                 'namespace' => 'Acme\\Foo\\Bar',
                 'testNamespace' => 'Acme\\Test\\Foo\\Bar',
-                'consoleNamespace' => 'Acme\\Console',
             ],
             [
                 'packageName' => 'acme/foo',
                 'namespace' => 'Acme',
                 'testNamespace' => 'Acme\\Test',
-                'consoleNamespace' => 'Acme\\Console',
             ],
             [
                 'packageName' => 'another/package',
                 'namespace' => 'Another\\Package\\With\\Long\\Namespace',
                 'testNamespace' => 'Another\\Test\\Package\\With\\Long\\Namespace',
-                'consoleNamespace' => 'Another\\Console',
             ],
         ];
     }
@@ -161,14 +159,12 @@ class UpdateNamespaceTest extends TestCase
             namespace Vendor\SubNamespace;
 
             use Vendor\Test\SubNamespace\Bar;
-            use Vendor\Console\Baz;
 
             class Foo
             {
                 public const CLASS_NAMES = [
                     'Vendor\\SubNamespace',
                     'Vendor\\Test\\SubNamespace',
-                    'Vendor\\Console',
                 ];
             }
             EOD;
@@ -177,12 +173,10 @@ class UpdateNamespaceTest extends TestCase
     private function getFileContentsExpected(
         string $packageName,
         string $namespace,
-        string $testNamespace,
-        string $consoleNamespace
+        string $testNamespace
     ): string {
         $namespaceEscaped = str_replace('\\', '\\\\', $namespace);
         $testNamespaceEscaped = str_replace('\\', '\\\\', $testNamespace);
-        $consoleNamespaceEscaped = str_replace('\\', '\\\\', $consoleNamespace);
 
         return <<<EOD
             <?php
@@ -196,14 +190,12 @@ class UpdateNamespaceTest extends TestCase
             namespace {$namespace};
 
             use {$testNamespace}\\Bar;
-            use {$consoleNamespace}\\Baz;
 
             class Foo
             {
                 public const CLASS_NAMES = [
                     '{$namespaceEscaped}',
                     '{$testNamespaceEscaped}',
-                    '{$consoleNamespaceEscaped}',
                 ];
             }
             EOD;

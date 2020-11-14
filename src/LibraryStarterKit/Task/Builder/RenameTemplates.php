@@ -39,7 +39,7 @@ class RenameTemplates extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Renaming template files</info>');
+        $this->getConsole()->note('Renaming template files');
 
         /** @var SplFileInfo $template */
         foreach ($this->getTemplatesFinder() as $template) {
@@ -49,17 +49,15 @@ class RenameTemplates extends Builder
 
     private function getTemplatesFinder(): Finder
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
 
         $finder
             ->ignoreDotFiles(false)
-            ->exclude(
-                [
-                    'build',
-                    'vendor',
-                ],
-            )
-            ->in($this->getBuildTask()->getAppPath())
+            ->exclude([
+                'build',
+                'vendor',
+            ])
+            ->in($this->getEnvironment()->getAppPath())
             ->name('*.template')
             ->name('.*.template');
 
@@ -73,14 +71,12 @@ class RenameTemplates extends Builder
         $baseName = basename($path, '.template');
         $newPath = $dirName . DIRECTORY_SEPARATOR . $baseName;
 
-        $this->getBuildTask()->getIO()->write(
-            sprintf(
-                '<comment>Renaming \'%s\' to \'%s\'.</comment>',
-                $path,
-                $newPath,
-            ),
-        );
+        $this->getConsole()->text(sprintf(
+            '<comment>Renaming \'%s\' to \'%s\'.</comment>',
+            $path,
+            $newPath,
+        ));
 
-        $this->getBuildTask()->getFilesystem()->rename($path, $newPath);
+        $this->getEnvironment()->getFilesystem()->rename($path, $newPath);
     }
 }

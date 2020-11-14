@@ -22,14 +22,20 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit;
 
-use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
+use ReflectionClass;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
+
+use function array_map;
+use function implode;
+
+use const DIRECTORY_SEPARATOR;
 
 class Setup
 {
@@ -67,14 +73,6 @@ class Setup
     }
 
     /**
-     * Returns the IO object from the event triggering this action
-     */
-    public function getIO(): IOInterface
-    {
-        return $this->event->getIO();
-    }
-
-    /**
      * Returns a filesystem object to use when executing filesystem commands
      */
     public function getFilesystem(): Filesystem
@@ -107,21 +105,45 @@ class Setup
     }
 
     /**
+     * Returns an instance used for executing a system command
+     *
+     * @param string[] $command
+     */
+    public function getProcess(array $command): Process
+    {
+        // Support backward-compatibility with older versions of symfony/process.
+        $processReflected = new ReflectionClass(Process::class);
+        $processConstructor = $processReflected->getConstructor();
+
+        if ($processConstructor !== null && !$processConstructor->getParameters()[0]->isArray()) {
+            $command = implode(' ', array_map('escapeshellarg', $command)); // @codeCoverageIgnore
+        }
+
+        /**
+         * @psalm-suppress PossiblyInvalidArgument
+         * @phpstan-ignore-next-line
+         */
+        return new Process($command, $this->getProject()->getPath());
+    }
+
+    /**
+     * Given a project-relative directory or filename, constructs an absolute path
+     */
+    public function path(string $fileName): string
+    {
+        return $this->getProject()->getPath() . DIRECTORY_SEPARATOR . $fileName;
+    }
+
+    /**
      * Returns a Build object used to process all the user inputs
      */
-    public function getBuild(Answers $answers): Build
+    public function getBuild(SymfonyStyle $console, Answers $answers): Build
     {
-        $build = new Build(
-            $this->getProject()->getPath(),
-            $this->getIO(),
-            $this->getFilesystem(),
-            $this->getFinder(),
+        return new Build(
+            $this,
+            $console,
+            $answers,
         );
-
-        $build->setAnswers($answers);
-        $build->setTwigEnvironment($this->getTwigEnvironment());
-
-        return $build;
     }
 
     /**
@@ -144,6 +166,6 @@ class Setup
      */
     public function run(SymfonyStyle $console, Answers $answers): void
     {
-        $this->getBuild($answers)->run();
+        $this->getBuild($console, $answers)->run();
     }
 }

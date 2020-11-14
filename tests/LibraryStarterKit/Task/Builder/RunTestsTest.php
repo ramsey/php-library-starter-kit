@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 
 use function callableValue;
@@ -18,25 +19,27 @@ class RunTestsTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Running project tests...</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Running project tests...');
 
         $process = $this->mockery(Process::class);
         $process->expects()->mustRun(callableValue());
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => new Answers(),
-            'getIO' => $io,
-            'streamProcessOutput' => fn () => null,
-        ]);
+        $environment = $this->mockery(Setup::class);
 
-        $task
+        $environment
             ->expects()
-            ->getProcess(['composer', 'run-script', 'vnd:test:all'])
+            ->getProcess(['composer', 'run-script', 'dev:test:all'])
             ->andReturn($process);
 
-        $builder = new RunTests($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => new Answers(),
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new RunTests($build);
 
         $builder->build();
     }

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSourceFileHeaders;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -22,8 +23,8 @@ class UpdateSourceFileHeadersTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating source file headers</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating source file headers');
 
         $answers = new Answers();
 
@@ -68,18 +69,23 @@ class UpdateSourceFileHeadersTest extends TestCase
             $this->getFile2ExpectedContents(),
         );
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
             'getFinder' => $finder,
-            'getIO' => $io,
             'getTwigEnvironment' => $twig,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
 
         $builder = new UpdateSourceFileHeaders($task);
 

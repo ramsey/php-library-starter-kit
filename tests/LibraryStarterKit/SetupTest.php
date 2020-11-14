@@ -57,11 +57,6 @@ class SetupTest extends TestCase
         $this->assertInstanceOf(Event::class, $this->setup->getEvent());
     }
 
-    public function testGetIO(): void
-    {
-        $this->assertInstanceOf(IOInterface::class, $this->setup->getIO());
-    }
-
     public function testGetFilesystem(): void
     {
         $this->assertInstanceOf(Filesystem::class, $this->setup->getFilesystem());
@@ -79,12 +74,15 @@ class SetupTest extends TestCase
 
     public function testGetBuild(): void
     {
+        /** @var SymfonyStyle & MockInterface $console */
+        $console = $this->mockery(SymfonyStyle::class);
+
         $answers = new Answers();
-        $build = $this->setup->getBuild($answers);
+        $build = $this->setup->getBuild($console, $answers);
 
         $this->assertSame($answers, $build->getAnswers());
-        $this->assertIsString($build->getAppPath());
-        $this->assertInstanceOf(TwigEnvironment::class, $build->getTwigEnvironment());
+        $this->assertSame($console, $build->getConsole());
+        $this->assertSame($this->setup, $build->getSetup());
     }
 
     public function testGetTwigEnvironment(): void

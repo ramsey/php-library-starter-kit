@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateComposerJson;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use RuntimeException;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -20,8 +21,8 @@ class UpdateComposerJsonTest extends TestCase
 {
     public function testBuild(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating composer.json</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating composer.json');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -59,28 +60,32 @@ class UpdateComposerJsonTest extends TestCase
         $answers->authorUrl = 'https://example.com/jane';
         $answers->license = 'Apache-2.0';
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
             'getFinder' => $finder,
-            'getIO' => $io,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
-        $builder = new UpdateComposerJson($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateComposerJson($build);
 
         $builder->build();
     }
 
     public function testBuildThrowsExceptionWhenComposerContentsContainInvalidJson(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating composer.json</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(
@@ -94,14 +99,18 @@ class UpdateComposerJsonTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('composer.json');
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFinder' => $finder,
-            'getIO' => $io,
         ]);
 
-        $builder = new UpdateComposerJson($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
+
+        $builder = new UpdateComposerJson($build);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to decode contents of composer.json');
@@ -111,8 +120,8 @@ class UpdateComposerJsonTest extends TestCase
 
     public function testBuildThrowsExceptionWhenComposerJsonCannotBeFound(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating composer.json</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(),
@@ -122,14 +131,18 @@ class UpdateComposerJsonTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('composer.json');
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFinder' => $finder,
-            'getIO' => $io,
         ]);
 
-        $builder = new UpdateComposerJson($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateComposerJson($build);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Unable to get contents of composer.json');
@@ -139,8 +152,8 @@ class UpdateComposerJsonTest extends TestCase
 
     public function testBuildWithMinimalComposerJson(): void
     {
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating composer.json</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating composer.json');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -157,16 +170,11 @@ class UpdateComposerJsonTest extends TestCase
             });
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
-                [
-                    $this->mockery(
-                        SplFileInfo::class,
-                        [
-                            'getContents' => $this->composerContentsOriginalMinimal(),
-                        ],
-                    ),
-                ],
-            ),
+            'getIterator' => new ArrayObject([
+                $this->mockery(SplFileInfo::class, [
+                    'getContents' => $this->composerContentsOriginalMinimal(),
+                ]),
+            ]),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -179,20 +187,24 @@ class UpdateComposerJsonTest extends TestCase
         $answers->authorName = 'Jane Doe';
         $answers->license = 'MPL-2.0';
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
             'getFinder' => $finder,
-            'getIO' => $io,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
 
-        $builder = new UpdateComposerJson($task);
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateComposerJson($build);
 
         $builder->build();
     }
@@ -201,113 +213,71 @@ class UpdateComposerJsonTest extends TestCase
     {
         return <<<'EOD'
             {
-              "name": "ramsey/php-library-starter-kit",
-              "type": "project",
-              "description": "A tool to quickly set up the base files of a PHP library package.",
-              "keywords": [
-                "skeleton",
-                "package",
-                "library"
-              ],
-              "license": "MIT",
-              "authors": [
-                {
-                  "name": "Ben Ramsey",
-                  "email": "ben@benramsey.com",
-                  "homepage": "https://benramsey.com"
-                }
-              ],
-              "require": {
-                "php": "^7.4",
-                "ext-json": "*",
-                "symfony/filesystem": "^5",
-                "symfony/finder": "^5",
-                "symfony/process": "^5",
-                "twig/twig": "^3"
-              },
-              "require-dev": {
-                "composer/composer": "^1.10",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
-                "ergebnis/composer-normalize": "^2.5",
-                "hamcrest/hamcrest-php": "^2",
-                "mockery/mockery": "^1.3",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/extension-installer": "^1",
-                "phpstan/phpstan": "^0.12.25",
-                "phpstan/phpstan-mockery": "^0.12.5",
-                "phpstan/phpstan-phpunit": "^0.12.8",
-                "phpunit/phpunit": "^9.1",
-                "psy/psysh": "^0.10.4",
-                "slevomat/coding-standard": "^6.3",
-                "squizlabs/php_codesniffer": "^3.5",
-                "vimeo/psalm": "^3.11"
-              },
-              "config": {
-                "sort-packages": true
-              },
-              "autoload": {
-                "psr-4": {
-                  "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
-                  "Vendor\\SubNamespace\\": "src/"
-                }
-              },
-              "autoload-dev": {
-                "psr-4": {
-                  "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
-                  "Vendor\\Console\\": "resources/console/",
-                  "Vendor\\Test\\SubNamespace\\": "tests/"
+                "name": "ramsey/php-library-starter-kit",
+                "type": "project",
+                "description": "A starter kit for quickly setting up a new PHP library package.",
+                "keywords": [
+                    "builder",
+                    "library",
+                    "package",
+                    "skeleton",
+                    "template"
+                ],
+                "license": "MIT",
+                "authors": [
+                    {
+                        "name": "Ben Ramsey",
+                        "email": "ben@benramsey.com",
+                        "homepage": "https://benramsey.com"
+                    }
+                ],
+                "require": {
+                    "php": "^7.4 || ^8",
+                    "ext-json": "*",
+                    "symfony/console": "^5.1",
+                    "symfony/filesystem": "^5.1",
+                    "symfony/finder": "^5.1",
+                    "symfony/process": "^5.1",
+                    "twig/twig": "^3.1"
                 },
-                "files": [
-                  "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-                ]
-              },
-              "scripts": {
-                "post-create-project-cmd": [
-                  "Ramsey\\Dev\\LibraryStarterKit\\Setup::wizard",
-                  "@vnd:test:all"
-                ],
-                "post-root-package-install": "git init",
-                "vnd:analyze": [
-                  "@vnd:analyze:phpstan",
-                  "@vnd:analyze:psalm"
-                ],
-                "vnd:analyze:phpstan": "phpstan analyse --no-progress",
-                "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
-                "vnd:build:clean": "git clean -fX build/.",
-                "vnd:build:clear-cache": "git clean -fX build/cache/.",
-                "vnd:lint": [
-                  "parallel-lint src tests",
-                  "phpcs --cache=build/cache/phpcs.cache"
-                ],
-                "vnd:lint:fix": "./bin/lint-fix.sh",
-                "vnd:repl": [
-                  "echo ; echo 'Type ./bin/repl to start the REPL.'"
-                ],
-                "vnd:test": "phpunit",
-                "vnd:test:all": [
-                  "@vnd:lint",
-                  "@vnd:analyze",
-                  "@vnd:test"
-                ],
-                "vnd:test:coverage:ci": "phpunit --coverage-clover build/logs/clover.xml",
-                "vnd:test:coverage:html": "phpunit --coverage-html build/coverage"
-              },
-              "scripts-descriptions": {
-                "vnd:analyze": "Performs static analysis on the code base.",
-                "vnd:analyze:phpstan": "Runs the PHPStan static analyzer.",
-                "vnd:analyze:psalm": "Runs the Psalm static analyzer.",
-                "vnd:build:clean": "Removes everything not under version control from the build directory.",
-                "vnd:build:clear-cache": "Removes everything not under version control from build/cache/.",
-                "vnd:lint": "Checks all source code for coding standards issues.",
-                "vnd:lint:fix": "Checks source code for coding standards issues and fixes them, if possible.",
-                "vnd:repl": "Note: Use ./bin/repl to run the REPL.",
-                "vnd:test": "Runs the full unit test suite.",
-                "vnd:test:all": "Runs linting, static analysis, and unit tests.",
-                "vnd:test:coverage:ci": "Runs the unit test suite and generates a Clover coverage report.",
-                "vnd:test:coverage:html": "Runs the unit tests suite and generates an HTML coverage report."
-              }
+                "require-dev": {
+                    "ramsey/devtools": "^1.5"
+                },
+                "config": {
+                    "sort-packages": true
+                },
+                "extra": {
+                    "ramsey/conventional-commits": {
+                        "configFile": "conventional-commits.json"
+                    },
+                    "ramsey/devtools": {
+                        "command-prefix": "dev"
+                    }
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
+                        "Vendor\\SubNamespace\\": "src/"
+                    }
+                },
+                "autoload-dev": {
+                    "psr-4": {
+                        "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
+                        "Vendor\\Test\\SubNamespace\\": "tests/"
+                    }
+                },
+                "minimum-stability": "dev",
+                "prefer-stable": true,
+                "scripts": {
+                    "post-root-package-install": "git init",
+                    "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
+                    "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start"
+                },
+                "scripts-descriptions": {
+                    "starter-kit": "Runs the PHP Library Starter Kit wizard."
+                }
             }
-        EOD;
+            EOD;
     }
 
     private function composerContentsExpected(): string
@@ -330,27 +300,21 @@ class UpdateComposerJsonTest extends TestCase
                 }
               ],
               "require": {
-                "php": "^7.4"
+                "php": "^7.4 || ^8"
               },
               "require-dev": {
-                "composer/composer": "^1.10",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
-                "ergebnis/composer-normalize": "^2.5",
-                "hamcrest/hamcrest-php": "^2",
-                "mockery/mockery": "^1.3",
-                "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpstan/extension-installer": "^1",
-                "phpstan/phpstan": "^0.12.25",
-                "phpstan/phpstan-mockery": "^0.12.5",
-                "phpstan/phpstan-phpunit": "^0.12.8",
-                "phpunit/phpunit": "^9.1",
-                "psy/psysh": "^0.10.4",
-                "slevomat/coding-standard": "^6.3",
-                "squizlabs/php_codesniffer": "^3.5",
-                "vimeo/psalm": "^3.11"
+                "ramsey/devtools": "^1.5"
               },
               "config": {
                 "sort-packages": true
+              },
+              "extra": {
+                "ramsey/conventional-commits": {
+                  "configFile": "conventional-commits.json"
+                },
+                "ramsey/devtools": {
+                  "command-prefix": "dev"
+                }
               },
               "autoload": {
                 "psr-4": {
@@ -359,55 +323,13 @@ class UpdateComposerJsonTest extends TestCase
               },
               "autoload-dev": {
                 "psr-4": {
-                  "Vendor\\Console\\": "resources/console/",
                   "Vendor\\Test\\SubNamespace\\": "tests/"
-                },
-                "files": [
-                  "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-                ]
+                }
               },
-              "scripts": {
-                "vnd:analyze": [
-                  "@vnd:analyze:phpstan",
-                  "@vnd:analyze:psalm"
-                ],
-                "vnd:analyze:phpstan": "phpstan analyse --no-progress",
-                "vnd:analyze:psalm": "psalm --diff --diff-methods --show-info=true --config=psalm.xml",
-                "vnd:build:clean": "git clean -fX build/.",
-                "vnd:build:clear-cache": "git clean -fX build/cache/.",
-                "vnd:lint": [
-                  "parallel-lint src tests",
-                  "phpcs --cache=build/cache/phpcs.cache"
-                ],
-                "vnd:lint:fix": "./bin/lint-fix.sh",
-                "vnd:repl": [
-                  "echo ; echo 'Type ./bin/repl to start the REPL.'"
-                ],
-                "vnd:test": "phpunit",
-                "vnd:test:all": [
-                  "@vnd:lint",
-                  "@vnd:analyze",
-                  "@vnd:test"
-                ],
-                "vnd:test:coverage:ci": "phpunit --coverage-clover build/logs/clover.xml",
-                "vnd:test:coverage:html": "phpunit --coverage-html build/coverage"
-              },
-              "scripts-descriptions": {
-                "vnd:analyze": "Performs static analysis on the code base.",
-                "vnd:analyze:phpstan": "Runs the PHPStan static analyzer.",
-                "vnd:analyze:psalm": "Runs the Psalm static analyzer.",
-                "vnd:build:clean": "Removes everything not under version control from the build directory.",
-                "vnd:build:clear-cache": "Removes everything not under version control from build/cache/.",
-                "vnd:lint": "Checks all source code for coding standards issues.",
-                "vnd:lint:fix": "Checks source code for coding standards issues and fixes them, if possible.",
-                "vnd:repl": "Note: Use ./bin/repl to run the REPL.",
-                "vnd:test": "Runs the full unit test suite.",
-                "vnd:test:all": "Runs linting, static analysis, and unit tests.",
-                "vnd:test:coverage:ci": "Runs the unit test suite and generates a Clover coverage report.",
-                "vnd:test:coverage:html": "Runs the unit tests suite and generates an HTML coverage report."
-              }
+              "minimum-stability": "dev",
+              "prefer-stable": true
             }
-        EOD;
+            EOD;
     }
 
     private function composerContentsOriginalMinimal(): string

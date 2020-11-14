@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Ramsey\Dev\LibraryStarterKit\Task;
 
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\Cleanup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTemplates;
@@ -31,7 +32,6 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\SetupRepository;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateChangelog;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateCodeOfConduct;
-use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateCommandPrefix;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateComposerJson;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateContributing;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateFunding;
@@ -39,53 +39,40 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateNamespace;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateReadme;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSourceFileHeaders;
-use Twig\Environment as TwigEnvironment;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * The Build task executes all the builders used to build the library
  */
-class Build extends Task
+class Build
 {
-    /** @psalm-suppress PropertyNotSetInConstructor */
     private Answers $answers;
+    private Setup $setup;
+    private SymfonyStyle $console;
 
-    /** @psalm-suppress PropertyNotSetInConstructor */
-    private TwigEnvironment $twig;
-
-    /**
-     * Sets the Answers instance to use for storing user answers
-     */
-    public function setAnswers(Answers $answers): self
-    {
+    public function __construct(
+        Setup $setup,
+        SymfonyStyle $console,
+        Answers $answers
+    ) {
+        $this->setup = $setup;
+        $this->console = $console;
         $this->answers = $answers;
-
-        return $this;
     }
 
-    /**
-     * Returns the user answers
-     */
     public function getAnswers(): Answers
     {
         return $this->answers;
     }
 
-    /**
-     * Sets the Twig environment instance to use for rendering Twig templates
-     */
-    public function setTwigEnvironment(TwigEnvironment $twig): self
+    public function getConsole(): SymfonyStyle
     {
-        $this->twig = $twig;
-
-        return $this;
+        return $this->console;
     }
 
-    /**
-     * Returns the Twig environment instance
-     */
-    public function getTwigEnvironment(): TwigEnvironment
+    public function getSetup(): Setup
     {
-        return $this->twig;
+        return $this->setup;
     }
 
     /**
@@ -101,7 +88,7 @@ class Build extends Task
     /**
      * Returns a list of builders to use for creating a library
      *
-     * @return list<Builder>
+     * @return Builder[]
      */
     public function getBuilders(): array
     {
@@ -117,7 +104,6 @@ class Build extends Task
             new UpdateChangelog($this),
             new UpdateContributing($this),
             new UpdateFunding($this),
-            new UpdateCommandPrefix($this),
             new InstallDependencies($this),
             new Cleanup($this),
             new SetupRepository($this),

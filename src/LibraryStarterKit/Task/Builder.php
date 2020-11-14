@@ -22,6 +22,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task;
 
+use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
+
 /**
  * Represents a builder that uses user responses to build some part of a library
  */
@@ -39,11 +44,34 @@ abstract class Builder
      */
     abstract public function build(): void;
 
-    /**
-     * Returns the build task for this builder
-     */
-    public function getBuildTask(): Build
+    public function getAnswers(): Answers
     {
-        return $this->buildTask;
+        return $this->buildTask->getAnswers();
+    }
+
+    public function getEnvironment(): Setup
+    {
+        return $this->buildTask->getSetup();
+    }
+
+    public function getConsole(): SymfonyStyle
+    {
+        return $this->buildTask->getConsole();
+    }
+
+    /**
+     * Returns a callback that may be used to stream process output to stdout
+     *
+     * @return callable(string, string): void
+     */
+    public function streamProcessOutput(): callable
+    {
+        return function (string $type, string $buffer): void {
+            if ($type === Process::ERR) {
+                $this->getConsole()->error($buffer);
+            } else {
+                $this->getConsole()->write($buffer);
+            }
+        };
     }
 }

@@ -31,15 +31,15 @@ class UpdateContributing extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating CONTRIBUTING.md</info>');
+        $this->getConsole()->note('Updating CONTRIBUTING.md');
 
-        $changelog = $this->getBuildTask()->getTwigEnvironment()->render(
+        $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'CONTRIBUTING.md.twig',
-            $this->getBuildTask()->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy(),
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('CONTRIBUTING.md'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('CONTRIBUTING.md'),
             $changelog,
         );
     }

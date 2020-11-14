@@ -31,16 +31,11 @@ class RunTests extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write(
-            '<info>Running project tests...</info>',
-        );
-
-        $commandPrefix = $this->getBuildTask()->getAnswers()->commandPrefix
-            ?? UpdateCommandPrefix::DEFAULT;
+        $this->getConsole()->note('Running project tests...');
 
         $this
-            ->getBuildTask()
-            ->getProcess(['composer', 'run-script', "{$commandPrefix}:test:all"])
-            ->mustRun($this->getBuildTask()->streamProcessOutput());
+            ->getEnvironment()
+            ->getProcess(['composer', 'run-script', 'dev:test:all'])
+            ->mustRun($this->streamProcessOutput());
     }
 }

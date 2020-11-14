@@ -29,56 +29,24 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder;
  */
 class InstallDependencies extends Builder
 {
-    public const COMPOSER_REMOVE_PACKAGES = [
-        'composer/composer',
-    ];
-
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Installing dependencies</info>');
+        $this->getConsole()->note('Installing dependencies');
 
         // Remove lockfiles and vendor directories to start fresh.
-        $this->getBuildTask()->getFilesystem()->remove(
-            [
-                $this->getBuildTask()->path('composer.lock'),
-                $this->getBuildTask()->path('vendor'),
-            ],
-        );
+        $this->getEnvironment()->getFilesystem()->remove([
+            $this->getEnvironment()->path('composer.lock'),
+            $this->getEnvironment()->path('vendor'),
+        ]);
 
-        $this->composerRemoveDevelopmentPackages();
-        $this->composerInstall();
-    }
+        $process = $this->getEnvironment()->getProcess([
+            'composer',
+            'update',
+            '--no-interaction',
+            '--ansi',
+            '--no-progress',
+        ]);
 
-    protected function composerRemoveDevelopmentPackages(): void
-    {
-        $process = $this->getBuildTask()->getProcess(
-            [
-                'composer',
-                'remove',
-                '--no-interaction',
-                '--ansi',
-                '--dev',
-                '--no-update',
-                ...self::COMPOSER_REMOVE_PACKAGES,
-            ],
-        );
-
-        $process->mustRun();
-    }
-
-    protected function composerInstall(): void
-    {
-        $process = $this->getBuildTask()->getProcess(
-            [
-                'composer',
-                'install',
-                '--no-interaction',
-                '--ansi',
-                '--no-progress',
-                '--no-suggest',
-            ],
-        );
-
-        $process->mustRun($this->getBuildTask()->streamProcessOutput());
+        $process->mustRun($this->streamProcessOutput());
     }
 }

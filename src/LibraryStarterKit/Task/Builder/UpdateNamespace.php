@@ -34,8 +34,6 @@ use function implode;
 use function iterator_to_array;
 use function str_replace;
 
-use const DIRECTORY_SEPARATOR;
-
 /**
  * Updates the namespace according to the one provided during project setup
  */
@@ -43,27 +41,24 @@ class UpdateNamespace extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating namespace</info>');
+        $this->getConsole()->note('Updating namespace');
 
-        $packageName = (string) $this->getBuildTask()->getAnswers()->packageName;
+        $packageName = (string) $this->getAnswers()->packageName;
         $namespaceParts = explode(
             '\\',
-            (string) $this->getBuildTask()->getAnswers()->packageNamespace,
+            (string) $this->getAnswers()->packageNamespace,
         );
         $vendor = array_shift($namespaceParts);
         $subNamespace = implode('\\', $namespaceParts);
 
         $namespace = implode('\\', array_filter([$vendor, $subNamespace]));
         $testNamespace = implode('\\', array_filter([$vendor, 'Test', $subNamespace]));
-        $consoleNamespace = implode('\\', [$vendor, 'Console']);
 
         $replacements = [
             'Vendor\\SubNamespace' => $namespace,
             'Vendor\\Test\\SubNamespace' => $testNamespace,
-            'Vendor\\Console' => $consoleNamespace,
             'Vendor\\\\SubNamespace' => str_replace('\\', '\\\\', $namespace),
             'Vendor\\\\Test\\\\SubNamespace' => str_replace('\\', '\\\\', $testNamespace),
-            'Vendor\\\\Console' => str_replace('\\', '\\\\', $consoleNamespace),
             'ramsey/php-library-starter-kit' => $packageName,
         ];
 
@@ -74,32 +69,29 @@ class UpdateNamespace extends Builder
     }
 
     /**
-     * @return list<SplFileInfo>
+     * @return SplFileInfo[]
      */
     private function getSourceFiles(): array
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
 
         $finder
             ->exclude(['LibraryStarterKit'])
-            ->in(
-                [
-                    $this->getBuildTask()->path('bin'),
-                    $this->getBuildTask()->path('src'),
-                    $this->getBuildTask()->path('tests'),
-                    $this->getBuildTask()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
-                ],
-            )
+            ->in([
+                $this->getEnvironment()->path('bin'),
+                $this->getEnvironment()->path('src'),
+                $this->getEnvironment()->path('tests'),
+            ])
             ->files()
             ->name('*.php');
 
-        /** @var list<SplFileInfo> $files */
+        /** @var SplFileInfo[] $files */
         $files = iterator_to_array($finder, false);
 
         // Find composer.json and add it to the array of files to return.
-        $composerFinder = $this->getBuildTask()->getFinder();
+        $composerFinder = $this->getEnvironment()->getFinder();
         $composerFinder
-            ->in([$this->getBuildTask()->getAppPath()])
+            ->in([$this->getEnvironment()->getAppPath()])
             ->files()
             ->depth('== 0')
             ->name('composer.json');
@@ -128,6 +120,6 @@ class UpdateNamespace extends Builder
             $contents,
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile($path, $updatedContents);
+        $this->getEnvironment()->getFilesystem()->dumpFile($path, $updatedContents);
     }
 }

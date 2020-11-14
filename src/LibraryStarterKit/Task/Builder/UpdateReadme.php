@@ -22,11 +22,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 use Symfony\Component\Finder\SplFileInfo;
-use Twig\Environment as TwigEnvironment;
 
 use function array_keys;
 use function array_values;
@@ -39,7 +37,7 @@ class UpdateReadme extends Builder
 {
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Updating README.md</info>');
+        $this->getConsole()->note('Updating README.md');
 
         $readmeContents = $this->getReadmeContents();
 
@@ -65,17 +63,17 @@ class UpdateReadme extends Builder
             $readmeContents,
         );
 
-        $this->getBuildTask()->getFilesystem()->dumpFile(
-            $this->getBuildTask()->path('README.md'),
+        $this->getEnvironment()->getFilesystem()->dumpFile(
+            $this->getEnvironment()->path('README.md'),
             $readme,
         );
     }
 
     private function getReadmeContents(): string
     {
-        $finder = $this->getBuildTask()->getFinder();
+        $finder = $this->getEnvironment()->getFinder();
         $finder
-            ->in($this->getBuildTask()->getAppPath())
+            ->in($this->getEnvironment()->getAppPath())
             ->files()
             ->depth('== 0')
             ->name('README.md');
@@ -96,19 +94,9 @@ class UpdateReadme extends Builder
         return (string) $readmeContents;
     }
 
-    private function getTwig(): TwigEnvironment
-    {
-        return $this->getBuildTask()->getTwigEnvironment();
-    }
-
-    private function getAnswers(): Answers
-    {
-        return $this->getBuildTask()->getAnswers();
-    }
-
     private function getBadges(): string
     {
-        return $this->getTwig()->render(
+        return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/badges.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
@@ -116,7 +104,7 @@ class UpdateReadme extends Builder
 
     private function getDescription(): string
     {
-        return $this->getTwig()->render(
+        return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/description.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
@@ -128,7 +116,7 @@ class UpdateReadme extends Builder
             return '';
         }
 
-        return $this->getTwig()->render(
+        return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/code-of-conduct.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
@@ -136,7 +124,7 @@ class UpdateReadme extends Builder
 
     private function getUsage(): string
     {
-        return $this->getTwig()->render(
+        return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/usage.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
@@ -144,7 +132,7 @@ class UpdateReadme extends Builder
 
     private function getCopyright(): string
     {
-        return $this->getTwig()->render(
+        return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/copyright.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );

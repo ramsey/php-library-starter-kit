@@ -45,17 +45,17 @@ class Cleanup extends Builder
 
     public function build(): void
     {
-        $this->getBuildTask()->getIO()->write('<info>Cleaning up...</info>');
+        $this->getConsole()->note('Cleaning up...');
 
         foreach (self::CLEANUP_FILES as $file) {
-            $this->getBuildTask()->getFilesystem()->remove($this->getBuildTask()->path($file));
-
-            $this->getBuildTask()->getIO()->write(
-                sprintf(
-                    '<comment>  - Deleted \'%s\'.</comment>',
-                    $this->getBuildTask()->path($file),
-                ),
+            $this->getEnvironment()->getFilesystem()->remove(
+                $this->getEnvironment()->path($file),
             );
+
+            $this->getConsole()->text(sprintf(
+                '<comment>  - Deleted \'%s\'.</comment>',
+                $this->getEnvironment()->path($file),
+            ));
         }
     }
 }

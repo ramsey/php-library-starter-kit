@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
-use Composer\IO\ConsoleIO;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as TwigEnvironment;
 
@@ -29,8 +30,8 @@ class UpdateLicenseTest extends TestCase
         $answers = new Answers();
         $answers->license = $license;
 
-        $io = $this->mockery(ConsoleIO::class);
-        $io->expects()->write('<info>Updating license and copyright information</info>');
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->note('Updating license and copyright information');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->remove('LICENSE');
@@ -45,17 +46,22 @@ class UpdateLicenseTest extends TestCase
             )
             ->andReturn($contents);
 
-        /** @var Build & MockInterface $task */
-        $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
-            'getIO' => $io,
             'getTwigEnvironment' => $twigEnvironment,
         ]);
 
-        $task
+        $environment
             ->shouldReceive('path')
             ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
 
         $additionalChecks($twigEnvironment, $filesystem, $answers);
 
