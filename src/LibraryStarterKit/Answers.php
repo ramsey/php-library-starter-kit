@@ -41,7 +41,6 @@ final class Answers
     public ?string $codeOfConductEmail = null;
     public ?string $codeOfConductPoliciesUrl = null;
     public ?string $codeOfConductReportingUrl = null;
-    public ?string $commandPrefix = null;
     public ?string $copyrightEmail = null;
     public ?string $copyrightHolder = null;
     public ?string $copyrightUrl = null;
