@@ -47,10 +47,11 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         5 => 'GNU Affero General Public License v3.0 or later',
         6 => 'GNU General Public License v3.0 or later',
         7 => 'GNU Lesser General Public License v3.0 or later',
-        8 => 'MIT License',
-        9 => 'MIT No Attribution',
-        10 => 'Mozilla Public License 2.0',
-        11 => 'Unlicense',
+        8 => 'Hippocratic License 2.1',
+        9 => 'MIT License',
+        10 => 'MIT No Attribution',
+        11 => 'Mozilla Public License 2.0',
+        12 => 'Unlicense',
     ];
 
     public const CHOICE_IDENTIFIER_MAP = [
@@ -61,10 +62,11 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         5 => 'AGPL-3.0-or-later',
         6 => 'GPL-3.0-or-later',
         7 => 'LGPL-3.0-or-later',
-        8 => 'MIT',
-        9 => 'MIT-0',
-        10 => 'MPL-2.0',
-        11 => 'Unlicense',
+        8 => 'Hippocratic-2.1',
+        9 => 'MIT',
+        10 => 'MIT-0',
+        11 => 'MPL-2.0',
+        12 => 'Unlicense',
     ];
 
     public function getName(): string
