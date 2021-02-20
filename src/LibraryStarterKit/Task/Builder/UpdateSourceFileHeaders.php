@@ -31,8 +31,6 @@ use function explode;
 use function implode;
 use function preg_replace;
 
-use const DIRECTORY_SEPARATOR;
-
 /**
  * Updates the source file headers to include license information, based on
  * responses received during project setup
@@ -68,7 +66,6 @@ class UpdateSourceFileHeaders extends Builder
             ->exclude(['LibraryStarterKit'])
             ->in([
                 $this->getEnvironment()->path('src'),
-                $this->getEnvironment()->path('resources' . DIRECTORY_SEPARATOR . 'console'),
             ])
             ->files()
             ->name('*.php');

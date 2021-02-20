@@ -17,8 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
-use const DIRECTORY_SEPARATOR;
-
 class UpdateSourceFileHeadersTest extends TestCase
 {
     public function testBuild(): void
@@ -40,7 +38,7 @@ class UpdateSourceFileHeadersTest extends TestCase
         ]);
 
         $file2 = $this->mockery(SplFileInfo::class, [
-            'getRealPath' => '/path/to/app/resources/console/AnotherClass.php',
+            'getRealPath' => '/path/to/app/src/foo/AnotherClass.php',
             'getContents' => $this->getFile2OriginalContents(),
         ]);
 
@@ -48,12 +46,7 @@ class UpdateSourceFileHeadersTest extends TestCase
             'getIterator' => new ArrayObject([$file1, $file2]),
         ]);
         $finder->expects()->exclude(['LibraryStarterKit'])->andReturnSelf();
-        $finder->expects()->in(
-            [
-                '/path/to/app/src',
-                '/path/to/app/resources' . DIRECTORY_SEPARATOR . 'console',
-            ],
-        )->andReturnSelf();
+        $finder->expects()->in(['/path/to/app/src'])->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
         $finder->expects()->name('*.php')->andReturnSelf();
 
@@ -65,7 +58,7 @@ class UpdateSourceFileHeadersTest extends TestCase
         );
 
         $filesystem->expects()->dumpFile(
-            '/path/to/app/resources/console/AnotherClass.php',
+            '/path/to/app/src/foo/AnotherClass.php',
             $this->getFile2ExpectedContents(),
         );
 

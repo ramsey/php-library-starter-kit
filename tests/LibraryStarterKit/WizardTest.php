@@ -16,6 +16,7 @@ use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
@@ -168,7 +169,7 @@ class WizardTest extends TestCase
             });
 
         $application->expects()->setDefaultCommand('starter-kit', true);
-        $application->expects()->run();
+        $application->expects()->run(anInstanceOf(StringInput::class));
 
         Wizard::$application = $application;
         Wizard::start($event);
