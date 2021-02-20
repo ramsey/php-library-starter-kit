@@ -32,6 +32,7 @@ use function trim;
 class SetupRepository extends Builder
 {
     private const COMMIT_MSG = 'chore: initialize project using ramsey/php-library-starter-kit';
+    private const DEFAULT_BRANCH = 'main';
 
     public function build(): void
     {
@@ -46,11 +47,24 @@ class SetupRepository extends Builder
             ->gitInitialCommit();
     }
 
+    private function getDefaultBranch(): string
+    {
+        $process = $this->getEnvironment()->getProcess(
+            ['git', 'config', 'init.defaultBranch'],
+        );
+
+        $process->run();
+
+        $defaultBranch = trim($process->getOutput());
+
+        return $defaultBranch ?: self::DEFAULT_BRANCH;
+    }
+
     private function initializeRepository(): self
     {
         $this
             ->getEnvironment()
-            ->getProcess(['git', 'init'])
+            ->getProcess(['git', 'init', '-b', $this->getDefaultBranch()])
             ->mustRun($this->streamProcessOutput());
 
         return $this;

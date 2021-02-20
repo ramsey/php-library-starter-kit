@@ -26,6 +26,11 @@ class SetupRepositoryTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Setting up Git repository');
 
+        // In this case, the local ~/.gitconfig does not have init.defaultBranch set.
+        $processDefaultBranch = $this->mockery(Process::class);
+        $processDefaultBranch->expects()->run()->andReturn(1);
+        $processDefaultBranch->expects()->getOutput()->andReturn('');
+
         $processMustRun = $this->mockery(Process::class);
         $processMustRun->expects()->mustRun()->times(3);
 
@@ -36,7 +41,12 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['git', 'init'])
+            ->getProcess(['git', 'config', 'init.defaultBranch'])
+            ->andReturn($processDefaultBranch);
+
+        $environment
+            ->expects()
+            ->getProcess(['git', 'init', '-b', 'main'])
             ->andReturn($processMustRunWithCallable);
 
         $environment
@@ -88,6 +98,11 @@ class SetupRepositoryTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Setting up Git repository');
 
+        // In this case, the local ~/.gitconfig has init.defaultBranch set.
+        $processDefaultBranch = $this->mockery(Process::class);
+        $processDefaultBranch->expects()->run()->andReturn(0);
+        $processDefaultBranch->expects()->getOutput()->andReturn("foobar\n");
+
         $processMustRun = $this->mockery(Process::class);
         $processMustRun->expects()->mustRun()->once();
 
@@ -98,7 +113,12 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['git', 'init'])
+            ->getProcess(['git', 'config', 'init.defaultBranch'])
+            ->andReturn($processDefaultBranch);
+
+        $environment
+            ->expects()
+            ->getProcess(['git', 'init', '-b', 'foobar'])
             ->andReturn($processMustRunWithCallable);
 
         $environment
