@@ -91,7 +91,7 @@ class UpdateReadme extends Builder
             throw new RuntimeException('Unable to get contents of README.md');
         }
 
-        return (string) $readmeContents;
+        return $readmeContents;
     }
 
     private function getBadges(): string

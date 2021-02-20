@@ -60,7 +60,7 @@ class PackageKeywords extends Question implements StarterKitQuestion
             return array_values(
                 array_filter(
                     array_map(
-                        fn ($v) => trim((string) $v),
+                        fn ($v) => trim($v),
                         explode(',', $answer),
                     ),
                 ),

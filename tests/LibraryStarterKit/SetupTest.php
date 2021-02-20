@@ -14,17 +14,21 @@ use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Twig\Environment as TwigEnvironment;
 
 use function dirname;
 
+use const DIRECTORY_SEPARATOR;
+
 class SetupTest extends TestCase
 {
+    private string $appPath;
     private Setup $setup;
 
     public function setUp(): void
     {
-        $appPath = dirname(dirname(dirname(__FILE__)));
+        $this->appPath = dirname(dirname(dirname(__FILE__)));
 
         /** @var Event & MockInterface $event */
         $event = $this->mockery(Event::class, [
@@ -37,7 +41,7 @@ class SetupTest extends TestCase
         /** @var Finder & MockInterface $finder */
         $finder = $this->mockery(Finder::class);
 
-        $project = new Project('a-project-name', $appPath);
+        $project = new Project('a-project-name', $this->appPath);
 
         $this->setup = new Setup(
             $project,
@@ -92,26 +96,33 @@ class SetupTest extends TestCase
 
     public function testRun(): void
     {
-        $answers = new Answers();
-        $answers->projectName = 'project-name';
-        $answers->packageName = 'vendor/package-name';
-
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
-
-        $io = $this->mockery(IOInterface::class);
 
         $build = $this->mockery(Build::class);
         $build->expects()->run();
 
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class, [
-            'getIO' => $io,
             'getBuild' => $build,
-            'getProject' => new Project('project-name', '/path/to/app'),
         ]);
         $setup->shouldReceive('run')->passthru();
 
-        $setup->run($console, $answers);
+        $setup->run($console, new Answers());
+    }
+
+    public function testGetProcessForCommand(): void
+    {
+        $process = $this->setup->getProcess(['ls', '-la']);
+
+        $this->assertInstanceOf(Process::class, $process);
+    }
+
+    public function testPath(): void
+    {
+        $this->assertSame(
+            $this->appPath . DIRECTORY_SEPARATOR . 'foobar',
+            $this->setup->path('foobar'),
+        );
     }
 }

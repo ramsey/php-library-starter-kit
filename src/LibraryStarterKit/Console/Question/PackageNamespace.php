@@ -75,7 +75,7 @@ class PackageNamespace extends Question implements StarterKitQuestion
     {
         $packageName = $this->getAnswers()->packageName;
 
-        if ($packageName === null || trim((string) $packageName) === '') {
+        if ($packageName === null || trim($packageName) === '') {
             return null;
         }
 
@@ -107,7 +107,7 @@ class PackageNamespace extends Question implements StarterKitQuestion
     {
         return function (string $value): string {
             // Replace any invalid characters with a space.
-            $value = preg_replace('/[^a-zA-Z0-9_\x80-\xff]/', ' ', (string) $value);
+            $value = preg_replace('/[^a-zA-Z0-9_\x80-\xff]/', ' ', $value);
             $valueParts = explode(' ', (string) $value);
 
             foreach ($valueParts as &$part) {

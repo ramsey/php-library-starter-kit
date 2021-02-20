@@ -40,7 +40,7 @@ trait UrlValidatorTool
     public function getValidator(): callable
     {
         return function (?string $data): ?string {
-            if ($this->isOptional && ($data === null || trim((string) $data) === '')) {
+            if ($this->isOptional && ($data === null || trim($data) === '')) {
                 return null;
             }
 

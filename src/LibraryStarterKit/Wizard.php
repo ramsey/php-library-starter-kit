@@ -87,7 +87,7 @@ class Wizard extends Command
 
         $console->success([
             sprintf('Congratulations! Your project, %s, is ready!', (string) $answers->packageName),
-            sprintf('Your project is available at %s.', (string) $this->setup->getProject()->getPath()),
+            sprintf('Your project is available at %s.', $this->setup->getProject()->getPath()),
         ]);
 
         return 0;

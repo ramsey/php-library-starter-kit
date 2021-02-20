@@ -100,7 +100,7 @@ class UpdateComposerJson extends Builder
          * @var string $property
          * @var string $value
          */
-        foreach ((array) $data as $property => $value) {
+        foreach ($data as $property => $value) {
             if (in_array($property, $whitelist)) {
                 $filtered[$property] = $value;
             }
@@ -131,7 +131,7 @@ class UpdateComposerJson extends Builder
             throw new RuntimeException('Unable to get contents of composer.json');
         }
 
-        return (string) $composerContents;
+        return $composerContents;
     }
 
     /**

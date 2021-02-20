@@ -87,7 +87,7 @@ final class Answers
         $reflected = new ReflectionObject($this);
         foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             /** @psalm-var mixed */
-            $values[] = $property->getValue($this);
+            $values[] = $property->getValue($this); // @phpstan-ignore-line
         }
 
         return $values;

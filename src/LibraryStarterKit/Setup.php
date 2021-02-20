@@ -25,6 +25,8 @@ namespace Ramsey\Dev\LibraryStarterKit;
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionNamedType;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -112,11 +114,16 @@ class Setup
     public function getProcess(array $command): Process
     {
         // Support backward-compatibility with older versions of symfony/process.
-        $processReflected = new ReflectionClass(Process::class);
-        $processConstructor = $processReflected->getConstructor();
+        $reflectedProcess = new ReflectionClass(Process::class);
 
-        if ($processConstructor !== null && !$processConstructor->getParameters()[0]->isArray()) {
-            $command = implode(' ', array_map('escapeshellarg', $command)); // @codeCoverageIgnore
+        /** @var ReflectionMethod $reflectedConstructor */
+        $reflectedConstructor = $reflectedProcess->getConstructor();
+        $reflectedConstructorType = $reflectedConstructor->getParameters()[0]->getType();
+
+        if ($reflectedConstructorType instanceof ReflectionNamedType) {
+            if ($reflectedConstructorType->getName() !== 'array') {
+                $command = implode(' ', array_map('escapeshellarg', $command)); // @codeCoverageIgnore
+            }
         }
 
         /**
