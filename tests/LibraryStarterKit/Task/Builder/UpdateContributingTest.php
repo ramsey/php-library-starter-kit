@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateContributing;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as TwigEnvironment;
 
 class UpdateContributingTest extends TestCase
@@ -33,11 +32,10 @@ class UpdateContributingTest extends TestCase
             });
 
         $twig = $this->mockery(TwigEnvironment::class);
-        $answers = new Answers();
 
         $twig
             ->expects()
-            ->render('CONTRIBUTING.md.twig', $answers->getArrayCopy())
+            ->render('CONTRIBUTING.md.twig', $this->answers->getArrayCopy())
             ->andReturn('contributingContents');
 
         $environment = $this->mockery(Setup::class, [
@@ -52,7 +50,7 @@ class UpdateContributingTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

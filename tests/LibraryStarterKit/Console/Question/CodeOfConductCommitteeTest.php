@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConductCommittee;
 
 class CodeOfConductCommitteeTest extends QuestionTestCase
@@ -26,7 +25,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
 
     public function testValidator(): void
     {
-        $validator = (new CodeOfConductCommittee(new Answers()))->getValidator();
+        $validator = (new CodeOfConductCommittee($this->answers))->getValidator();
 
         $this->assertSame('The Big Committee', $validator('The Big Committee'));
         $this->assertNull($validator(null));
@@ -37,10 +36,9 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
      */
     public function testShouldSkip(?string $choice, bool $expected): void
     {
-        $answers = new Answers();
-        $question = new CodeOfConductCommittee($answers);
+        $question = new CodeOfConductCommittee($this->answers);
 
-        $answers->codeOfConduct = $choice;
+        $this->answers->codeOfConduct = $choice;
 
         $this->assertSame($expected, $question->shouldSkip());
     }

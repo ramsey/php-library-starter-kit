@@ -6,13 +6,12 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSourceFileHeaders;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
@@ -24,12 +23,10 @@ class UpdateSourceFileHeadersTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Updating source file headers');
 
-        $answers = new Answers();
-
         $twig = $this->mockery(TwigEnvironment::class);
         $twig
             ->expects()
-            ->render('source-file-header.twig', $answers->getArrayCopy())
+            ->render('source-file-header.twig', $this->answers->getArrayCopy())
             ->andReturn($this->getTwigGeneratedHeader());
 
         $file1 = $this->mockery(SplFileInfo::class, [
@@ -75,7 +72,7 @@ class UpdateSourceFileHeadersTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

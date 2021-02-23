@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageNamespace;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -27,20 +26,18 @@ class PackageNamespaceTest extends QuestionTestCase
 
     public function testDefaultWithEmptyPackageName(): void
     {
-        $answers = new Answers();
-        $question = new PackageNamespace($answers);
+        $question = new PackageNamespace($this->answers);
 
-        $answers->packageName = '    ';
+        $this->answers->packageName = '    ';
 
         $this->assertNull($question->getDefault());
     }
 
     public function testDefaultWithPackageName(): void
     {
-        $answers = new Answers();
-        $question = new PackageNamespace($answers);
+        $question = new PackageNamespace($this->answers);
 
-        $answers->packageName = 'frodo/fellowship-of-the-ring';
+        $this->answers->packageName = 'frodo/fellowship-of-the-ring';
 
         $this->assertSame('Frodo\\Fellowship\\Of\\The\\Ring', $question->getDefault());
         $this->assertSame('What is the library\'s root namespace?', $question->getQuestion());
@@ -48,10 +45,9 @@ class PackageNamespaceTest extends QuestionTestCase
 
     public function testDefaultWithOddlyNamedPackageName(): void
     {
-        $answers = new Answers();
-        $question = new PackageNamespace($answers);
+        $question = new PackageNamespace($this->answers);
 
-        $answers->packageName = 'foo/1bar-2baz';
+        $this->answers->packageName = 'foo/1bar-2baz';
 
         $this->assertSame('Foo\\Bar\\Baz', $question->getDefault());
         $this->assertSame('What is the library\'s root namespace?', $question->getQuestion());
@@ -59,14 +55,14 @@ class PackageNamespaceTest extends QuestionTestCase
 
     public function testValidator(): void
     {
-        $validator = (new PackageNamespace(new Answers()))->getValidator();
+        $validator = (new PackageNamespace($this->answers))->getValidator();
 
         $this->assertSame('Foo\\Bar\\Baz\\Quux', $validator('Foo\\Bar\\Baz\\Quux'));
     }
 
     public function testValidatorThrowsExceptionForInvalidNamespaceName(): void
     {
-        $validator = (new PackageNamespace(new Answers()))->getValidator();
+        $validator = (new PackageNamespace($this->answers))->getValidator();
 
         $this->expectException(InvalidConsoleInput::class);
         $this->expectExceptionMessage('You must enter a valid library namespace.');

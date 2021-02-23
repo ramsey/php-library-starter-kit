@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as TwigEnvironment;
 
 use const DIRECTORY_SEPARATOR;
@@ -27,8 +26,7 @@ class UpdateLicenseTest extends TestCase
         string $contents,
         callable $additionalChecks
     ): void {
-        $answers = new Answers();
-        $answers->license = $license;
+        $this->answers->license = $license;
 
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Updating license and copyright information');
@@ -42,7 +40,7 @@ class UpdateLicenseTest extends TestCase
             ->expects()
             ->render(
                 'license' . DIRECTORY_SEPARATOR . $license . '.twig',
-                $answers->getArrayCopy(),
+                $this->answers->getArrayCopy(),
             )
             ->andReturn($contents);
 
@@ -58,12 +56,12 @@ class UpdateLicenseTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
 
-        $additionalChecks($twigEnvironment, $filesystem, $answers);
+        $additionalChecks($twigEnvironment, $filesystem, $this->answers);
 
         $builder = new UpdateLicense($task);
 

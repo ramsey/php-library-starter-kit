@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateCodeOfConduct;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Twig\Environment as TwigEnvironment;
 
 use const DIRECTORY_SEPARATOR;
@@ -37,8 +36,7 @@ class UpdateCodeOfConductTest extends TestCase
                 return true;
             });
 
-        $answers = new Answers();
-        $answers->codeOfConduct = 'Contributor-1.4';
+        $this->answers->codeOfConduct = 'Contributor-1.4';
 
         $twig = $this->mockery(TwigEnvironment::class);
 
@@ -46,7 +44,7 @@ class UpdateCodeOfConductTest extends TestCase
             ->expects()
             ->render(
                 'code-of-conduct' . DIRECTORY_SEPARATOR . 'Contributor-1.4.md.twig',
-                $answers->getArrayCopy(),
+                $this->answers->getArrayCopy(),
             )
             ->andReturn('codeOfConductContents');
 
@@ -62,7 +60,7 @@ class UpdateCodeOfConductTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
@@ -81,7 +79,6 @@ class UpdateCodeOfConductTest extends TestCase
         $filesystem->shouldReceive('dumpFile')->never();
         $filesystem->expects()->remove('/path/to/app/CODE_OF_CONDUCT.md');
 
-        $answers = new Answers();
         $twig = $this->mockery(TwigEnvironment::class);
 
         $twig->shouldReceive('render')->never();
@@ -98,7 +95,7 @@ class UpdateCodeOfConductTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

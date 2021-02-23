@@ -41,6 +41,7 @@ class Cleanup extends Builder
         'src' . DIRECTORY_SEPARATOR . 'LibraryStarterKit',
         'tests' . DIRECTORY_SEPARATOR . 'LibraryStarterKit',
         '.git',
+        '.starter-kit-answers',
     ];
 
     public function build(): void

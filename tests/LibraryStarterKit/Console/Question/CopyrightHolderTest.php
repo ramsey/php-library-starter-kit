@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightHolder;
 
 class CopyrightHolderTest extends QuestionTestCase
@@ -26,10 +25,9 @@ class CopyrightHolderTest extends QuestionTestCase
 
     public function testGetDefaultWhenAuthorNameIsSet(): void
     {
-        $answers = new Answers();
-        $question = new CopyrightHolder($answers);
+        $question = new CopyrightHolder($this->answers);
 
-        $answers->authorName = 'Samwise Gamgee';
+        $this->answers->authorName = 'Samwise Gamgee';
 
         $this->assertSame('Samwise Gamgee', $question->getDefault());
     }
@@ -39,10 +37,9 @@ class CopyrightHolderTest extends QuestionTestCase
      */
     public function testShouldSkip(bool $choice, bool $expected): void
     {
-        $answers = new Answers();
-        $question = new CopyrightHolder($answers);
+        $question = new CopyrightHolder($this->answers);
 
-        $answers->authorHoldsCopyright = $choice;
+        $this->answers->authorHoldsCopyright = $choice;
 
         $this->assertSame($expected, $question->shouldSkip());
     }

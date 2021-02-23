@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
@@ -22,11 +21,9 @@ class BuildTest extends TestCase
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
 
-        $answers = new Answers();
+        $build = new Build($setup, $console, $this->answers);
 
-        $build = new Build($setup, $console, $answers);
-
-        $this->assertSame($answers, $build->getAnswers());
+        $this->assertSame($this->answers, $build->getAnswers());
     }
 
     public function testGetSetup(): void
@@ -37,7 +34,7 @@ class BuildTest extends TestCase
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
 
-        $build = new Build($setup, $console, new Answers());
+        $build = new Build($setup, $console, $this->answers);
 
         $this->assertSame($setup, $build->getSetup());
     }
@@ -50,7 +47,7 @@ class BuildTest extends TestCase
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
 
-        $build = new Build($setup, $console, new Answers());
+        $build = new Build($setup, $console, $this->answers);
 
         $this->assertSame($console, $build->getConsole());
     }
@@ -63,7 +60,7 @@ class BuildTest extends TestCase
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
 
-        $build = new Build($setup, $console, new Answers());
+        $build = new Build($setup, $console, $this->answers);
 
         $builders = $build->getBuilders();
 

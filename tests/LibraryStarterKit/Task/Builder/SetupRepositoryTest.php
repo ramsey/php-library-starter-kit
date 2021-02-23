@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\SetupRepository;
@@ -19,9 +18,8 @@ class SetupRepositoryTest extends TestCase
 {
     public function testBuild(): void
     {
-        $answers = new Answers();
-        $answers->authorName = 'Jane Doe';
-        $answers->authorEmail = 'jdoe@example.com';
+        $this->answers->authorName = 'Jane Doe';
+        $this->answers->authorEmail = 'jdoe@example.com';
 
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Setting up Git repository');
@@ -81,7 +79,7 @@ class SetupRepositoryTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
@@ -93,8 +91,6 @@ class SetupRepositoryTest extends TestCase
 
     public function testBuildWithoutAuthor(): void
     {
-        $answers = new Answers();
-
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Setting up Git repository');
 
@@ -153,7 +149,7 @@ class SetupRepositoryTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

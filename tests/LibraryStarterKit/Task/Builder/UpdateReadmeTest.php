@@ -6,14 +6,13 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateReadme;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
@@ -52,36 +51,35 @@ class UpdateReadmeTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('README.md');
 
-        $answers = new Answers();
-        $answers->codeOfConduct = 'Contributor-1.4';
-        $answers->packageName = 'a-vendor/package-name';
-        $answers->packageDescription = 'This is a test package.';
+        $this->answers->codeOfConduct = 'Contributor-1.4';
+        $this->answers->packageName = 'a-vendor/package-name';
+        $this->answers->packageDescription = 'This is a test package.';
 
         $twig = $this->mockery(TwigEnvironment::class);
 
         $twig
             ->expects()
-            ->render('readme/badges.md.twig', $answers->getArrayCopy())
+            ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
             ->andReturn('badgesInfo');
 
         $twig
             ->expects()
-            ->render('readme/description.md.twig', $answers->getArrayCopy())
+            ->render('readme/description.md.twig', $this->answers->getArrayCopy())
             ->andReturn('descriptionInfo');
 
         $twig
             ->expects()
-            ->render('readme/code-of-conduct.md.twig', $answers->getArrayCopy())
+            ->render('readme/code-of-conduct.md.twig', $this->answers->getArrayCopy())
             ->andReturn('codeOfConductInfo');
 
         $twig
             ->expects()
-            ->render('readme/usage.md.twig', $answers->getArrayCopy())
+            ->render('readme/usage.md.twig', $this->answers->getArrayCopy())
             ->andReturn('usageInfo');
 
         $twig
             ->expects()
-            ->render('readme/copyright.md.twig', $answers->getArrayCopy())
+            ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
             ->andReturn('copyrightInfo');
 
         $environment = $this->mockery(Setup::class, [
@@ -97,7 +95,7 @@ class UpdateReadmeTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
@@ -139,36 +137,35 @@ class UpdateReadmeTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('README.md');
 
-        $answers = new Answers();
-        $answers->codeOfConduct = null;
-        $answers->packageName = 'a-vendor/package-name';
-        $answers->packageDescription = 'This is a test package.';
+        $this->answers->codeOfConduct = null;
+        $this->answers->packageName = 'a-vendor/package-name';
+        $this->answers->packageDescription = 'This is a test package.';
 
         $twig = $this->mockery(TwigEnvironment::class);
 
         $twig
             ->expects()
-            ->render('readme/badges.md.twig', $answers->getArrayCopy())
+            ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
             ->andReturn('badgesInfo');
 
         $twig
             ->expects()
-            ->render('readme/description.md.twig', $answers->getArrayCopy())
+            ->render('readme/description.md.twig', $this->answers->getArrayCopy())
             ->andReturn('descriptionInfo');
 
         $twig
             ->expects()
-            ->render('readme/code-of-conduct.md.twig', $answers->getArrayCopy())
+            ->render('readme/code-of-conduct.md.twig', $this->answers->getArrayCopy())
             ->never();
 
         $twig
             ->expects()
-            ->render('readme/usage.md.twig', $answers->getArrayCopy())
+            ->render('readme/usage.md.twig', $this->answers->getArrayCopy())
             ->andReturn('usageInfo');
 
         $twig
             ->expects()
-            ->render('readme/copyright.md.twig', $answers->getArrayCopy())
+            ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
             ->andReturn('copyrightInfo');
 
         $environment = $this->mockery(Setup::class, [
@@ -184,7 +181,7 @@ class UpdateReadmeTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

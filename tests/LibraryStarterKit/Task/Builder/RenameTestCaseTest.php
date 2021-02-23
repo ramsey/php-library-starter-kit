@@ -6,14 +6,13 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTestCase;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -26,8 +25,7 @@ class RenameTestCaseTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Renaming VendorTestCase');
 
-        $answers = new Answers();
-        $answers->packageNamespace = 'Acme\\Foo\\Bar';
+        $this->answers->packageNamespace = 'Acme\\Foo\\Bar';
 
         $testCaseFile = $this->mockery(SplFileInfo::class, [
             'getRealPath' => '/path/to/app/tests/VendorTestCase.php',
@@ -88,7 +86,7 @@ class RenameTestCaseTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getSetup' => $environment,
             'getConsole' => $console,
         ]);
@@ -103,8 +101,7 @@ class RenameTestCaseTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Renaming VendorTestCase');
 
-        $answers = new Answers();
-        $answers->packageNamespace = 'Acme\\Foo\\Bar';
+        $this->answers->packageNamespace = 'Acme\\Foo\\Bar';
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(),
@@ -125,7 +122,7 @@ class RenameTestCaseTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getSetup' => $environment,
             'getConsole' => $console,
         ]);

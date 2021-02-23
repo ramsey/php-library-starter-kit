@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightYear;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -30,14 +29,14 @@ class CopyrightYearTest extends QuestionTestCase
     public function testGetDefault(): void
     {
         $yearNow = date('Y');
-        $question = new CopyrightYear(new Answers());
+        $question = new CopyrightYear($this->answers);
 
         $this->assertSame($yearNow, $question->getDefault());
     }
 
     public function testValidatorReturnsValidValue(): void
     {
-        $validator = (new CopyrightYear(new Answers()))->getValidator();
+        $validator = (new CopyrightYear($this->answers))->getValidator();
 
         $this->assertSame('2017', $validator('2017'));
     }
@@ -47,7 +46,7 @@ class CopyrightYearTest extends QuestionTestCase
      */
     public function testValidatorThrowsExceptionForInvalidValue(?string $value): void
     {
-        $validator = (new CopyrightYear(new Answers()))->getValidator();
+        $validator = (new CopyrightYear($this->answers))->getValidator();
 
         $this->expectException(InvalidConsoleInput::class);
         $this->expectExceptionMessage('You must enter a valid, 4-digit year.');

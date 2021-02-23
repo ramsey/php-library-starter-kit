@@ -35,7 +35,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 use function basename;
@@ -47,6 +46,8 @@ use function strtolower;
 
 class Wizard extends Command
 {
+    private const ANSWERS_FILE = '.starter-kit-answers';
+
     public static ?Application $application = null;
 
     private Setup $setup;
@@ -80,7 +81,11 @@ class Wizard extends Command
             return 0;
         }
 
-        $answers = new Answers();
+        $answers = new Answers(
+            $this->setup->path(self::ANSWERS_FILE),
+            $this->setup->getFilesystem(),
+        );
+
         $answers->projectName = $this->setup->getProject()->getName();
 
         $this->askQuestions($console, $answers);
@@ -127,11 +132,13 @@ class Wizard extends Command
         foreach ((new InstallQuestions())->getQuestions($answers) as $question) {
             if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
                 $answers->{$question->getName()} = $question->getDefault();
+                $answers->saveToFile();
 
                 continue;
             }
 
             $answers->{$question->getName()} = $console->askQuestion($question);
+            $answers->saveToFile();
         }
     }
 

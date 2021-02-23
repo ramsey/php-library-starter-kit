@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightUrl;
 
 class CopyrightUrlTest extends QuestionTestCase
@@ -26,10 +25,9 @@ class CopyrightUrlTest extends QuestionTestCase
 
     public function testGetDefaultWhenAuthorNameIsSet(): void
     {
-        $answers = new Answers();
-        $question = new CopyrightUrl($answers);
+        $question = new CopyrightUrl($this->answers);
 
-        $answers->authorUrl = 'https://example.com/copyright';
+        $this->answers->authorUrl = 'https://example.com/copyright';
 
         $this->assertSame('https://example.com/copyright', $question->getDefault());
     }
@@ -39,10 +37,9 @@ class CopyrightUrlTest extends QuestionTestCase
      */
     public function testShouldSkip(bool $choice, bool $expected): void
     {
-        $answers = new Answers();
-        $question = new CopyrightUrl($answers);
+        $question = new CopyrightUrl($this->answers);
 
-        $answers->authorHoldsCopyright = $choice;
+        $this->answers->authorHoldsCopyright = $choice;
 
         $this->assertSame($expected, $question->shouldSkip());
     }

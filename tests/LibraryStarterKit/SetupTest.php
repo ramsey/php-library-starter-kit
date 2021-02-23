@@ -7,12 +7,11 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Twig\Environment as TwigEnvironment;
@@ -28,6 +27,8 @@ class SetupTest extends TestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->appPath = dirname(dirname(dirname(__FILE__)));
 
         /** @var Event & MockInterface $event */
@@ -81,10 +82,9 @@ class SetupTest extends TestCase
         /** @var SymfonyStyle & MockInterface $console */
         $console = $this->mockery(SymfonyStyle::class);
 
-        $answers = new Answers();
-        $build = $this->setup->getBuild($console, $answers);
+        $build = $this->setup->getBuild($console, $this->answers);
 
-        $this->assertSame($answers, $build->getAnswers());
+        $this->assertSame($this->answers, $build->getAnswers());
         $this->assertSame($console, $build->getConsole());
         $this->assertSame($this->setup, $build->getSetup());
     }
@@ -108,7 +108,7 @@ class SetupTest extends TestCase
         ]);
         $setup->shouldReceive('run')->passthru();
 
-        $setup->run($console, new Answers());
+        $setup->run($console, $this->answers);
     }
 
     public function testGetProcessForCommand(): void

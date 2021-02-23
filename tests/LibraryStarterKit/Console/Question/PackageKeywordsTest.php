@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageKeywords;
 
 class PackageKeywordsTest extends QuestionTestCase
@@ -31,7 +30,7 @@ class PackageKeywordsTest extends QuestionTestCase
      */
     public function testNormalizer(?string $value, array $expected): void
     {
-        $normalizer = (new PackageKeywords(new Answers()))->getNormalizer();
+        $normalizer = (new PackageKeywords($this->answers))->getNormalizer();
 
         $this->assertSame($expected, $normalizer($value));
     }

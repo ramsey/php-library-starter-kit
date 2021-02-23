@@ -6,13 +6,12 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateNamespace;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -31,9 +30,8 @@ class UpdateNamespaceTest extends TestCase
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Updating namespace');
 
-        $answers = new Answers();
-        $answers->packageName = $packageName;
-        $answers->packageNamespace = $namespace;
+        $this->answers->packageName = $packageName;
+        $this->answers->packageNamespace = $namespace;
 
         $file1 = $this->mockery(SplFileInfo::class, [
             'getRealPath' => '/path/to/app/src/Foo.php',
@@ -111,7 +109,7 @@ class UpdateNamespaceTest extends TestCase
 
         /** @var Build & MockInterface $task */
         $task = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

@@ -6,14 +6,13 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateComposerJson;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -51,14 +50,13 @@ class UpdateComposerJsonTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('composer.json');
 
-        $answers = new Answers();
-        $answers->packageName = 'a-vendor/package-name';
-        $answers->packageDescription = 'This is a test package.';
-        $answers->packageKeywords = ['test', 'package'];
-        $answers->authorName = 'Jane Doe';
-        $answers->authorEmail = 'jdoe@example.com';
-        $answers->authorUrl = 'https://example.com/jane';
-        $answers->license = 'Apache-2.0';
+        $this->answers->packageName = 'a-vendor/package-name';
+        $this->answers->packageDescription = 'This is a test package.';
+        $this->answers->packageKeywords = ['test', 'package'];
+        $this->answers->authorName = 'Jane Doe';
+        $this->answers->authorEmail = 'jdoe@example.com';
+        $this->answers->authorUrl = 'https://example.com/jane';
+        $this->answers->license = 'Apache-2.0';
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -72,7 +70,7 @@ class UpdateComposerJsonTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
@@ -181,11 +179,10 @@ class UpdateComposerJsonTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('composer.json');
 
-        $answers = new Answers();
-        $answers->packageName = 'a-vendor/package-name';
-        $answers->packageDescription = 'This is a test package.';
-        $answers->authorName = 'Jane Doe';
-        $answers->license = 'MPL-2.0';
+        $this->answers->packageName = 'a-vendor/package-name';
+        $this->answers->packageDescription = 'This is a test package.';
+        $this->answers->authorName = 'Jane Doe';
+        $this->answers->license = 'MPL-2.0';
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -199,7 +196,7 @@ class UpdateComposerJsonTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => $answers,
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);

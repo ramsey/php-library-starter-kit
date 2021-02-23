@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConductReportingUrl;
 
 class CodeOfConductReportingUrlTest extends QuestionTestCase
@@ -29,10 +28,9 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
      */
     public function testShouldSkip(?string $choice, bool $expected): void
     {
-        $answers = new Answers();
-        $question = new CodeOfConductReportingUrl($answers);
+        $question = new CodeOfConductReportingUrl($this->answers);
 
-        $answers->codeOfConduct = $choice;
+        $this->answers->codeOfConduct = $choice;
 
         $this->assertSame($expected, $question->shouldSkip());
     }

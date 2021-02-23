@@ -11,6 +11,7 @@ use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
+use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
@@ -99,6 +100,17 @@ class WizardTest extends TestCase
                 return true;
             });
 
+        $setup
+            ->expects()
+            ->path('.starter-kit-answers')
+            ->andReturn('/path/to/.starter-kit-answers');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+        $filesystem->shouldReceive('dumpFile')->atLeast()->once();
+
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
         /** @var SymfonyStyleFactory & MockInterface $styleFactory */
         $styleFactory = $this->mockery(SymfonyStyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
@@ -115,7 +127,7 @@ class WizardTest extends TestCase
             ->askQuestion(anInstanceOf(ConfirmationQuestion::class))
             ->andReturnTrue();
 
-        $defaultAnswers = new Answers();
+        $defaultAnswers = $this->answers;
 
         /** @var Question & StarterKitQuestion $question */
         foreach ((new InstallQuestions())->getQuestions($defaultAnswers) as $question) {

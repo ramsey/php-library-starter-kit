@@ -25,7 +25,13 @@ namespace Ramsey\Dev\LibraryStarterKit;
 use ReflectionObject;
 use ReflectionProperty;
 
-use function array_combine;
+use function json_decode;
+use function json_encode;
+use function property_exists;
+
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 
 /**
  * Answers to questions prompted to the user building a library
@@ -56,6 +62,16 @@ final class Answers
     public ?string $packageNamespace = null;
     public ?string $projectName = null;
     public ?string $vendorName = null;
+
+    private string $saveToPath;
+    private Filesystem $filesystem;
+
+    public function __construct(string $saveToPath, Filesystem $filesystem)
+    {
+        $this->saveToPath = $saveToPath;
+        $this->filesystem = $filesystem;
+        $this->loadFile();
+    }
 
     /**
      * Returns the property names a tokens to use in templates
@@ -99,7 +115,51 @@ final class Answers
      */
     public function getArrayCopy(): array
     {
-        /** @psalm-var array<string, mixed> */
-        return (array) array_combine($this->getTokens(), $this->getValues());
+        $answers = [];
+
+        $reflected = new ReflectionObject($this);
+        foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+            /** @psalm-var mixed */
+            $answers[$property->getName()] = $property->getValue($this); // @phpstan-ignore-line
+        }
+
+        return $answers;
+    }
+
+    /**
+     * Stores the answers to a JSON file on local disk
+     */
+    public function saveToFile(): void
+    {
+        $this->filesystem->dumpFile(
+            $this->saveToPath,
+            (string) json_encode(
+                $this->getArrayCopy(),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+            ),
+        );
+    }
+
+    /**
+     * If an answers file already exists, loads the file and hydrates this
+     * answers instance with the values
+     */
+    private function loadFile(): void
+    {
+        if (!$this->filesystem->exists($this->saveToPath)) {
+            return;
+        }
+
+        $file = $this->filesystem->getFile($this->saveToPath);
+
+        /** @var array<string, mixed> $answers */
+        $answers = json_decode($file->getContents(), true);
+
+        /** @var mixed $value */
+        foreach ($answers as $propertyName => $value) {
+            if (property_exists($this, $propertyName)) {
+                $this->{$propertyName} = $value;
+            }
+        }
     }
 }

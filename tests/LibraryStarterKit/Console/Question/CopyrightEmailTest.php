@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightEmail;
 
 class CopyrightEmailTest extends QuestionTestCase
@@ -26,10 +25,9 @@ class CopyrightEmailTest extends QuestionTestCase
 
     public function testGetDefaultWhenAuthorEmailIsSet(): void
     {
-        $answers = new Answers();
-        $question = new CopyrightEmail($answers);
+        $question = new CopyrightEmail($this->answers);
 
-        $answers->authorEmail = 'samwise@example.com';
+        $this->answers->authorEmail = 'samwise@example.com';
 
         $this->assertSame('samwise@example.com', $question->getDefault());
     }
@@ -39,10 +37,9 @@ class CopyrightEmailTest extends QuestionTestCase
      */
     public function testShouldSkip(bool $choice, bool $expected): void
     {
-        $answers = new Answers();
-        $question = new CopyrightEmail($answers);
+        $question = new CopyrightEmail($this->answers);
 
-        $answers->authorHoldsCopyright = $choice;
+        $this->answers->authorHoldsCopyright = $choice;
 
         $this->assertSame($expected, $question->shouldSkip());
     }

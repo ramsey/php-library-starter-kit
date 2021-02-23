@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -37,7 +36,7 @@ class LicenseTest extends QuestionTestCase
 
     public function testGetChoices(): void
     {
-        $question = new License(new Answers());
+        $question = new License($this->answers);
 
         $this->assertSame(
             [
@@ -63,7 +62,7 @@ class LicenseTest extends QuestionTestCase
      */
     public function testNormalizer(?string $value, string $expected): void
     {
-        $normalizer = (new License(new Answers()))->getNormalizer();
+        $normalizer = (new License($this->answers))->getNormalizer();
 
         $this->assertSame($expected, $normalizer($value));
     }
@@ -109,7 +108,7 @@ class LicenseTest extends QuestionTestCase
      */
     public function testValidator(string $value): void
     {
-        $validator = (new License(new Answers()))->getValidator();
+        $validator = (new License($this->answers))->getValidator();
 
         $this->assertSame($value, $validator($value));
     }
@@ -127,7 +126,7 @@ class LicenseTest extends QuestionTestCase
      */
     public function testValidatorThrowsExceptionForInvalidValues(?string $value, string $message): void
     {
-        $validator = (new License(new Answers()))->getValidator();
+        $validator = (new License($this->answers))->getValidator();
 
         $this->expectException(InvalidConsoleInput::class);
         $this->expectExceptionMessage($message);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -35,7 +34,7 @@ class CodeOfConductTest extends QuestionTestCase
 
     public function testGetChoices(): void
     {
-        $question = new CodeOfConduct(new Answers());
+        $question = new CodeOfConduct($this->answers);
 
         $this->assertSame(
             [
@@ -53,7 +52,7 @@ class CodeOfConductTest extends QuestionTestCase
      */
     public function testNormalizer(?string $value, string $expected): void
     {
-        $normalizer = (new CodeOfConduct(new Answers()))->getNormalizer();
+        $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
 
         $this->assertSame($expected, $normalizer($value));
     }
@@ -83,7 +82,7 @@ class CodeOfConductTest extends QuestionTestCase
      */
     public function testValidator(string $value, ?string $expected): void
     {
-        $validator = (new CodeOfConduct(new Answers()))->getValidator();
+        $validator = (new CodeOfConduct($this->answers))->getValidator();
 
         $this->assertSame($expected, $validator($value));
     }
@@ -118,7 +117,7 @@ class CodeOfConductTest extends QuestionTestCase
      */
     public function testValidatorThrowsExceptionForInvalidValues(?string $value, string $message): void
     {
-        $validator = (new CodeOfConduct(new Answers()))->getValidator();
+        $validator = (new CodeOfConduct($this->answers))->getValidator();
 
         $this->expectException(InvalidConsoleInput::class);
         $this->expectExceptionMessage($message);

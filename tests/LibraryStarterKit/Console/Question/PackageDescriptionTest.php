@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageDescription;
 
 class PackageDescriptionTest extends QuestionTestCase
@@ -26,7 +25,7 @@ class PackageDescriptionTest extends QuestionTestCase
 
     public function testValidator(): void
     {
-        $validator = (new PackageDescription(new Answers()))->getValidator();
+        $validator = (new PackageDescription($this->answers))->getValidator();
 
         $this->assertSame(
             'A brief description of my library.',

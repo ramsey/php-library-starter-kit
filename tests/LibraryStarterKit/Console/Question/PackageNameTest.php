@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -27,38 +26,35 @@ class PackageNameTest extends QuestionTestCase
 
     public function testDefaultWithVendorAndProjectNames(): void
     {
-        $answers = new Answers();
-        $question = new PackageName($answers);
+        $question = new PackageName($this->answers);
 
-        $answers->vendorName = 'frodo';
-        $answers->projectName = 'fellowship';
+        $this->answers->vendorName = 'frodo';
+        $this->answers->projectName = 'fellowship';
 
         $this->assertSame('frodo/fellowship', $question->getDefault());
     }
 
     public function testValidator(): void
     {
-        $validator = (new PackageName(new Answers()))->getValidator();
+        $validator = (new PackageName($this->answers))->getValidator();
 
         $this->assertSame('foo/bar', $validator('foo/bar'));
     }
 
     public function testValidatorWithVendorPrefix(): void
     {
-        $answers = new Answers();
-        $validator = (new PackageName($answers))->getValidator();
+        $validator = (new PackageName($this->answers))->getValidator();
 
-        $answers->vendorName = 'frodo';
+        $this->answers->vendorName = 'frodo';
 
         $this->assertSame('frodo/fellowship-of-the-ring', $validator('frodo/fellowship-of-the-ring'));
     }
 
     public function testValidatorWithoutVendorPrefix(): void
     {
-        $answers = new Answers();
-        $validator = (new PackageName($answers))->getValidator();
+        $validator = (new PackageName($this->answers))->getValidator();
 
-        $answers->vendorName = 'frodo';
+        $this->answers->vendorName = 'frodo';
 
         $this->assertSame('frodo/fellowship_ring', $validator('fellowship_ring'));
     }
@@ -68,10 +64,9 @@ class PackageNameTest extends QuestionTestCase
      */
     public function testValidatorThrowsExceptionForInvalidPackageNames(?string $value, ?string $vendorName): void
     {
-        $answers = new Answers();
-        $validator = (new PackageName($answers))->getValidator();
+        $validator = (new PackageName($this->answers))->getValidator();
 
-        $answers->vendorName = $vendorName;
+        $this->answers->vendorName = $vendorName;
 
         $this->expectException(InvalidConsoleInput::class);
         $this->expectExceptionMessage('You must enter a valid package name.');

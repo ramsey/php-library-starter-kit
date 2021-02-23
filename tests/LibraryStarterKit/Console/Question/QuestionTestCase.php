@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 
 abstract class QuestionTestCase extends TestCase
@@ -26,7 +25,7 @@ abstract class QuestionTestCase extends TestCase
     public function testGetName(): void
     {
         $questionClass = $this->getTestClass();
-        $question = new $questionClass(new Answers());
+        $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionName(), $question->getName());
     }
@@ -34,7 +33,7 @@ abstract class QuestionTestCase extends TestCase
     public function testGetQuestion(): void
     {
         $questionClass = $this->getTestClass();
-        $question = new $questionClass(new Answers());
+        $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionText(), $question->getQuestion());
     }
@@ -42,16 +41,15 @@ abstract class QuestionTestCase extends TestCase
     public function testGetAnswers(): void
     {
         $questionClass = $this->getTestClass();
-        $answers = new Answers();
-        $question = new $questionClass($answers);
+        $question = new $questionClass($this->answers);
 
-        $this->assertSame($answers, $question->getAnswers());
+        $this->assertSame($this->answers, $question->getAnswers());
     }
 
     public function testGetDefault(): void
     {
         $questionClass = $this->getTestClass();
-        $question = new $questionClass(new Answers());
+        $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionDefault(), $question->getDefault());
     }

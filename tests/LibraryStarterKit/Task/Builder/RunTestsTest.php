@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Mockery\MockInterface;
-use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
@@ -34,7 +33,7 @@ class RunTestsTest extends TestCase
 
         /** @var Build & MockInterface $build */
         $build = $this->mockery(Build::class, [
-            'getAnswers' => new Answers(),
+            'getAnswers' => $this->answers,
             'getConsole' => $console,
             'getSetup' => $environment,
         ]);
