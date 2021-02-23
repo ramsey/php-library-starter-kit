@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit;
 
+use Closure;
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
@@ -39,10 +40,14 @@ use Symfony\Component\Finder\Finder;
 
 use function basename;
 use function dirname;
+use function pcntl_signal;
 use function preg_replace;
 use function realpath;
 use function sprintf;
 use function strtolower;
+
+use const SIGINT;
+use const SIGTERM;
 
 class Wizard extends Command
 {
@@ -88,6 +93,7 @@ class Wizard extends Command
 
         $answers->projectName = $this->setup->getProject()->getName();
 
+        $this->registerInterruptHandler($console, $answers);
         $this->askQuestions($console, $answers);
         $this->setup->run($console, $answers);
 
@@ -116,6 +122,7 @@ class Wizard extends Command
         ]);
 
         $console->text([
+            '    <info>cd ' . $this->setup->getAppPath() . '</info>',
             '    <info>composer starter-kit</info>',
         ]);
 
@@ -132,14 +139,45 @@ class Wizard extends Command
         foreach ((new InstallQuestions())->getQuestions($answers) as $question) {
             if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
                 $answers->{$question->getName()} = $question->getDefault();
-                $answers->saveToFile();
 
                 continue;
             }
 
             $answers->{$question->getName()} = $console->askQuestion($question);
-            $answers->saveToFile();
         }
+    }
+
+    private function registerInterruptHandler(SymfonyStyle $console, Answers $answers): void
+    {
+        $interruptHandler = $this->getInterruptHandler($console, $answers);
+
+        pcntl_signal(SIGINT, $interruptHandler);
+        pcntl_signal(SIGTERM, $interruptHandler);
+    }
+
+    private function getInterruptHandler(SymfonyStyle $console, Answers $answers): Closure
+    {
+        return function (int $event) use ($console, $answers): void {
+            switch ($event) {
+                case SIGTERM:
+                case SIGINT:
+                    $answers->saveToFile();
+
+                    $console->block([
+                        "I see you're exiting the wizard before finishing. No problem! I'll be here when you're ready.",
+                        "When you're ready to return to the starter kit wizard, enter:",
+                    ]);
+
+                    $console->text([
+                        '    <info>cd ' . $this->setup->getAppPath() . '</info>',
+                        '    <info>composer starter-kit</info>',
+                    ]);
+
+                    $console->newLine();
+
+                    exit(0);
+            }
+        };
     }
 
     public static function newApplication(): Application

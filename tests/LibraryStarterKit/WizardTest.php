@@ -51,6 +51,7 @@ class WizardTest extends TestCase
 
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class);
+        $setup->expects()->getAppPath()->andReturn('/path/to/app');
 
         /** @var SymfonyStyleFactory & MockInterface $styleFactory */
         $styleFactory = $this->mockery(SymfonyStyleFactory::class);
@@ -107,7 +108,6 @@ class WizardTest extends TestCase
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
-        $filesystem->shouldReceive('dumpFile')->atLeast()->once();
 
         $setup->expects()->getFilesystem()->andReturn($filesystem);
 

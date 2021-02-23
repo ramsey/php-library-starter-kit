@@ -29,6 +29,9 @@
     "require-dev": {
         "ramsey/devtools": "^1.5"
     },
+    "suggest": {
+        "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
+    },
     "config": {
         "sort-packages": true
     },
