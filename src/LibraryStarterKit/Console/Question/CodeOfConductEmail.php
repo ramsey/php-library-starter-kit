@@ -40,7 +40,10 @@ class CodeOfConductEmail extends Question implements SkippableQuestion, StarterK
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What email address should people use to report code of conduct issues?');
+        parent::__construct(
+            'What email address should people use to report code of conduct issues?',
+            $answers->codeOfConductEmail,
+        );
 
         $this->answers = $answers;
     }

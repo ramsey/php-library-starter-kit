@@ -40,7 +40,10 @@ class AuthorUrl extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What is your website address?');
+        parent::__construct(
+            'What is your website address?',
+            $answers->authorUrl,
+        );
 
         $this->answers = $answers;
     }

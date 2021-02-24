@@ -27,6 +27,7 @@ use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 use function array_combine;
+use function array_search;
 use function ctype_digit;
 use function in_array;
 use function sprintf;
@@ -39,8 +40,10 @@ class License extends ChoiceQuestion implements StarterKitQuestion
 {
     use AnswersTool;
 
+    public const DEFAULT = 'Proprietary';
+
     public const CHOICES = [
-        1 => 'Proprietary',
+        1 => self::DEFAULT,
         2 => 'Apache License 2.0',
         3 => 'BSD 2-Clause "Simplified" License',
         4 => 'BSD 3-Clause "New" or "Revised" License',
@@ -55,7 +58,7 @@ class License extends ChoiceQuestion implements StarterKitQuestion
     ];
 
     public const CHOICE_IDENTIFIER_MAP = [
-        1 => 'Proprietary',
+        1 => self::DEFAULT,
         2 => 'Apache-2.0',
         3 => 'BSD-2-Clause',
         4 => 'BSD-3-Clause',
@@ -76,7 +79,11 @@ class License extends ChoiceQuestion implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('Choose a license for your project', self::CHOICES, 1);
+        parent::__construct(
+            'Choose a license for your project',
+            self::CHOICES,
+            array_search($answers->license, self::CHOICE_IDENTIFIER_MAP) ?: 1,
+        );
 
         $this->answers = $answers;
     }

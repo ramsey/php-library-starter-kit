@@ -39,7 +39,10 @@ class GithubUsername extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What is the GitHub username or org name for your package?');
+        parent::__construct(
+            'What is the GitHub username or org name for your package?',
+            $answers->githubUsername,
+        );
 
         $this->answers = $answers;
     }

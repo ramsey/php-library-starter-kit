@@ -49,7 +49,7 @@ class CopyrightHolder extends Question implements SkippableQuestion, StarterKitQ
      */
     public function getDefault()
     {
-        return $this->getAnswers()->authorName;
+        return $this->getAnswers()->copyrightHolder ?? $this->getAnswers()->authorName;
     }
 
     public function shouldSkip(): bool

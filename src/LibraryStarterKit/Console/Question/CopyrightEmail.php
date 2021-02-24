@@ -50,7 +50,7 @@ class CopyrightEmail extends Question implements SkippableQuestion, StarterKitQu
      */
     public function getDefault()
     {
-        return $this->getAnswers()->authorEmail;
+        return $this->getAnswers()->copyrightEmail ?? $this->getAnswers()->authorEmail;
     }
 
     public function shouldSkip(): bool

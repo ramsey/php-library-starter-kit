@@ -50,7 +50,7 @@ class CopyrightUrl extends Question implements SkippableQuestion, StarterKitQues
      */
     public function getDefault()
     {
-        return $this->getAnswers()->authorUrl;
+        return $this->getAnswers()->copyrightUrl ?? $this->getAnswers()->authorUrl;
     }
 
     public function shouldSkip(): bool

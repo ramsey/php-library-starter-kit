@@ -29,6 +29,7 @@ use function array_filter;
 use function array_map;
 use function array_values;
 use function explode;
+use function implode;
 use function trim;
 
 /**
@@ -45,7 +46,10 @@ class PackageKeywords extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('Enter a set of comma-separated keywords describing your library');
+        parent::__construct(
+            'Enter a set of comma-separated keywords describing your library',
+            implode(',', $answers->packageKeywords) ?: null,
+        );
 
         $this->answers = $answers;
     }

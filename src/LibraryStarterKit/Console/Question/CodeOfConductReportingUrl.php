@@ -40,7 +40,10 @@ class CodeOfConductReportingUrl extends Question implements SkippableQuestion, S
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('At what URL are your code of conduct reporting guidelines described?');
+        parent::__construct(
+            'At what URL are your code of conduct reporting guidelines described?',
+            $answers->codeOfConductReportingUrl,
+        );
 
         $this->answers = $answers;
     }

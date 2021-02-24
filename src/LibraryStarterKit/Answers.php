@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use ReflectionObject;
 use ReflectionProperty;
 
@@ -39,10 +41,10 @@ use const JSON_UNESCAPED_UNICODE;
 final class Answers
 {
     public ?string $authorEmail = null;
-    public bool $authorHoldsCopyright = false;
+    public bool $authorHoldsCopyright = true;
     public ?string $authorName = null;
     public ?string $authorUrl = null;
-    public ?string $codeOfConduct = null;
+    public ?string $codeOfConduct = CodeOfConduct::DEFAULT;
     public ?string $codeOfConductCommittee = null;
     public ?string $codeOfConductEmail = null;
     public ?string $codeOfConductPoliciesUrl = null;
@@ -52,7 +54,7 @@ final class Answers
     public ?string $copyrightUrl = null;
     public ?string $copyrightYear = null;
     public ?string $githubUsername = null;
-    public ?string $license = null;
+    public ?string $license = License::DEFAULT;
     public ?string $packageDescription = null;
 
     /** @var string[] */

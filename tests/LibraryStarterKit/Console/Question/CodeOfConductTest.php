@@ -95,7 +95,7 @@ class CodeOfConductTest extends QuestionTestCase
         return [
             [
                 'value' => 'None',
-                'expected' => null,
+                'expected' => 'None',
             ],
             [
                 'value' => 'Contributor-1.4',

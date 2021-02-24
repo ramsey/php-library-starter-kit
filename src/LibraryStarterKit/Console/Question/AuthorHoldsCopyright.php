@@ -39,7 +39,10 @@ class AuthorHoldsCopyright extends ConfirmationQuestion implements StarterKitQue
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('Are you the copyright holder?', true);
+        parent::__construct(
+            'Are you the copyright holder?',
+            $answers->authorHoldsCopyright,
+        );
 
         $this->answers = $answers;
     }

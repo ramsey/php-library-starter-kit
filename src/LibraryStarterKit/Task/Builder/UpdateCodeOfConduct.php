@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 use const DIRECTORY_SEPARATOR;
@@ -33,7 +34,7 @@ class UpdateCodeOfConduct extends Builder
 {
     public function build(): void
     {
-        if ($this->getAnswers()->codeOfConduct === null) {
+        if ($this->getAnswers()->codeOfConduct === CodeOfConduct::DEFAULT) {
             $this->getConsole()->note('Removing CODE_OF_CONDUCT.md');
             $this->getEnvironment()->getFilesystem()->remove(
                 $this->getEnvironment()->path('CODE_OF_CONDUCT.md'),

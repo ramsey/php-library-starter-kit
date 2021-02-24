@@ -55,7 +55,7 @@ class VendorName extends Question implements StarterKitQuestion
      */
     public function getDefault()
     {
-        return $this->getAnswers()->githubUsername;
+        return $this->getAnswers()->vendorName ?? $this->getAnswers()->githubUsername;
     }
 
     public function getValidator(): callable

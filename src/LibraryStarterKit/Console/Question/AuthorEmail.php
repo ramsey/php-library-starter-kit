@@ -40,7 +40,10 @@ class AuthorEmail extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What is your email address?');
+        parent::__construct(
+            'What is your email address?',
+            $answers->authorEmail,
+        );
 
         $this->answers = $answers;
     }

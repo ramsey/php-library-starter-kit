@@ -39,7 +39,10 @@ class PackageDescription extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('Enter a brief description of your library');
+        parent::__construct(
+            'Enter a brief description of your library',
+            $answers->packageDescription,
+        );
 
         $this->answers = $answers;
     }

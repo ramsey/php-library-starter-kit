@@ -27,6 +27,7 @@ use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 use function array_combine;
+use function array_search;
 use function ctype_digit;
 use function in_array;
 use function sprintf;
@@ -39,15 +40,17 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
 {
     use AnswersTool;
 
+    public const DEFAULT = 'None';
+
     public const CHOICES = [
-        1 => 'None',
+        1 => self::DEFAULT,
         2 => 'Contributor Covenant Code of Conduct, version 1.4',
         3 => 'Contributor Covenant Code of Conduct, version 2.0',
         4 => 'Citizen Code of Conduct, version 2.3',
     ];
 
     public const CHOICE_IDENTIFIER_MAP = [
-        1 => 'None',
+        1 => self::DEFAULT,
         2 => 'Contributor-1.4',
         3 => 'Contributor-2.0',
         4 => 'Citizen-2.3',
@@ -60,7 +63,11 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('Choose a code of conduct for your project', self::CHOICES, 1);
+        parent::__construct(
+            'Choose a code of conduct for your project',
+            self::CHOICES,
+            array_search($answers->codeOfConduct, self::CHOICE_IDENTIFIER_MAP) ?: 1,
+        );
 
         $this->answers = $answers;
     }
@@ -86,10 +93,6 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
                     '"%s" is not a valid code of conduct choice.',
                     (string) $value,
                 ));
-            }
-
-            if ($value === 'None') {
-                return null;
             }
 
             return $value;

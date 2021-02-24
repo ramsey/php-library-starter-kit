@@ -40,7 +40,10 @@ class CodeOfConductPoliciesUrl extends Question implements SkippableQuestion, St
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('At what URL are your committee\'s governing policies described?');
+        parent::__construct(
+            'At what URL are your committee\'s governing policies described?',
+            $answers->codeOfConductPoliciesUrl,
+        );
 
         $this->answers = $answers;
     }

@@ -73,6 +73,10 @@ class PackageNamespace extends Question implements StarterKitQuestion
      */
     public function getDefault()
     {
+        if ($this->getAnswers()->packageNamespace !== null) {
+            return $this->getAnswers()->packageNamespace;
+        }
+
         $packageName = $this->getAnswers()->packageName;
 
         if ($packageName === null || trim($packageName) === '') {

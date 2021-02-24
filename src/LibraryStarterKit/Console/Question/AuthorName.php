@@ -39,7 +39,10 @@ class AuthorName extends Question implements StarterKitQuestion
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What is your name?');
+        parent::__construct(
+            'What is your name?',
+            $answers->authorName,
+        );
 
         $this->answers = $answers;
     }

@@ -57,6 +57,10 @@ class PackageName extends Question implements StarterKitQuestion
      */
     public function getDefault()
     {
+        if ($this->getAnswers()->packageName !== null) {
+            return $this->getAnswers()->packageName;
+        }
+
         $packageName = (string) $this->getAnswers()->vendorName
             . '/'
             . (string) $this->getAnswers()->projectName;

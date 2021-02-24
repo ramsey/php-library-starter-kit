@@ -56,7 +56,7 @@ class CopyrightYear extends Question implements StarterKitQuestion
      */
     public function getDefault()
     {
-        return date('Y');
+        return $this->getAnswers()->copyrightYear ?? date('Y');
     }
 
     public function getValidator(): callable

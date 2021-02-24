@@ -39,7 +39,10 @@ class CodeOfConductCommittee extends Question implements SkippableQuestion, Star
 
     public function __construct(Answers $answers)
     {
-        parent::__construct('What is the name of your group or committee who oversees code of conduct issues?');
+        parent::__construct(
+            'What is the name of your group or committee who oversees code of conduct issues?',
+            $answers->codeOfConductCommittee,
+        );
 
         $this->answers = $answers;
     }
