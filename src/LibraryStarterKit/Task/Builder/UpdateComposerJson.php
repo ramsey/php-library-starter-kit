@@ -79,6 +79,7 @@ class UpdateComposerJson extends Builder
 
         unset($composer['scripts']);
         unset($composer['scripts-descriptions']);
+        unset($composer['suggest']);
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
             $this->getEnvironment()->path('composer.json'),

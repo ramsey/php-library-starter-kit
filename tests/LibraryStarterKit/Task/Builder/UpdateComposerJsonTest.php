@@ -240,6 +240,9 @@ class UpdateComposerJsonTest extends TestCase
                 "require-dev": {
                     "ramsey/devtools": "^1.5"
                 },
+                "suggest": {
+                    "ext-foobar": "Foo bar"
+                },
                 "config": {
                     "sort-packages": true
                 },
