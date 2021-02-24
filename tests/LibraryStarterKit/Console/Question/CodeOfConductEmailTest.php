@@ -42,7 +42,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
     {
         return [
             [
-                'choice' => null,
+                'choice' => 'None',
                 'expected' => true,
             ],
             [

@@ -50,7 +50,6 @@ class CodeOfConductEmail extends Question implements SkippableQuestion, StarterK
 
     public function shouldSkip(): bool
     {
-        // Skip if codeOfConduct is `null` (i.e., "None").
-        return $this->getAnswers()->codeOfConduct === null;
+        return $this->getAnswers()->codeOfConduct === CodeOfConduct::DEFAULT;
     }
 }
