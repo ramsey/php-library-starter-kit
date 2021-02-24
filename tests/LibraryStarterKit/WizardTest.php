@@ -33,6 +33,18 @@ class WizardTest extends TestCase
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class);
 
+        $setup->shouldReceive('getProject->getName')->andReturn('foo-project');
+
+        $setup
+            ->expects()
+            ->path('.starter-kit-answers')
+            ->andReturn('/path/to/.starter-kit-answers');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
         $wizard = new Wizard($setup);
 
         $this->assertSame($setup, $wizard->getSetup());
@@ -52,6 +64,18 @@ class WizardTest extends TestCase
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class);
         $setup->expects()->getAppPath()->andReturn('/path/to/app');
+        $setup->shouldReceive('getProject->getName')->andReturn('foo-project');
+
+        $setup
+            ->expects()
+            ->path('.starter-kit-answers')
+            ->andReturn('/path/to/app/.starter-kit-answers');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/app/.starter-kit-answers')->andReturnFalse();
+        $filesystem->expects()->dumpFile('/path/to/app/.starter-kit-answers', typeOf('string'));
+
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
 
         /** @var SymfonyStyleFactory & MockInterface $styleFactory */
         $styleFactory = $this->mockery(SymfonyStyleFactory::class);

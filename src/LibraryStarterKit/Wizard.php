@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit;
 
-use Closure;
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
@@ -53,6 +52,7 @@ class Wizard extends Command
 
     private Setup $setup;
     private SymfonyStyleFactory $styleFactory;
+    private Answers $answers;
 
     public function __construct(Setup $setup, ?SymfonyStyleFactory $styleFactory = null)
     {
@@ -60,6 +60,15 @@ class Wizard extends Command
 
         $this->setup = $setup;
         $this->styleFactory = $styleFactory ?? new SymfonyStyleFactory();
+
+        $this->answers = new Answers(
+            $this->setup->path(self::ANSWERS_FILE),
+            $this->setup->getFilesystem(),
+        );
+
+        if ($this->answers->projectName === null) {
+            $this->answers->projectName = $this->setup->getProject()->getName();
+        }
     }
 
     public function getSetup(): Setup
@@ -78,23 +87,17 @@ class Wizard extends Command
             . 'that you may customize to suit your needs.',
         );
 
+        $this->registerInterruptHandler($console);
+
         if (!$this->confirmStart($console)) {
             return 0;
         }
 
-        $answers = new Answers(
-            $this->setup->path(self::ANSWERS_FILE),
-            $this->setup->getFilesystem(),
-        );
-
-        $answers->projectName = $this->setup->getProject()->getName();
-
-        $this->registerInterruptHandler($console, $answers);
-        $this->askQuestions($console, $answers);
-        $this->setup->run($console, $answers);
+        $this->askQuestions($console);
+        $this->setup->run($console, $this->answers);
 
         $console->success([
-            sprintf('Congratulations! Your project, %s, is ready!', (string) $answers->packageName),
+            sprintf('Congratulations! Your project, %s, is ready!', (string) $this->answers->packageName),
             sprintf('Your project is available at %s.', $this->setup->getProject()->getPath()),
         ]);
 
@@ -112,9 +115,33 @@ class Wizard extends Command
             return true;
         }
 
+        $this->exitEarly($console);
+
+        return false;
+    }
+
+    private function askQuestions(SymfonyStyle $console): void
+    {
+        /**
+         * @var Question & StarterKitQuestion $question
+         */
+        foreach ((new InstallQuestions())->getQuestions($this->answers) as $question) {
+            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
+                $this->answers->{$question->getName()} = $question->getDefault();
+
+                continue;
+            }
+
+            $this->answers->{$question->getName()} = $console->askQuestion($question);
+        }
+    }
+
+    private function exitEarly(SymfonyStyle $console): void
+    {
+        $this->answers->saveToFile();
+
         $console->block([
-            "No problem! I'll be here when you're ready.",
-            "When you're ready to run the starter kit wizard, enter:",
+            "When you're ready to return to the starter kit wizard, enter:",
         ]);
 
         $console->text([
@@ -123,29 +150,17 @@ class Wizard extends Command
         ]);
 
         $console->newLine();
-
-        return false;
     }
 
-    private function askQuestions(SymfonyStyle $console, Answers $answers): void
+    /**
+     * @codeCoverageIgnore
+     */
+    private function registerInterruptHandler(SymfonyStyle $console): void
     {
-        /**
-         * @var Question & StarterKitQuestion $question
-         */
-        foreach ((new InstallQuestions())->getQuestions($answers) as $question) {
-            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
-                $answers->{$question->getName()} = $question->getDefault();
-
-                continue;
-            }
-
-            $answers->{$question->getName()} = $console->askQuestion($question);
-        }
-    }
-
-    private function registerInterruptHandler(SymfonyStyle $console, Answers $answers): void
-    {
-        $interruptHandler = $this->getInterruptHandler($console, $answers);
+        $interruptHandler = function () use ($console): void {
+            $this->exitEarly($console);
+            exit(0);
+        };
 
         // phpcs:disable
         if (\function_exists('pcntl_signal')) {
@@ -155,27 +170,6 @@ class Wizard extends Command
             \sapi_windows_set_ctrl_handler($interruptHandler);
         }
         // phpcs:enable
-    }
-
-    private function getInterruptHandler(SymfonyStyle $console, Answers $answers): Closure
-    {
-        return function () use ($console, $answers): void {
-            $answers->saveToFile();
-
-            $console->block([
-                "I see you're exiting the wizard before finishing. No problem! I'll be here when you're ready.",
-                "When you're ready to return to the starter kit wizard, enter:",
-            ]);
-
-            $console->text([
-                '    <info>cd ' . $this->setup->getAppPath() . '</info>',
-                '    <info>composer starter-kit</info>',
-            ]);
-
-            $console->newLine();
-
-            exit(0);
-        };
     }
 
     public static function newApplication(): Application
