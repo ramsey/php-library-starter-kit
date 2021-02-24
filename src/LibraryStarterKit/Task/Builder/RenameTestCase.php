@@ -38,9 +38,11 @@ use const DIRECTORY_SEPARATOR;
  */
 class RenameTestCase extends Builder
 {
+    private const TEST_CASE = 'VendorTestCase';
+
     public function build(): void
     {
-        $this->getConsole()->note('Renaming VendorTestCase');
+        $this->getConsole()->note('Renaming ' . self::TEST_CASE);
 
         $namespaceParts = explode(
             '\\',
@@ -63,7 +65,7 @@ class RenameTestCase extends Builder
 
         $finder
             ->in([$this->getEnvironment()->path('tests')])
-            ->name('VendorTestCase.php');
+            ->name(self::TEST_CASE . '.php');
 
         /** @var SplFileInfo $file */
         foreach ($finder as $file) {
@@ -71,7 +73,7 @@ class RenameTestCase extends Builder
         }
 
         throw new RuntimeException(
-            'Unable to get contents of tests/VendorTestCase.php',
+            'Unable to get contents of tests/' . self::TEST_CASE . '.php',
         );
     }
 
@@ -94,7 +96,7 @@ class RenameTestCase extends Builder
 
         $testCaseContents = $testCase->getContents();
         $testCaseContents = str_replace(
-            'VendorTestCase',
+            self::TEST_CASE,
             $className,
             $testCaseContents,
         );
@@ -112,7 +114,7 @@ class RenameTestCase extends Builder
     private function renameParentClass(SplFileInfo $file, string $parentClass): void
     {
         $contents = $file->getContents();
-        $updatedContents = str_replace('VendorTestCase', $parentClass, $contents);
+        $updatedContents = str_replace(self::TEST_CASE, $parentClass, $contents);
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
             (string) $file->getRealPath(),
