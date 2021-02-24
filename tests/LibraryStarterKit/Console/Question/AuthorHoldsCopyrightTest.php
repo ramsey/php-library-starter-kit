@@ -30,4 +30,13 @@ class AuthorHoldsCopyrightTest extends QuestionTestCase
     {
         return true;
     }
+
+    public function testGetDefaultWhenAnswerAlreadySet(): void
+    {
+        $this->answers->authorHoldsCopyright = false;
+
+        $question = new AuthorHoldsCopyright($this->answers);
+
+        $this->assertFalse($question->getDefault());
+    }
 }

@@ -32,6 +32,15 @@ class CodeOfConductTest extends QuestionTestCase
         return 1;
     }
 
+    public function testGetDefaultWhenAnswerAlreadySet(): void
+    {
+        $this->answers->codeOfConduct = 'Contributor-2.0';
+
+        $question = new CodeOfConduct($this->answers);
+
+        $this->assertSame(3, $question->getDefault());
+    }
+
     public function testGetChoices(): void
     {
         $question = new CodeOfConduct($this->answers);

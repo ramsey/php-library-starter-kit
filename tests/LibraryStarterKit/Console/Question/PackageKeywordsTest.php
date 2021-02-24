@@ -23,6 +23,15 @@ class PackageKeywordsTest extends QuestionTestCase
         return 'Enter a set of comma-separated keywords describing your library';
     }
 
+    public function testGetDefaultWhenAnswerAlreadySet(): void
+    {
+        $this->answers->packageKeywords = ['foo', 'bar', 'baz'];
+
+        $question = new PackageKeywords($this->answers);
+
+        $this->assertSame('foo,bar,baz', $question->getDefault());
+    }
+
     /**
      * @param string[] $expected
      *

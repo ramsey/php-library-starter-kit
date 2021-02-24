@@ -53,4 +53,14 @@ abstract class QuestionTestCase extends TestCase
 
         $this->assertSame($this->getQuestionDefault(), $question->getDefault());
     }
+
+    public function testGetDefaultWhenAnswerAlreadySet(): void
+    {
+        $this->answers->{$this->getQuestionName()} = 'foobar';
+
+        $questionClass = $this->getTestClass();
+        $question = new $questionClass($this->answers);
+
+        $this->assertSame('foobar', $question->getDefault());
+    }
 }

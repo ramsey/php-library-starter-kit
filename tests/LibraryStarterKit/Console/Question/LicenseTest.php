@@ -34,6 +34,15 @@ class LicenseTest extends QuestionTestCase
         return 1;
     }
 
+    public function testGetDefaultWhenAnswerAlreadySet(): void
+    {
+        $this->answers->license = 'MIT-0';
+
+        $question = new License($this->answers);
+
+        $this->assertSame(10, $question->getDefault());
+    }
+
     public function testGetChoices(): void
     {
         $question = new License($this->answers);
