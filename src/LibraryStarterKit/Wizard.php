@@ -40,14 +40,10 @@ use Symfony\Component\Finder\Finder;
 
 use function basename;
 use function dirname;
-use function pcntl_signal;
 use function preg_replace;
 use function realpath;
 use function sprintf;
 use function strtolower;
-
-use const SIGINT;
-use const SIGTERM;
 
 class Wizard extends Command
 {
@@ -151,32 +147,34 @@ class Wizard extends Command
     {
         $interruptHandler = $this->getInterruptHandler($console, $answers);
 
-        pcntl_signal(SIGINT, $interruptHandler);
-        pcntl_signal(SIGTERM, $interruptHandler);
+        // phpcs:disable
+        if (\function_exists('pcntl_signal')) {
+            \pcntl_signal(\SIGINT, $interruptHandler);
+            \pcntl_signal(\SIGTERM, $interruptHandler);
+        } elseif (\function_exists('sapi_windows_set_ctrl_handler')) {
+            \sapi_windows_set_ctrl_handler($interruptHandler);
+        }
+        // phpcs:enable
     }
 
     private function getInterruptHandler(SymfonyStyle $console, Answers $answers): Closure
     {
-        return function (int $event) use ($console, $answers): void {
-            switch ($event) {
-                case SIGTERM:
-                case SIGINT:
-                    $answers->saveToFile();
+        return function () use ($console, $answers): void {
+            $answers->saveToFile();
 
-                    $console->block([
-                        "I see you're exiting the wizard before finishing. No problem! I'll be here when you're ready.",
-                        "When you're ready to return to the starter kit wizard, enter:",
-                    ]);
+            $console->block([
+                "I see you're exiting the wizard before finishing. No problem! I'll be here when you're ready.",
+                "When you're ready to return to the starter kit wizard, enter:",
+            ]);
 
-                    $console->text([
-                        '    <info>cd ' . $this->setup->getAppPath() . '</info>',
-                        '    <info>composer starter-kit</info>',
-                    ]);
+            $console->text([
+                '    <info>cd ' . $this->setup->getAppPath() . '</info>',
+                '    <info>composer starter-kit</info>',
+            ]);
 
-                    $console->newLine();
+            $console->newLine();
 
-                    exit(0);
-            }
+            exit(0);
         };
     }
 
