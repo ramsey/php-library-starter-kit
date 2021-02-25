@@ -12,7 +12,7 @@
     <a href="https://github.com/ramsey/php-library-starter-kit/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/ramsey/php-library-starter-kit/CI?label=CI&logo=github&style=flat-square" alt="Build Status"></a>
     <a href="https://codecov.io/gh/ramsey/php-library-starter-kit"><img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-starter-kit?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
     <a href="https://shepherd.dev/github/ramsey/php-library-starter-kit"><img src="https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fshepherd.dev%2Fgithub%2Framsey%2Fphp-library-starter-kit%2Fcoverage" alt="Psalm Type Coverage"></a>
-    <a href="https://github.com/ramsey/php-library-starter-kit/blob/master/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
+    <a href="https://github.com/ramsey/php-library-starter-kit/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
     <a href="https://packagist.org/packages/ramsey/php-library-starter-kit/stats"><img src="https://img.shields.io/packagist/dt/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=darkmagenta" alt="Package downloads on Packagist"></a>
     <a href="https://phpc.chat/channel/ramsey"><img src="https://img.shields.io/badge/phpc.chat-%23ramsey-darkslateblue?style=flat-square" alt="Chat with the maintainers"></a>
 </p>
