@@ -37,16 +37,16 @@ this code.
 <!-- USAGE_START -->
 ## Usage
 
-Running the command below will create a new repository containing the same files
-and structure as this repository. Afterward, it will run the
-`Ramsey\Dev\LibraryStarterKit\Setup::wizard()` callable to set up the project, which will
-walk you through a series of questions and make changes to files based on your
-answers. When complete, it will remove the `./src/LibraryStarterKit` and `./tests/LibraryStarterKit`
-directories, leaving everything else in place with an initial commit.
-
 ``` bash
 composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME
 ```
+
+Running this command will create a new repository containing the same files
+and structure as this repository. Afterward, it will run the
+`Ramsey\Dev\LibraryStarterKit\Wizard::start()` method to set up the project, which will
+walk you through a series of questions and make changes to files based on your
+answers. When complete, it will remove the `./src/LibraryStarterKit` and `./tests/LibraryStarterKit`
+directories, leaving everything else in place with an initial commit.
 <!-- USAGE_END -->
 
 ## Contributing
