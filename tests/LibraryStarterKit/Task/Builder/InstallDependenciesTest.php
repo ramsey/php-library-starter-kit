@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
+use Hamcrest\Type\IsCallable;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
@@ -12,8 +13,6 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-
-use function callableValue;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -31,7 +30,7 @@ class InstallDependenciesTest extends TestCase
         ]);
 
         $process = $this->mockery(Process::class);
-        $process->expects()->mustRun(callableValue());
+        $process->expects()->mustRun(new IsCallable());
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',

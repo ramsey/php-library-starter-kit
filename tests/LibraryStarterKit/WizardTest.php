@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
+use Hamcrest\Core\IsInstanceOf;
+use Hamcrest\Core\IsTypeOf;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
@@ -24,6 +26,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function dirname;
+use function get_class;
 use function realpath;
 
 class WizardTest extends TestCase
@@ -73,7 +76,7 @@ class WizardTest extends TestCase
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/app/.starter-kit-answers')->andReturnFalse();
-        $filesystem->expects()->dumpFile('/path/to/app/.starter-kit-answers', typeOf('string'));
+        $filesystem->expects()->dumpFile('/path/to/app/.starter-kit-answers', new IsTypeOf('string'));
 
         $setup->expects()->getFilesystem()->andReturn($filesystem);
 
@@ -89,7 +92,7 @@ class WizardTest extends TestCase
 
         $console
             ->shouldReceive('askQuestion')
-            ->with(anInstanceOf(ConfirmationQuestion::class))
+            ->with(new IsInstanceOf(ConfirmationQuestion::class))
             ->andReturnFalse();
 
         $wizard = new Wizard($setup, $styleFactory);
@@ -148,7 +151,7 @@ class WizardTest extends TestCase
 
         $console
             ->expects()
-            ->askQuestion(anInstanceOf(ConfirmationQuestion::class))
+            ->askQuestion(new IsInstanceOf(ConfirmationQuestion::class))
             ->andReturnTrue();
 
         $defaultAnswers = $this->answers;
@@ -161,7 +164,7 @@ class WizardTest extends TestCase
 
             $console
                 ->expects()
-                ->askQuestion(anInstanceOf($question))
+                ->askQuestion(new IsInstanceOf(get_class($question)))
                 ->andReturn($defaultAnswers->{$question->getName()});
         }
 
@@ -205,7 +208,7 @@ class WizardTest extends TestCase
             });
 
         $application->expects()->setDefaultCommand('starter-kit', true);
-        $application->expects()->run(anInstanceOf(StringInput::class));
+        $application->expects()->run(new IsInstanceOf(StringInput::class));
 
         Wizard::$application = $application;
         Wizard::start($event);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
+use Hamcrest\Type\IsCallable;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -11,8 +12,6 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\SetupRepository;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-
-use function callableValue;
 
 class SetupRepositoryTest extends TestCase
 {
@@ -33,7 +32,7 @@ class SetupRepositoryTest extends TestCase
         $processMustRun->expects()->mustRun();
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(callableValue())->times(4);
+        $processMustRunWithCallable->expects()->mustRun(new IsCallable())->times(4);
 
         $environment = $this->mockery(Setup::class);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
+use Hamcrest\Type\IsCallable;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -11,8 +12,6 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
-
-use function callableValue;
 
 class RunTestsTest extends TestCase
 {
@@ -22,7 +21,7 @@ class RunTestsTest extends TestCase
         $console->expects()->note('Running project tests...');
 
         $process = $this->mockery(Process::class);
-        $process->expects()->mustRun(callableValue());
+        $process->expects()->mustRun(new IsCallable());
 
         $environment = $this->mockery(Setup::class);
 
