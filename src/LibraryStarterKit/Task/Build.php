@@ -27,7 +27,6 @@ use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\Cleanup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTemplates;
-use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTestCase;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\SetupRepository;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateChangelog;
@@ -99,7 +98,6 @@ class Build
             new UpdateLicense($this),
             new UpdateSourceFileHeaders($this),
             new UpdateNamespace($this),
-            new RenameTestCase($this),
             new UpdateCodeOfConduct($this),
             new UpdateChangelog($this),
             new UpdateContributing($this),

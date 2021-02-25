@@ -18,5 +18,4 @@
 /psalm.xml                  export-ignore
 /resources/                 export-ignore
 /SECURITY.md                export-ignore
-/SECURITY.md.asc            export-ignore
 /tests/                     export-ignore

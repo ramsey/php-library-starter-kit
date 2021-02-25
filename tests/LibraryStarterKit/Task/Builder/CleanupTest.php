@@ -36,6 +36,9 @@ class CleanupTest extends TestCase
         $console->expects()->text(
             '<comment>  - Deleted \'/path/to/app/.starter-kit-answers\'.</comment>',
         );
+        $console->expects()->text(
+            '<comment>  - Deleted \'/path/to/app/SECURITY.md\'.</comment>',
+        );
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->remove('/path/to/app/resources' . DIRECTORY_SEPARATOR . 'templates');
@@ -43,6 +46,7 @@ class CleanupTest extends TestCase
         $filesystem->expects()->remove('/path/to/app/tests' . DIRECTORY_SEPARATOR . 'LibraryStarterKit');
         $filesystem->expects()->remove('/path/to/app/.git');
         $filesystem->expects()->remove('/path/to/app/.starter-kit-answers');
+        $filesystem->expects()->remove('/path/to/app/SECURITY.md');
 
         $environment = $this->mockery(Setup::class, [
             'getFilesystem' => $filesystem,

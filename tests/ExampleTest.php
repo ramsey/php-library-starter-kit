@@ -7,7 +7,7 @@ namespace Vendor\Test\SubNamespace;
 use Mockery\MockInterface;
 use Vendor\SubNamespace\Example;
 
-class ExampleTest extends VendorTestCase
+class ExampleTest extends TestCase
 {
     public function testGreet(): void
     {

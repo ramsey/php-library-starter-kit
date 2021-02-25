@@ -42,7 +42,6 @@ class SetupRepository extends Builder
             ->initializeRepository()
             ->installHooks()
             ->cleanBuildDir()
-            ->configureAuthor()
             ->gitAddAllFiles()
             ->gitInitialCommit();
     }
@@ -84,30 +83,8 @@ class SetupRepository extends Builder
     {
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'run-script', 'dev:build:clean'])
+            ->getProcess(['composer', 'dev:build:clean'])
             ->mustRun();
-
-        return $this;
-    }
-
-    private function configureAuthor(): self
-    {
-        $authorName = trim((string) $this->getAnswers()->authorName);
-        $authorEmail = trim((string) $this->getAnswers()->authorEmail);
-
-        if ($authorName !== '') {
-            $this
-                ->getEnvironment()
-                ->getProcess(['git', 'config', 'user.name', $authorName])
-                ->mustRun();
-        }
-
-        if ($authorEmail !== '') {
-            $this
-                ->getEnvironment()
-                ->getProcess(['git', 'config', 'user.email', $authorEmail])
-                ->mustRun();
-        }
 
         return $this;
     }
@@ -126,7 +103,7 @@ class SetupRepository extends Builder
     {
         $this
             ->getEnvironment()
-            ->getProcess(['git', 'commit', '-m', self::COMMIT_MSG])
+            ->getProcess(['git', 'commit', '-n', '-m', self::COMMIT_MSG])
             ->mustRun($this->streamProcessOutput());
 
         return $this;

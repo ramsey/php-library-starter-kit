@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Vendor\Test\SubNamespace;
 
-use Ramsey\Dev\Tools\TestCase;
+use Ramsey\Dev\Tools\TestCase as BaseTestCase;
 
 /**
  * A base test case for common test functionality
  */
-class VendorTestCase extends TestCase
+class TestCase extends BaseTestCase
 {
 }

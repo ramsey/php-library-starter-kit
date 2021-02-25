@@ -72,7 +72,7 @@ class RenameTemplates extends Builder
         $newPath = $dirName . DIRECTORY_SEPARATOR . $baseName;
 
         $this->getConsole()->text(sprintf(
-            '<comment>Renaming \'%s\' to \'%s\'.</comment>',
+            '<comment>  - Renaming \'%s\' to \'%s\'.</comment>',
             $path,
             $newPath,
         ));

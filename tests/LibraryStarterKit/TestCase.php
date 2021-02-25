@@ -6,9 +6,9 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
-use Vendor\Test\SubNamespace\VendorTestCase;
+use Vendor\Test\SubNamespace\TestCase as BaseTestCase;
 
-class TestCase extends VendorTestCase
+class TestCase extends BaseTestCase
 {
     protected Answers $answers;
 

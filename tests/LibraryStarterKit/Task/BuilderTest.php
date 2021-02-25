@@ -51,21 +51,12 @@ class BuilderTest extends TestCase
         $this->assertSame($this->console, $this->builder->getConsole());
     }
 
-    public function testStreamProcessOutputWithError(): void
-    {
-        $streamProcessOutput = $this->builder->streamProcessOutput();
-
-        $this->console->expects()->error('writes an error to output');
-
-        $streamProcessOutput('err', 'writes an error to output');
-    }
-
     public function testStreamProcessOutput(): void
     {
         $streamProcessOutput = $this->builder->streamProcessOutput();
 
         $this->console->expects()->write('writes a message to output');
 
-        $streamProcessOutput('not-an-error', 'writes a message to output');
+        $streamProcessOutput('foo', 'writes a message to output');
     }
 }

@@ -42,7 +42,7 @@ class RenameTemplatesTest extends TestCase
 
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->note('Renaming template files');
-        $console->expects()->text("<comment>Renaming '{$path}' to '{$expectedPath}'.</comment>");
+        $console->expects()->text("<comment>  - Renaming '{$path}' to '{$expectedPath}'.</comment>");
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->rename($path, $expectedPath);

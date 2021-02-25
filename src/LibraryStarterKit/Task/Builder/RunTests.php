@@ -35,7 +35,7 @@ class RunTests extends Builder
 
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'run-script', 'dev:test:all'])
+            ->getProcess(['composer', 'dev:test:all'])
             ->mustRun($this->streamProcessOutput());
     }
 }

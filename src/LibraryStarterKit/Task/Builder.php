@@ -25,7 +25,6 @@ namespace Ramsey\Dev\LibraryStarterKit\Task;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Process\Process;
 
 /**
  * Represents a builder that uses user responses to build some part of a library
@@ -67,11 +66,7 @@ abstract class Builder
     public function streamProcessOutput(): callable
     {
         return function (string $type, string $buffer): void {
-            if ($type === Process::ERR) {
-                $this->getConsole()->error($buffer);
-            } else {
-                $this->getConsole()->write($buffer);
-            }
+            $this->getConsole()->write($buffer);
         };
     }
 }
