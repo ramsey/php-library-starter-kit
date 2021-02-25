@@ -64,7 +64,7 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['git', 'commit', '-m', 'chore: initialize project using ramsey/php-library-starter-kit'])
+            ->getProcess(['git', 'commit', '-n', '-m', 'chore: initialize project using ramsey/php-library-starter-kit'])
             ->andReturn($processMustRunWithCallable);
 
         /** @var Build & MockInterface $build */

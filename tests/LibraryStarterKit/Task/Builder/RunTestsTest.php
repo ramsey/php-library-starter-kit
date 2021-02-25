@@ -28,7 +28,7 @@ class RunTestsTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['composer', 'run-script', 'dev:test:all'])
+            ->getProcess(['composer', 'dev:test:all'])
             ->andReturn($process);
 
         /** @var Build & MockInterface $build */
