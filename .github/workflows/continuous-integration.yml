@@ -1,51 +1,81 @@
-# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+name: "build"
 
-name: "CI"
-
-on:
-  pull_request:
-  push:
-    branches:
-      - "main"
+on: ["pull_request", "push"]
 
 env:
   COMPOSER_ROOT_VERSION: "1.99.99"
 
 jobs:
-
   coding-standards:
-    name: "Coding Standards"
+    name: "Coding standards"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
           php-version: "8.0"
           coverage: "none"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
       - name: "Check coding standards"
         run: "composer dev:lint"
 
   static-analysis:
-    name: "Static Analysis"
+    name: "Static analysis"
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
           php-version: "8.0"
           coverage: "none"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
-      - name: "Run PHPStan"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+
+      - name: "Statically analyze code (PHPStan)"
         run: "composer dev:analyze:phpstan"
-      - name: "Run Psalm"
+
+      - name: "Statically analyze code (Psalm)"
         run: "composer dev:analyze:psalm -- --shepherd"
 
+  code-coverage:
+    name: "Code coverage"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.0"
+          coverage: "pcov"
+          ini-values: "memory_limit=-1"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+
+      - name: "Run unit tests"
+        run: "composer dev:test:coverage:ci"
+
+      - name: "Publish coverage report to Codecov"
+        uses: "codecov/codecov-action@v1"
+
   unit-tests:
-    name: "Unit Tests"
+    name: "Unit tests"
     runs-on: ${{ matrix.operating-system }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -53,27 +83,33 @@ jobs:
           - "7.4"
           - "8.0"
         operating-system:
+          - "macos-latest"
           - "ubuntu-latest"
           - "windows-latest"
         dependencies:
           - "lowest"
           - "highest"
+
     steps:
-      - name: "Configure Git"
+      - name: "Configure Git (for Windows)"
         if: ${{ matrix.operating-system == 'windows-latest' }}
         run: |
           git config --system core.autocrlf false
           git config --system core.eol lf
-      - uses: "actions/checkout@v2"
-      - uses: "shivammathur/setup-php@v2"
+
+      - name: "Checkout repository"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
           php-version: "${{ matrix.php-version }}"
-          coverage: "pcov"
-          ini-values: "memory_limit=-1"
-      - uses: "ramsey/composer-install@v1"
+          coverage: "none"
+
+      - name: "Install dependencies (Composer)"
+        uses: "ramsey/composer-install@v1"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
+
       - name: "Run unit tests"
-        run: "composer dev:test:coverage:ci -- --coverage-text"
-      - name: "Publish coverage report to Codecov"
-        uses: "codecov/codecov-action@v1"
+        run: "composer dev:test:unit"
