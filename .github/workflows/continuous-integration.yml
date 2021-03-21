@@ -25,6 +25,9 @@ jobs:
       - name: "Check coding standards"
         run: "composer dev:lint"
 
+      - name: "Check package structure standards (pds/skeleton)"
+        run: "composer dev:lint:pds"
+
   static-analysis:
     name: "Static analysis"
     runs-on: "ubuntu-latest"
