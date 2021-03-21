@@ -1,0 +1,69 @@
+{
+    "name": "ramsey/php-library-starter-kit",
+    "type": "project",
+    "description": "A starter kit for quickly setting up a new PHP library package.",
+    "keywords": [
+        "builder",
+        "library",
+        "package",
+        "skeleton",
+        "template"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Ramsey",
+            "email": "ben@benramsey.com",
+            "homepage": "https://benramsey.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8",
+        "ext-json": "*",
+        "symfony/console": "^5.1",
+        "symfony/filesystem": "^5.1",
+        "symfony/finder": "^5.1",
+        "symfony/process": "^5.1",
+        "twig/twig": "^3.1"
+    },
+    "require-dev": {
+        "ramsey/devtools": "^1.5",
+        "spatie/phpunit-snapshot-assertions": "^4.2"
+    },
+    "suggest": {
+        "ext-foobar": "Foo bar"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "ramsey/conventional-commits": {
+            "configFile": "conventional-commits.json"
+        },
+        "ramsey/devtools": {
+            "command-prefix": "dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
+            "Vendor\\SubNamespace\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
+            "Vendor\\Test\\SubNamespace\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-root-package-install": "git init",
+        "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
+        "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start"
+    },
+    "scripts-descriptions": {
+        "starter-kit": "Runs the PHP Library Starter Kit wizard."
+    }
+}

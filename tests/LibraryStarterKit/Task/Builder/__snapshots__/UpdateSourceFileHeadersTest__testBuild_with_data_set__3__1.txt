@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * This file is part of fellowship/one-ring
+ *
+ * fellowship/one-ring is open source software: you can distribute
+ * it and/or modify it under the terms of the BSD 3-Clause "New" or
+ * "Revised" License (the "License"). You may not use this file except
+ * in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ * implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ *
+ * @copyright Copyright (c) Samwise Gamgee
+ * @license https://opensource.org/licenses/BSD-3-Clause BSD 3-Clause "New" or "Revised" License
+ */
+
+declare(strict_types=1);
+
+namespace Foo;
+
+/**
+ * Class description
+ */
+class Bar
+{
+}

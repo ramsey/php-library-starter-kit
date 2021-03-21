@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * This file is part of fellowship/one-ring
+ *
+ * @copyright Copyright (c) Samwise Gamgee <fellowship@example.com>. All rights reserved.
+ */
+
+declare(strict_types=1);
+
+namespace Foo;
+
+/**
+ * Class description
+ */
+class Bar
+{
+}

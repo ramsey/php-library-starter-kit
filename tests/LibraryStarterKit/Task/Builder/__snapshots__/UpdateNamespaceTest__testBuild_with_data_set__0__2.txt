@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * File header comment for acme/foo-bar
+ *
+ * phpcs:disable
+ */
+
+declare(strict_types=1);
+
+namespace Acme\Foo\Bar;
+
+use Acme\Test\Foo\Bar\Bar;
+
+class Foo
+{
+    public const CLASS_NAMES = [
+        'Acme\\Foo\\Bar',
+        'Acme\\Test\\Foo\\Bar',
+    ];
+}

@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * This file is part of fellowship/one-ring
+ *
+ * fellowship/one-ring is free and unencumbered software released
+ * into the public domain. For more information, please view the
+ * UNLICENSE file that was distributed with this source code.
+ *
+ * @license https://opensource.org/licenses/Unlicense The Unlicense
+ */
+
+declare(strict_types=1);
+
+namespace Foo;
+
+/**
+ * Class description
+ */
+class Baz
+{
+    /**
+     * Method description
+     */
+    public function __construct()
+    {
+    }
+}

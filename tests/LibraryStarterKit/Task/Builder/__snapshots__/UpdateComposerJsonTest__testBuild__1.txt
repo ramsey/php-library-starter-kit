@@ -1,0 +1,46 @@
+{
+    "name": "a-vendor/package-name",
+    "type": "library",
+    "description": "This is a test package.",
+    "keywords": [
+        "test",
+        "package"
+    ],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jane Doe",
+            "email": "jdoe@example.com",
+            "homepage": "https://example.com/jane"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8"
+    },
+    "require-dev": {
+        "ramsey/devtools": "^1.5"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "ramsey/conventional-commits": {
+            "configFile": "conventional-commits.json"
+        },
+        "ramsey/devtools": {
+            "command-prefix": "dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Vendor\\SubNamespace\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vendor\\Test\\SubNamespace\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * File header comment for another/package
+ *
+ * phpcs:disable
+ */
+
+declare(strict_types=1);
+
+namespace Another\Package\With\Long\Namespace;
+
+use Another\Test\Package\With\Long\Namespace\Bar;
+
+class Foo
+{
+    public const CLASS_NAMES = [
+        'Another\\Package\\With\\Long\\Namespace',
+        'Another\\Test\\Package\\With\\Long\\Namespace',
+    ];
+}

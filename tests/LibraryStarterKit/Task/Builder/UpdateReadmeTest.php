@@ -10,15 +10,21 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateReadme;
+use Ramsey\Test\Dev\LibraryStarterKit\SnapshotsTool;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Ramsey\Test\Dev\LibraryStarterKit\WindowsSafeTextDriver;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
+use function file_get_contents;
+
 class UpdateReadmeTest extends TestCase
 {
+    use SnapshotsTool;
+
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
@@ -30,10 +36,7 @@ class UpdateReadmeTest extends TestCase
             ->once()
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame('/path/to/app/README.md', $path);
-                $this->assertSame(
-                    $this->readmeContentsExpected(),
-                    $contents,
-                );
+                $this->assertMatchesSnapshot($contents, new WindowsSafeTextDriver());
 
                 return true;
             });
@@ -60,27 +63,27 @@ class UpdateReadmeTest extends TestCase
         $twig
             ->expects()
             ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('badgesInfo');
+            ->andReturn('badges info');
 
         $twig
             ->expects()
             ->render('readme/description.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('descriptionInfo');
+            ->andReturn('description info');
 
         $twig
             ->expects()
             ->render('readme/code-of-conduct.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('codeOfConductInfo');
+            ->andReturn('code of conduct info');
 
         $twig
             ->expects()
             ->render('readme/usage.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('usageInfo');
+            ->andReturn('usage info');
 
         $twig
             ->expects()
             ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('copyrightInfo');
+            ->andReturn('copyright info');
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -116,10 +119,7 @@ class UpdateReadmeTest extends TestCase
             ->once()
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame('/path/to/app/README.md', $path);
-                $this->assertSame(
-                    $this->readmeContentsExpectedWithoutCodeOfConduct(),
-                    $contents,
-                );
+                $this->assertMatchesSnapshot($contents, new WindowsSafeTextDriver());
 
                 return true;
             });
@@ -146,12 +146,12 @@ class UpdateReadmeTest extends TestCase
         $twig
             ->expects()
             ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('badgesInfo');
+            ->andReturn('badges info');
 
         $twig
             ->expects()
             ->render('readme/description.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('descriptionInfo');
+            ->andReturn('description info');
 
         $twig
             ->expects()
@@ -161,12 +161,12 @@ class UpdateReadmeTest extends TestCase
         $twig
             ->expects()
             ->render('readme/usage.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('usageInfo');
+            ->andReturn('usage info');
 
         $twig
             ->expects()
             ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
-            ->andReturn('copyrightInfo');
+            ->andReturn('copyright info');
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -230,107 +230,6 @@ class UpdateReadmeTest extends TestCase
 
     private function readmeContentsOriginal(): string
     {
-        return <<<'EOD'
-        # <!-- NAME_START -->ramsey/php-library-starter-kit<!-- NAME_END -->
-
-        <!-- BADGES_START -->
-        [![Source Code][badge-source]][source]
-
-        [badge-source]: http://img.shields.io/badge/source-ramsey/php--library--starter--kit-blue.svg?style=flat-square
-
-        [source]: https://github.com/ramsey/php-library-starter-kit
-        <!-- BADGES_END -->
-
-        <!-- DESC_START -->
-        ramsey/php-library-starter-kit is a package that may be used to generate a basic
-        PHP library project directory structure, complete with many of the starting
-        files (i.e. README, LICENSE, GitHub issue templates, PHPUnit configuration,
-        etc.) that are commonly found in PHP libraries. You may use the project
-        directory that's created as a starting point for creating your own PHP libraries.
-        <!-- DESC_END -->
-
-        <!-- COC_START -->
-        This project adheres to a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-        By participating in this project and its community, you are expected to uphold
-        this code.
-        <!-- COC_END -->
-
-        <!-- USAGE_START -->
-        ## Usage
-
-        ``` bash
-        composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME
-        ```
-        <!-- USAGE_END -->
-
-        ## Contributing
-
-        Contributions are welcome! Before contributing to this project, familiarize
-        yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
-
-        <!-- FAQ_START -->
-        ## FAQs
-
-        ### Wait, what, why?
-
-        Because.
-        <!-- FAQ_END -->
-
-        <!-- COPYRIGHT_START -->
-        ## Copyright and License
-
-        The ramsey/php-library-starter-kit library is copyright © [Ben Ramsey](https://benramsey.com)
-        and licensed for use under the MIT License (MIT). Please see [LICENSE](LICENSE)
-        for more information.
-        <!-- COPYRIGHT_END -->
-        EOD;
-    }
-
-    private function readmeContentsExpected(): string
-    {
-        return <<<'EOD'
-        # a-vendor/package-name
-
-        badgesInfo
-
-        descriptionInfo
-
-        codeOfConductInfo
-
-        usageInfo
-
-        ## Contributing
-
-        Contributions are welcome! Before contributing to this project, familiarize
-        yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-
-        copyrightInfo
-        EOD;
-    }
-
-    private function readmeContentsExpectedWithoutCodeOfConduct(): string
-    {
-        return <<<'EOD'
-        # a-vendor/package-name
-
-        badgesInfo
-
-        descriptionInfo
-
-
-
-        usageInfo
-
-        ## Contributing
-
-        Contributions are welcome! Before contributing to this project, familiarize
-        yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-
-        copyrightInfo
-        EOD;
+        return (string) file_get_contents(__DIR__ . '/fixtures/readme-full.md');
     }
 }

@@ -10,14 +10,20 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateComposerJson;
+use Ramsey\Test\Dev\LibraryStarterKit\SnapshotsTool;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Ramsey\Test\Dev\LibraryStarterKit\WindowsSafeTextDriver;
 use RuntimeException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function file_get_contents;
+
 class UpdateComposerJsonTest extends TestCase
 {
+    use SnapshotsTool;
+
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
@@ -29,10 +35,7 @@ class UpdateComposerJsonTest extends TestCase
             ->once()
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame('/path/to/app/composer.json', $path);
-                $this->assertJsonStringEqualsJsonString(
-                    $this->composerContentsExpected(),
-                    $contents,
-                );
+                $this->assertMatchesSnapshot($contents, new WindowsSafeTextDriver());
 
                 return true;
             });
@@ -159,10 +162,7 @@ class UpdateComposerJsonTest extends TestCase
             ->once()
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame('/path/to/app/composer.json', $path);
-                $this->assertJsonStringEqualsJsonString(
-                    $this->composerContentsExpectedMinimal(),
-                    $contents,
-                );
+                $this->assertMatchesSnapshot($contents, new WindowsSafeTextDriver());
 
                 return true;
             });
@@ -208,170 +208,11 @@ class UpdateComposerJsonTest extends TestCase
 
     private function composerContentsOriginal(): string
     {
-        return <<<'EOD'
-            {
-                "name": "ramsey/php-library-starter-kit",
-                "type": "project",
-                "description": "A starter kit for quickly setting up a new PHP library package.",
-                "keywords": [
-                    "builder",
-                    "library",
-                    "package",
-                    "skeleton",
-                    "template"
-                ],
-                "license": "MIT",
-                "authors": [
-                    {
-                        "name": "Ben Ramsey",
-                        "email": "ben@benramsey.com",
-                        "homepage": "https://benramsey.com"
-                    }
-                ],
-                "require": {
-                    "php": "^7.4 || ^8",
-                    "ext-json": "*",
-                    "symfony/console": "^5.1",
-                    "symfony/filesystem": "^5.1",
-                    "symfony/finder": "^5.1",
-                    "symfony/process": "^5.1",
-                    "twig/twig": "^3.1"
-                },
-                "require-dev": {
-                    "ramsey/devtools": "^1.5",
-                    "spatie/phpunit-snapshot-assertions": "^4.2"
-                },
-                "suggest": {
-                    "ext-foobar": "Foo bar"
-                },
-                "config": {
-                    "sort-packages": true
-                },
-                "extra": {
-                    "ramsey/conventional-commits": {
-                        "configFile": "conventional-commits.json"
-                    },
-                    "ramsey/devtools": {
-                        "command-prefix": "dev"
-                    }
-                },
-                "autoload": {
-                    "psr-4": {
-                        "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
-                        "Vendor\\SubNamespace\\": "src/"
-                    }
-                },
-                "autoload-dev": {
-                    "psr-4": {
-                        "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
-                        "Vendor\\Test\\SubNamespace\\": "tests/"
-                    }
-                },
-                "minimum-stability": "dev",
-                "prefer-stable": true,
-                "scripts": {
-                    "post-root-package-install": "git init",
-                    "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
-                    "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start"
-                },
-                "scripts-descriptions": {
-                    "starter-kit": "Runs the PHP Library Starter Kit wizard."
-                }
-            }
-            EOD;
-    }
-
-    private function composerContentsExpected(): string
-    {
-        return <<<'EOD'
-            {
-              "name": "a-vendor/package-name",
-              "type": "library",
-              "description": "This is a test package.",
-              "keywords": [
-                "test",
-                "package"
-              ],
-              "license": "Apache-2.0",
-              "authors": [
-                {
-                  "name": "Jane Doe",
-                  "email": "jdoe@example.com",
-                  "homepage": "https://example.com/jane"
-                }
-              ],
-              "require": {
-                "php": "^7.4 || ^8"
-              },
-              "require-dev": {
-                "ramsey/devtools": "^1.5"
-              },
-              "config": {
-                "sort-packages": true
-              },
-              "extra": {
-                "ramsey/conventional-commits": {
-                  "configFile": "conventional-commits.json"
-                },
-                "ramsey/devtools": {
-                  "command-prefix": "dev"
-                }
-              },
-              "autoload": {
-                "psr-4": {
-                  "Vendor\\SubNamespace\\": "src/"
-                }
-              },
-              "autoload-dev": {
-                "psr-4": {
-                  "Vendor\\Test\\SubNamespace\\": "tests/"
-                }
-              },
-              "minimum-stability": "dev",
-              "prefer-stable": true
-            }
-            EOD;
+        return (string) file_get_contents(__DIR__ . '/fixtures/composer-full.json');
     }
 
     private function composerContentsOriginalMinimal(): string
     {
-        return <<<'EOD'
-            {
-              "name": "ramsey/php-library-starter-kit",
-              "type": "project",
-              "description": "A tool to quickly set up the base files of a PHP library package.",
-              "keywords": [
-                "skeleton",
-                "package",
-                "library"
-              ],
-              "license": "MIT",
-              "authors": [
-                {
-                  "name": "Ben Ramsey",
-                  "email": "ben@benramsey.com",
-                  "homepage": "https://benramsey.com"
-                }
-              ]
-            }
-        EOD;
-    }
-
-    private function composerContentsExpectedMinimal(): string
-    {
-        return <<<'EOD'
-            {
-              "name": "a-vendor/package-name",
-              "type": "library",
-              "description": "This is a test package.",
-              "keywords": [],
-              "license": "MPL-2.0",
-              "authors": [
-                {
-                  "name": "Jane Doe"
-                }
-              ]
-            }
-        EOD;
+        return (string) file_get_contents(__DIR__ . '/fixtures/composer-minimal.json');
     }
 }

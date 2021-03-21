@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * This file is part of fellowship/one-ring
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * @copyright Copyright (c) Samwise Gamgee
+ * @license https://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0
+ */
+
+declare(strict_types=1);
+
+namespace Foo;
+
+/**
+ * Class description
+ */
+class Bar
+{
+}

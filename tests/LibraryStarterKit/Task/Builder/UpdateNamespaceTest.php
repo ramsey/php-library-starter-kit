@@ -10,15 +10,19 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateNamespace;
+use Ramsey\Test\Dev\LibraryStarterKit\SnapshotsTool;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Ramsey\Test\Dev\LibraryStarterKit\WindowsSafeTextDriver;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-use function str_replace;
+use function file_get_contents;
 
 class UpdateNamespaceTest extends TestCase
 {
+    use SnapshotsTool;
+
     /**
      * @dataProvider provideNamespaceTestValues
      */
@@ -73,25 +77,14 @@ class UpdateNamespaceTest extends TestCase
         $filesystem = $this->mockery(Filesystem::class);
 
         $filesystem
-            ->expects()
-            ->dumpFile(
-                '/path/to/app/src/Foo.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
-            );
+            ->shouldReceive('dumpFile')
+            ->times(3)
+            ->withArgs(function (string $path, string $contents) {
+                $this->assertMatchesSnapshot($path, new WindowsSafeTextDriver());
+                $this->assertMatchesSnapshot($contents, new WindowsSafeTextDriver());
 
-        $filesystem
-            ->expects()
-            ->dumpFile(
-                '/path/to/app/src/Bar.php',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
-            );
-
-        $filesystem
-            ->expects()
-            ->dumpFile(
-                '/path/to/app/composer.json',
-                $this->getFileContentsExpected($packageName, $namespace, $testNamespace),
-            );
+                return true;
+            });
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -145,57 +138,6 @@ class UpdateNamespaceTest extends TestCase
 
     private function getFileContents(): string
     {
-        return <<<'EOD'
-            <?php
-
-            /**
-             * File header comment for ramsey/php-library-starter-kit
-             */
-
-            declare(strict_types=1);
-
-            namespace Vendor\SubNamespace;
-
-            use Vendor\Test\SubNamespace\Bar;
-
-            class Foo
-            {
-                public const CLASS_NAMES = [
-                    'Vendor\\SubNamespace',
-                    'Vendor\\Test\\SubNamespace',
-                ];
-            }
-            EOD;
-    }
-
-    private function getFileContentsExpected(
-        string $packageName,
-        string $namespace,
-        string $testNamespace
-    ): string {
-        $namespaceEscaped = str_replace('\\', '\\\\', $namespace);
-        $testNamespaceEscaped = str_replace('\\', '\\\\', $testNamespace);
-
-        return <<<EOD
-            <?php
-
-            /**
-             * File header comment for {$packageName}
-             */
-
-            declare(strict_types=1);
-
-            namespace {$namespace};
-
-            use {$testNamespace}\\Bar;
-
-            class Foo
-            {
-                public const CLASS_NAMES = [
-                    '{$namespaceEscaped}',
-                    '{$testNamespaceEscaped}',
-                ];
-            }
-            EOD;
+        return (string) file_get_contents(__DIR__ . '/fixtures/update-namespace-test.php');
     }
 }
