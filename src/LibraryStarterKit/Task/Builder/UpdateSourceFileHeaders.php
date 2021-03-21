@@ -44,7 +44,7 @@ class UpdateSourceFileHeaders extends Builder
         $this->getConsole()->note('Updating source file headers');
 
         $newFileHeader = $this->getEnvironment()->getTwigEnvironment()->render(
-            'source-file-header.twig',
+            'header/source-file-header.twig',
             $this->getAnswers()->getArrayCopy(),
         );
 

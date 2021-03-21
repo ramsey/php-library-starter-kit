@@ -26,7 +26,7 @@ class UpdateSourceFileHeadersTest extends TestCase
         $twig = $this->mockery(TwigEnvironment::class);
         $twig
             ->expects()
-            ->render('source-file-header.twig', $this->answers->getArrayCopy())
+            ->render('header/source-file-header.twig', $this->answers->getArrayCopy())
             ->andReturn($this->getTwigGeneratedHeader());
 
         $file1 = $this->mockery(SplFileInfo::class, [

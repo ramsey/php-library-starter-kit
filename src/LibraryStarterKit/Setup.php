@@ -32,9 +32,11 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 
 use function array_map;
 use function implode;
+use function preg_replace;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -157,7 +159,12 @@ class Setup
      */
     public function getTwigEnvironment(): TwigEnvironment
     {
-        return new TwigEnvironment(
+        $pregReplaceFilter = new TwigFilter(
+            'preg_replace',
+            fn (string $s, string $p, string $r): string => (string) preg_replace($p, $r, $s),
+        );
+
+        $twig = new TwigEnvironment(
             new FilesystemLoader($this->getProject()->getPath() . '/resources/templates'),
             [
                 'debug' => true,
@@ -165,6 +172,10 @@ class Setup
                 'autoescape' => false,
             ],
         );
+
+        $twig->addFilter($pregReplaceFilter);
+
+        return $twig;
     }
 
     /**

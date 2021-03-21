@@ -1,0 +1,9 @@
+{% set headerTemplate %}header/{{ license }}.twig{% endset %}
+{% set copyright %}Copyright (c) {{ copyrightHolder }}{% if copyrightEmail %} <{{ copyrightEmail }}>{% elseif copyrightUrl %} <{{ copyrightUrl }}>{% endif %}{% endset %}
+{% set licenseStatement %}{{ include(headerTemplate) }}{% endset %}
+
+/**
+ * This file is part of {{ packageName }}
+ *
+ {{ licenseStatement|preg_replace('/^/m', ' * ')|preg_replace('/\\s+$/m', '')|trim }}
+ */
