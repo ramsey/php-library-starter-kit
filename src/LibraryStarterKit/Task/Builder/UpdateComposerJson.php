@@ -44,6 +44,10 @@ class UpdateComposerJson extends Builder
         'php',
     ];
 
+    private const WHITELIST_REQUIRE_DEV = [
+        'ramsey/devtools',
+    ];
+
     private const WHITELIST_AUTOLOAD = [
         'Vendor\\SubNamespace\\',
     ];
@@ -74,6 +78,7 @@ class UpdateComposerJson extends Builder
 
         $this->buildAuthors($composer);
         $this->buildRequire($composer);
+        $this->buildRequireDev($composer);
         $this->buildAutoload($composer);
         $this->buildAutoloadDev($composer);
 
@@ -169,6 +174,24 @@ class UpdateComposerJson extends Builder
         $composer['require'] = $this->filterPropertiesByWhitelist(
             $require,
             self::WHITELIST_REQUIRE,
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $composer
+     */
+    private function buildRequireDev(array &$composer): void
+    {
+        if (!isset($composer['require-dev'])) {
+            return;
+        }
+
+        /** @var array<string, string> $requireDev */
+        $requireDev = $composer['require-dev'];
+
+        $composer['require-dev'] = $this->filterPropertiesByWhitelist(
+            $requireDev,
+            self::WHITELIST_REQUIRE_DEV,
         );
     }
 

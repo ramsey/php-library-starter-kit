@@ -27,7 +27,8 @@
         "twig/twig": "^3.1"
     },
     "require-dev": {
-        "ramsey/devtools": "^1.6"
+        "ramsey/devtools": "^1.6",
+        "spatie/phpunit-snapshot-assertions": "^4.2"
     },
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"

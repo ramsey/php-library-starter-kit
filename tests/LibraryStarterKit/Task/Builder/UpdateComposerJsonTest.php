@@ -238,7 +238,8 @@ class UpdateComposerJsonTest extends TestCase
                     "twig/twig": "^3.1"
                 },
                 "require-dev": {
-                    "ramsey/devtools": "^1.5"
+                    "ramsey/devtools": "^1.5",
+                    "spatie/phpunit-snapshot-assertions": "^4.2"
                 },
                 "suggest": {
                     "ext-foobar": "Foo bar"
