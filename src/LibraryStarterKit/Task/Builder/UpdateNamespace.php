@@ -62,7 +62,6 @@ class UpdateNamespace extends Builder
             'ramsey/php-library-starter-kit' => $packageName,
         ];
 
-        /** @var SplFileInfo $file */
         foreach ($this->getSourceFiles() as $file) {
             $this->replaceNamespace($file, $replacements);
         }

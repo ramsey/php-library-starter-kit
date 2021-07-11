@@ -65,7 +65,7 @@ abstract class Builder
      */
     public function streamProcessOutput(): callable
     {
-        return function (string $type, string $buffer): void {
+        return function (string $_type, string $buffer): void {
             $this->getConsole()->write($buffer);
         };
     }

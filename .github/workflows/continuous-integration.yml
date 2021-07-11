@@ -22,8 +22,11 @@ jobs:
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v1"
 
-      - name: "Check coding standards"
-        run: "composer dev:lint"
+      - name: "Check syntax (php-parallel-lint)"
+        run: "composer dev:lint:syntax"
+
+      - name: "Check coding standards (PHP_CodeSniffer)"
+        run: "composer dev:lint:style"
 
       - name: "Check package structure standards (pds/skeleton)"
         run: "composer dev:lint:pds"
@@ -93,7 +96,7 @@ jobs:
         with:
           dependency-versions: "${{ matrix.dependencies }}"
 
-      - name: "Run unit tests"
+      - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:coverage:ci"
 
       - name: "Publish coverage report to Codecov"
@@ -138,5 +141,5 @@ jobs:
         with:
           dependency-versions: "${{ matrix.dependencies }}"
 
-      - name: "Run unit tests"
+      - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:unit"

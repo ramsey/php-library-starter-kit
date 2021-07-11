@@ -102,10 +102,6 @@ class UpdateComposerJson extends Builder
     {
         $filtered = [];
 
-        /**
-         * @var string $property
-         * @var string $value
-         */
         foreach ($data as $property => $value) {
             if (in_array($property, $whitelist)) {
                 $filtered[$property] = $value;
