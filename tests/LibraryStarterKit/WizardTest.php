@@ -164,7 +164,7 @@ class WizardTest extends TestCase
 
             $console
                 ->expects()
-                ->askQuestion(new IsInstanceOf(get_class($question)))
+                ->askQuestion(new IsInstanceOf(get_class($question))) // phpcs:ignore
                 ->andReturn($defaultAnswers->{$question->getName()});
         }
 
