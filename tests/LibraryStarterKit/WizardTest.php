@@ -12,7 +12,8 @@ use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
-use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
+use Ramsey\Dev\LibraryStarterKit\Console\Style;
+use Ramsey\Dev\LibraryStarterKit\Console\StyleFactory;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function dirname;
 use function get_class;
@@ -61,8 +61,8 @@ class WizardTest extends TestCase
         /** @var OutputInterface & MockInterface $output */
         $output = $this->mockery(OutputInterface::class);
 
-        /** @var SymfonyStyle & MockInterface $console */
-        $console = $this->mockery(SymfonyStyle::class);
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
 
         /** @var Setup & MockInterface $setup */
         $setup = $this->mockery(Setup::class);
@@ -80,8 +80,8 @@ class WizardTest extends TestCase
 
         $setup->expects()->getFilesystem()->andReturn($filesystem);
 
-        /** @var SymfonyStyleFactory & MockInterface $styleFactory */
-        $styleFactory = $this->mockery(SymfonyStyleFactory::class);
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
         $console->shouldReceive('title')->once();
@@ -108,8 +108,8 @@ class WizardTest extends TestCase
         /** @var OutputInterface & MockInterface $output */
         $output = $this->mockery(OutputInterface::class);
 
-        /** @var SymfonyStyle & MockInterface $console */
-        $console = $this->mockery(SymfonyStyle::class);
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
 
         $project = new Project('my-project', '/my/project/path');
 
@@ -121,7 +121,7 @@ class WizardTest extends TestCase
         $setup
             ->shouldReceive('run')
             ->once()
-            ->withArgs(function (SymfonyStyle $style, Answers $answers) use ($console): bool {
+            ->withArgs(function (Style $style, Answers $answers) use ($console): bool {
                 $answers->packageName = 'my-package/name';
                 $this->assertSame($console, $style);
 
@@ -138,8 +138,8 @@ class WizardTest extends TestCase
 
         $setup->expects()->getFilesystem()->andReturn($filesystem);
 
-        /** @var SymfonyStyleFactory & MockInterface $styleFactory */
-        $styleFactory = $this->mockery(SymfonyStyleFactory::class);
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
         $console->shouldReceive('title')->once();

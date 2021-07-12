@@ -26,7 +26,7 @@ use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
-use Ramsey\Dev\LibraryStarterKit\Console\SymfonyStyleFactory;
+use Ramsey\Dev\LibraryStarterKit\Console\StyleFactory;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,15 +51,15 @@ class Wizard extends Command
     public static ?Application $application = null;
 
     private Setup $setup;
-    private SymfonyStyleFactory $styleFactory;
+    private StyleFactory $styleFactory;
     private Answers $answers;
 
-    public function __construct(Setup $setup, ?SymfonyStyleFactory $styleFactory = null)
+    public function __construct(Setup $setup, ?StyleFactory $styleFactory = null)
     {
         parent::__construct('starter-kit');
 
         $this->setup = $setup;
-        $this->styleFactory = $styleFactory ?? new SymfonyStyleFactory();
+        $this->styleFactory = $styleFactory ?? new StyleFactory();
 
         $this->answers = new Answers(
             $this->setup->path(self::ANSWERS_FILE),
@@ -81,10 +81,10 @@ class Wizard extends Command
         $console = $this->styleFactory->factory($input, $output);
         $console->title('Welcome to the PHP Library Starter Kit!');
         $console->block(
-            'This wizard will walk you through a series of questions '
-            . 'about the library you are creating. When it is finished, '
-            . 'it will set up a repository with an initial set of files '
-            . 'that you may customize to suit your needs.',
+            'I\'ll ask you a series of questions about the library '
+            . 'you\'re creating. When finished, I\'ll set up a repository with '
+            . 'an initial set of files that you may customize to suit your '
+            . 'needs.',
         );
 
         $this->registerInterruptHandler($console);
@@ -141,7 +141,8 @@ class Wizard extends Command
         $this->answers->saveToFile();
 
         $console->block([
-            "When you're ready to return to the starter kit wizard, enter:",
+            'I\'ve saved your progress. When you\'re ready to return to the '
+            . 'starter kit wizard, enter:',
         ]);
 
         $console->text([

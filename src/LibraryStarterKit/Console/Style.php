@@ -22,17 +22,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Console;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * A factory useful for creating a SymfonyStyle instance
- */
-class SymfonyStyleFactory
+class Style extends SymfonyStyle
 {
-    public function factory(InputInterface $input, OutputInterface $output): SymfonyStyle
-    {
-        return new SymfonyStyle($input, $output);
-    }
 }
