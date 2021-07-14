@@ -16,7 +16,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "latest"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -28,9 +28,6 @@ jobs:
       - name: "Check coding standards (PHP_CodeSniffer)"
         run: "composer dev:lint:style"
 
-      - name: "Check package structure standards (pds/skeleton)"
-        run: "composer dev:lint:pds"
-
   static-analysis:
     name: "Static analysis"
     runs-on: "ubuntu-latest"
@@ -41,7 +38,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "latest"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -63,7 +60,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "latest"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -87,7 +84,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "latest"
           coverage: "pcov"
           ini-values: "memory_limit=-1"
 
