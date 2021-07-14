@@ -37,6 +37,9 @@
         "sort-packages": true
     },
     "extra": {
+        "captainhook": {
+            "force-install": true
+        },
         "ramsey/conventional-commits": {
             "configFile": "conventional-commits.json"
         },
