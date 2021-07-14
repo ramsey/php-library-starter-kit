@@ -5,15 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 3.0.0 - TBD
+## 3.0.0 - 2021-07-14
 
 ### Added
 
-- Nothing.
+- Allow users to exit the wizard and restart it later, saving their answers
+- Use ramsey/devtools instead of `vnd:*` scripts in the local `composer.json`
+- Use [CaptainHook](https://github.com/captainhookphp/captainhook) to manage Git hooks
+  - Enforce the use of [Conventional Commits](https://www.conventionalcommits.org)
+  - Validate and check normalization of `composer.json` in pre-commit hook
+  - Run syntax, style, and static analysis checks in pre-commit hook
+  - Run `composer install` on post-merge and post-checkout hooks
+  - Run `composer test` in pre-push hook
+- Add option to include a security policy (vulnerability disclosure policy) as part of the wizard
+- Add [GitHub Actions](https://docs.github.com/en/actions) configuration for CI workflows
+- Add [Codecov](https://about.codecov.io) configuration for viewing code coverage reports
+- Use ramsey/coding-standard
 
 ### Changed
 
-- Nothing.
+- Rename from ramsey/php-library-skeleton to ramsey/php-library-starter-kit
+- Major re-working of the library to use [symfony/console](https://symfony.com/doc/current/components/console.html)
 
 ### Deprecated
 
@@ -21,7 +33,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Removed
 
-- Nothing.
+- Remove dependencies on NodeJS and npm packages
+- Remove all `vnd:*` scripts from `composer.json`
+- Remove `bin/repl`, since ramsey/devtools uses ramsey/composer-repl
+- Remove Travis CI configuration, in favor of GitHub Actions
+- Remove Coveralls configuration, in favor of Codecov
 
 ### Fixed
 
