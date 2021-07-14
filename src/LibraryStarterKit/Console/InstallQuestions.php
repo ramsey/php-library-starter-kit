@@ -42,6 +42,9 @@ use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageDescription;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageKeywords;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageName;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageNamespace;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SecurityPolicy;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SecurityPolicyContactEmail;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\SecurityPolicyContactFormUrl;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\VendorName;
 use Symfony\Component\Console\Question\Question as SymfonyQuestion;
@@ -70,6 +73,9 @@ class InstallQuestions
             new CopyrightUrl($answers),
             new CopyrightYear($answers),
             new License($answers),
+            new SecurityPolicy($answers),
+            new SecurityPolicyContactEmail($answers),
+            new SecurityPolicyContactFormUrl($answers),
             new CodeOfConduct($answers),
             new CodeOfConductEmail($answers),
             new CodeOfConductCommittee($answers),

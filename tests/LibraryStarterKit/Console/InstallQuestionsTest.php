@@ -18,6 +18,6 @@ class InstallQuestionsTest extends TestCase
 
         $this->assertContainsOnlyInstancesOf(Question::class, $receivedQuestions);
         $this->assertContainsOnlyInstancesOf(StarterKitQuestion::class, $receivedQuestions);
-        $this->assertCount(20, $receivedQuestions);
+        $this->assertCount(23, $receivedQuestions);
     }
 }

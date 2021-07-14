@@ -51,6 +51,9 @@ class AnswersTest extends TestCase
                 'packageName',
                 'packageNamespace',
                 'projectName',
+                'securityPolicy',
+                'securityPolicyContactEmail',
+                'securityPolicyContactFormUrl',
                 'vendorName',
             ],
             $answers->getTokens(),
@@ -83,6 +86,9 @@ class AnswersTest extends TestCase
                 null,
                 [],
                 null,
+                null,
+                null,
+                true,
                 null,
                 null,
                 null,
@@ -119,6 +125,9 @@ class AnswersTest extends TestCase
                 'packageName' => null,
                 'packageNamespace' => null,
                 'projectName' => null,
+                'securityPolicy' => true,
+                'securityPolicyContactEmail' => null,
+                'securityPolicyContactFormUrl' => null,
                 'vendorName' => null,
             ],
             $answers->getArrayCopy(),
@@ -138,16 +147,19 @@ class AnswersTest extends TestCase
             'codeOfConductEmail' => 'council@example.com',
             'projectName' => 'The Fellowship of the Ring',
             'codeOfConductPoliciesUrl' => 'https://example.com/the-fellowship/conduct-policies',
+            'securityPolicyContactFormUrl' => 'https://example.com/security',
             'codeOfConductReportingUrl' => 'https://example.com/the-fellowship/conduct-reporting',
             'authorName' => 'Frodo Baggins',
             'copyrightEmail' => 'fellowship@example.com',
             'copyrightHolder' => 'The Fellowship',
             'copyrightUrl' => 'https://example.com/the-fellowship',
             'packageName' => 'fellowship/ring',
+            'securityPolicy' => true,
             'anotherUnknownProperty' => 'baz',
             'copyrightYear' => '2021',
             'codeOfConductCommittee' => 'Council of the Wise',
             'githubUsername' => 'frodo',
+            'securityPolicyContactEmail' => 'security@example.com',
             'vendorName' => 'fellowship',
             'license' => 'BSD-2-Clause',
             'packageKeywords' => ['foo', 'bar'],
@@ -181,6 +193,9 @@ class AnswersTest extends TestCase
                 'packageName' => 'fellowship/ring',
                 'packageNamespace' => 'Fellowship\\Ring',
                 'projectName' => 'The Fellowship of the Ring',
+                'securityPolicy' => true,
+                'securityPolicyContactEmail' => 'security@example.com',
+                'securityPolicyContactFormUrl' => 'https://example.com/security',
                 'vendorName' => 'fellowship',
             ],
             $answers->getArrayCopy(),
@@ -216,6 +231,9 @@ class AnswersTest extends TestCase
                         'packageName' => 'fellowship/ring',
                         'packageNamespace' => 'Fellowship\\Ring',
                         'projectName' => 'The Fellowship of the Ring',
+                        'securityPolicy' => true,
+                        'securityPolicyContactEmail' => 'security@example.com',
+                        'securityPolicyContactFormUrl' => 'https://example.com/security',
                         'vendorName' => 'fellowship',
                     ]),
                     $content,
@@ -246,6 +264,9 @@ class AnswersTest extends TestCase
         $answers->packageName = 'fellowship/ring';
         $answers->packageNamespace = 'Fellowship\\Ring';
         $answers->projectName = 'The Fellowship of the Ring';
+        $answers->securityPolicy = true;
+        $answers->securityPolicyContactEmail = 'security@example.com';
+        $answers->securityPolicyContactFormUrl = 'https://example.com/security';
         $answers->vendorName = 'fellowship';
 
         $answers->saveToFile();

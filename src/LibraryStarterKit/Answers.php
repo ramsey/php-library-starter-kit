@@ -63,6 +63,9 @@ final class Answers
     public ?string $packageName = null;
     public ?string $packageNamespace = null;
     public ?string $projectName = null;
+    public bool $securityPolicy = true;
+    public ?string $securityPolicyContactEmail = null;
+    public ?string $securityPolicyContactFormUrl = null;
     public ?string $vendorName = null;
 
     private string $saveToPath;

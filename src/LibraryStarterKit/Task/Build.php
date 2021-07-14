@@ -37,6 +37,7 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateFunding;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateNamespace;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateReadme;
+use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSecurityPolicy;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSourceFileHeaders;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -98,6 +99,7 @@ class Build
             new UpdateLicense($this),
             new UpdateSourceFileHeaders($this),
             new UpdateNamespace($this),
+            new UpdateSecurityPolicy($this),
             new UpdateCodeOfConduct($this),
             new UpdateChangelog($this),
             new UpdateContributing($this),

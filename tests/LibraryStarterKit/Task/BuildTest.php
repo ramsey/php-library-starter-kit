@@ -65,7 +65,7 @@ class BuildTest extends TestCase
         $builders = $build->getBuilders();
 
         $this->assertContainsOnlyInstancesOf(Builder::class, $builders);
-        $this->assertCount(14, $builders);
+        $this->assertCount(15, $builders);
     }
 
     public function testRun(): void
