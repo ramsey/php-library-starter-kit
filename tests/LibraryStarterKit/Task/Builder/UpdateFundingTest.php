@@ -18,7 +18,7 @@ class UpdateFundingTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating .github/FUNDING.yml');
+        $console->expects()->section('Updating .github/FUNDING.yml');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem

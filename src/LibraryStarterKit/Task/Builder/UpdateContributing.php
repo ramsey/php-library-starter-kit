@@ -31,7 +31,7 @@ class UpdateContributing extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating CONTRIBUTING.md');
+        $this->getConsole()->section('Updating CONTRIBUTING.md');
 
         $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'CONTRIBUTING.md.twig',

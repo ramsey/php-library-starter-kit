@@ -31,7 +31,7 @@ class InstallDependencies extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Installing dependencies');
+        $this->getConsole()->section('Installing dependencies');
 
         // Remove lockfiles and vendor directories to start fresh.
         $this->getEnvironment()->getFilesystem()->remove([

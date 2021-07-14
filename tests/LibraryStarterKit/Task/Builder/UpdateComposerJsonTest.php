@@ -27,7 +27,7 @@ class UpdateComposerJsonTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating composer.json');
+        $console->expects()->section('Updating composer.json');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -86,7 +86,7 @@ class UpdateComposerJsonTest extends TestCase
     public function testBuildThrowsExceptionWhenComposerContentsContainInvalidJson(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating composer.json');
+        $console->expects()->section('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(
@@ -122,7 +122,7 @@ class UpdateComposerJsonTest extends TestCase
     public function testBuildThrowsExceptionWhenComposerJsonCannotBeFound(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating composer.json');
+        $console->expects()->section('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(),
@@ -154,7 +154,7 @@ class UpdateComposerJsonTest extends TestCase
     public function testBuildWithMinimalComposerJson(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating composer.json');
+        $console->expects()->section('Updating composer.json');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem

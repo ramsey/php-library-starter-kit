@@ -35,7 +35,7 @@ class UpdateLicense extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating license and copyright information');
+        $this->getConsole()->section('Updating license and copyright information');
 
         $licenseChoice = $this->getAnswers()->license ?? '';
 

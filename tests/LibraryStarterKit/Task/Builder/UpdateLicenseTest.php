@@ -29,7 +29,7 @@ class UpdateLicenseTest extends TestCase
         $this->answers->license = $license;
 
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating license and copyright information');
+        $console->expects()->section('Updating license and copyright information');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->remove('LICENSE');

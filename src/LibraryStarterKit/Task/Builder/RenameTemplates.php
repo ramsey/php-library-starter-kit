@@ -39,7 +39,7 @@ class RenameTemplates extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Renaming template files');
+        $this->getConsole()->section('Renaming template files');
 
         /** @var SplFileInfo $template */
         foreach ($this->getTemplatesFinder() as $template) {

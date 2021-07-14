@@ -41,7 +41,7 @@ class UpdateNamespace extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating namespace');
+        $this->getConsole()->section('Updating namespace');
 
         $packageName = (string) $this->getAnswers()->packageName;
         $namespaceParts = explode(

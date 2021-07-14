@@ -18,7 +18,7 @@ class UpdateContributingTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating CONTRIBUTING.md');
+        $console->expects()->section('Updating CONTRIBUTING.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem

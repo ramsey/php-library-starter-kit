@@ -31,7 +31,7 @@ class RunTests extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Running project tests...');
+        $this->getConsole()->section('Running project tests...');
 
         $this
             ->getEnvironment()

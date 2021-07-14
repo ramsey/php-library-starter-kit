@@ -20,7 +20,7 @@ class UpdateCodeOfConductTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating CODE_OF_CONDUCT.md');
+        $console->expects()->section('Updating CODE_OF_CONDUCT.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -73,7 +73,7 @@ class UpdateCodeOfConductTest extends TestCase
     public function testBuildRemovesCodeOfConductFile(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Removing CODE_OF_CONDUCT.md');
+        $console->expects()->section('Removing CODE_OF_CONDUCT.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->shouldReceive('dumpFile')->never();

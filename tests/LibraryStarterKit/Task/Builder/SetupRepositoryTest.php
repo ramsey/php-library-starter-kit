@@ -21,7 +21,7 @@ class SetupRepositoryTest extends TestCase
         $this->answers->authorEmail = 'jdoe@example.com';
 
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Setting up Git repository');
+        $console->expects()->section('Setting up Git repository');
 
         // In this case, the local ~/.gitconfig does not have init.defaultBranch set.
         $processDefaultBranch = $this->mockery(Process::class);

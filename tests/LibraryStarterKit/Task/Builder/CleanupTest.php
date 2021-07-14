@@ -20,7 +20,7 @@ class CleanupTest extends TestCase
     {
         $console = $this->mockery(SymfonyStyle::class);
 
-        $console->expects()->note('Cleaning up...');
+        $console->expects()->section('Cleaning up...');
         $console->expects()->text(
             '<comment>  - Deleted \'/path/to/app/resources' . DIRECTORY_SEPARATOR . 'templates\'.</comment>',
         );

@@ -37,7 +37,7 @@ class UpdateSourceFileHeadersTest extends TestCase
         $this->answers->copyrightUrl = $copyrightUrl;
 
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating source file headers');
+        $console->expects()->section('Updating source file headers');
 
         $realSetup = new Setup(
             $this->mockery(Project::class, [

@@ -18,7 +18,7 @@ class UpdateChangelogTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating CHANGELOG.md');
+        $console->expects()->section('Updating CHANGELOG.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem

@@ -36,7 +36,7 @@ class SetupRepository extends Builder
 
     public function build(): void
     {
-        $this->getConsole()->note('Setting up Git repository');
+        $this->getConsole()->section('Setting up Git repository');
 
         $this
             ->initializeRepository()

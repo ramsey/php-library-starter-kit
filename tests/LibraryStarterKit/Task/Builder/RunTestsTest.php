@@ -18,7 +18,7 @@ class RunTestsTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Running project tests...');
+        $console->expects()->section('Running project tests...');
 
         $process = $this->mockery(Process::class);
         $process->expects()->mustRun(new IsCallable());

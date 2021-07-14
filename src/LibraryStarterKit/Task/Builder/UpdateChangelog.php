@@ -31,7 +31,7 @@ class UpdateChangelog extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating CHANGELOG.md');
+        $this->getConsole()->section('Updating CHANGELOG.md');
 
         $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'CHANGELOG.md.twig',

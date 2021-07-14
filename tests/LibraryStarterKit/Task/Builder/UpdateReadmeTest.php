@@ -28,7 +28,7 @@ class UpdateReadmeTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating README.md');
+        $console->expects()->section('Updating README.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -111,7 +111,7 @@ class UpdateReadmeTest extends TestCase
     public function testBuildWhenCodeOfConductIsNull(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating README.md');
+        $console->expects()->section('Updating README.md');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -194,7 +194,7 @@ class UpdateReadmeTest extends TestCase
     public function testBuildThrowsExceptionWhenReadmeCannotBeFound(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating README.md');
+        $console->expects()->section('Updating README.md');
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => new ArrayObject(

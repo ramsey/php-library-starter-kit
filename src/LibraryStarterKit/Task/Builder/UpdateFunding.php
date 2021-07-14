@@ -31,7 +31,7 @@ class UpdateFunding extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating .github/FUNDING.yml');
+        $this->getConsole()->section('Updating .github/FUNDING.yml');
 
         $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'FUNDING.yml.twig',

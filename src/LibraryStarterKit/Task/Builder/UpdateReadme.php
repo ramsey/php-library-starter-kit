@@ -37,7 +37,7 @@ class UpdateReadme extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->note('Updating README.md');
+        $this->getConsole()->section('Updating README.md');
 
         $readmeContents = $this->getReadmeContents();
 

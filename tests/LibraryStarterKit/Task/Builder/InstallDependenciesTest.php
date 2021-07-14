@@ -21,7 +21,7 @@ class InstallDependenciesTest extends TestCase
     public function testBuild(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Installing dependencies');
+        $console->expects()->section('Installing dependencies');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->remove([

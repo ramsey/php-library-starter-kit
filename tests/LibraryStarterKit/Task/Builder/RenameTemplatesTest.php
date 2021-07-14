@@ -41,7 +41,7 @@ class RenameTemplatesTest extends TestCase
         $expectedPath = implode(DIRECTORY_SEPARATOR, $expectedPathParts);
 
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Renaming template files');
+        $console->expects()->section('Renaming template files');
         $console->expects()->text("<comment>  - Renaming '{$path}' to '{$expectedPath}'.</comment>");
 
         $filesystem = $this->mockery(Filesystem::class);

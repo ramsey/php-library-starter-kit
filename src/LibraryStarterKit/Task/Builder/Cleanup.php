@@ -47,7 +47,7 @@ class Cleanup extends Builder
 
     public function build(): void
     {
-        $this->getConsole()->note('Cleaning up...');
+        $this->getConsole()->section('Cleaning up...');
 
         foreach (self::CLEANUP_FILES as $file) {
             $this->getEnvironment()->getFilesystem()->remove(

@@ -60,7 +60,7 @@ class UpdateComposerJson extends Builder
 
     public function build(): void
     {
-        $this->getConsole()->note('Updating composer.json');
+        $this->getConsole()->section('Updating composer.json');
 
         /**
          * @var array<string, mixed>|null $composer

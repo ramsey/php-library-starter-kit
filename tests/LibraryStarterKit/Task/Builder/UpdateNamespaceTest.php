@@ -32,7 +32,7 @@ class UpdateNamespaceTest extends TestCase
         string $testNamespace
     ): void {
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->note('Updating namespace');
+        $console->expects()->section('Updating namespace');
 
         $this->answers->packageName = $packageName;
         $this->answers->packageNamespace = $namespace;

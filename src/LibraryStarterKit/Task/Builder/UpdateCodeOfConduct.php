@@ -35,7 +35,7 @@ class UpdateCodeOfConduct extends Builder
     public function build(): void
     {
         if ($this->getAnswers()->codeOfConduct === CodeOfConduct::DEFAULT) {
-            $this->getConsole()->note('Removing CODE_OF_CONDUCT.md');
+            $this->getConsole()->section('Removing CODE_OF_CONDUCT.md');
             $this->getEnvironment()->getFilesystem()->remove(
                 $this->getEnvironment()->path('CODE_OF_CONDUCT.md'),
             );
@@ -43,7 +43,7 @@ class UpdateCodeOfConduct extends Builder
             return;
         }
 
-        $this->getConsole()->note('Updating CODE_OF_CONDUCT.md');
+        $this->getConsole()->section('Updating CODE_OF_CONDUCT.md');
 
         $codeOfConductTemplate = 'code-of-conduct' . DIRECTORY_SEPARATOR;
         $codeOfConductTemplate .= $this->getAnswers()->codeOfConduct ?? '';
