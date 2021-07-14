@@ -40,9 +40,6 @@
                 ]
             },
             {
-                "action": "composer dev:lint:pds"
-            },
-            {
                 "action": "composer dev:lint:syntax -- {$STAGED_FILES|of-type:php}",
                 "conditions": [
                     {
