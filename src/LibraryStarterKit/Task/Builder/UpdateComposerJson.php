@@ -88,7 +88,7 @@ class UpdateComposerJson extends Builder
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
             $this->getEnvironment()->path('composer.json'),
-            (string) json_encode($composer, self::JSON_OPTIONS),
+            (string) json_encode($composer, self::JSON_OPTIONS) . "\n",
         );
     }
 
