@@ -71,9 +71,11 @@ class SetupRepository extends Builder
 
     private function installHooks(): self
     {
+        $captainHookPath = $this->getEnvironment()->path('vendor') . '/bin/captainhook';
+
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
+            ->getProcess([$captainHookPath, 'install', '--force', '--skip-existing'])
             ->mustRun($this->streamProcessOutput());
 
         return $this;

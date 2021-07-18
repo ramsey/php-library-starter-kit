@@ -38,6 +38,11 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
+            ->path('vendor')
+            ->andReturn('/path/to/vendor');
+
+        $environment
+            ->expects()
             ->getProcess(['git', 'config', 'init.defaultBranch'])
             ->andReturn($processDefaultBranch);
 
@@ -48,7 +53,7 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['composer', 'run-script', 'post-autoload-dump'])
+            ->getProcess(['/path/to/vendor/bin/captainhook', 'install', '--force', '--skip-existing'])
             ->andReturn($processMustRunWithCallable);
 
         $environment
