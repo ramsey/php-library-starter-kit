@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
+use Closure;
 use Hamcrest\Type\IsCallable;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Setup;
@@ -22,6 +23,7 @@ class SetupRepositoryTest extends TestCase
 
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Setting up Git repository');
+        $console->expects()->write('a string to write to the console');
 
         // In this case, the local ~/.gitconfig does not have init.defaultBranch set.
         $processDefaultBranch = $this->mockery(Process::class);
@@ -46,9 +48,24 @@ class SetupRepositoryTest extends TestCase
             ->getProcess(['git', 'config', 'init.defaultBranch'])
             ->andReturn($processDefaultBranch);
 
+        $processMustRunWritesOutput = $this->mockery(Process::class);
+        $processMustRunWritesOutput
+            ->shouldReceive('mustRun')
+            ->once()
+            ->withArgs(function (Closure $consoleWriter): bool {
+                $consoleWriter('out', 'a string to write to the console');
+
+                return true;
+            });
+
         $environment
             ->expects()
-            ->getProcess(['git', 'init', '-b', 'main'])
+            ->getProcess(['git', 'init'])
+            ->andReturn($processMustRunWritesOutput);
+
+        $environment
+            ->expects()
+            ->getProcess(['git', 'branch', '-M', 'main'])
             ->andReturn($processMustRunWithCallable);
 
         $environment

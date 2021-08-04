@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
+use Symfony\Component\Process\Process;
 
 use function trim;
 
@@ -63,7 +64,16 @@ class SetupRepository extends Builder
     {
         $this
             ->getEnvironment()
-            ->getProcess(['git', 'init', '-b', $this->getDefaultBranch()])
+            ->getProcess(['git', 'init'])
+            ->mustRun(function (string $type, string $buffer): void {
+                if ($type === Process::OUT) {
+                    $this->getConsole()->write($buffer);
+                }
+            });
+
+        $this
+            ->getEnvironment()
+            ->getProcess(['git', 'branch', '-M', $this->getDefaultBranch()])
             ->mustRun($this->streamProcessOutput());
 
         return $this;
