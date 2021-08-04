@@ -36,6 +36,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 use function basename;
 use function dirname;
@@ -78,6 +79,8 @@ class Wizard extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->setVerbosity($this->getSetup()->getVerbosity());
+
         $console = $this->styleFactory->factory($input, $output);
         $console->title('Welcome to the PHP Library Starter Kit!');
         $console->block(
@@ -89,12 +92,16 @@ class Wizard extends Command
 
         $this->registerInterruptHandler($console);
 
-        if (!$this->confirmStart($console)) {
-            return 0;
-        }
+        try {
+            if (!$this->confirmStart($console)) {
+                return 0;
+            }
 
-        $this->askQuestions($console);
-        $this->setup->run($console, $this->answers);
+            $this->askQuestions($console);
+            $this->setup->run($console, $this->answers);
+        } catch (Throwable $throwable) {
+            return $this->handleException($throwable, $console);
+        }
 
         $console->success([
             sprintf('Congratulations! Your project, %s, is ready!', (string) $this->answers->packageName),
@@ -173,6 +180,30 @@ class Wizard extends Command
         // phpcs:enable
     }
 
+    private function handleException(Throwable $throwable, SymfonyStyle $console): int
+    {
+        $errorMessages = [
+            $throwable->getMessage(),
+            sprintf('At line %d in %s', $throwable->getLine(), $throwable->getFile()),
+        ];
+
+        if ($console->getVerbosity() === OutputInterface::VERBOSITY_DEBUG) {
+            $errorMessages[] = $throwable->getTraceAsString();
+        }
+
+        $console->error($errorMessages);
+
+        $console->block([
+            'Oops! I encountered an error.',
+            'Please go here and click the "New issue" button to report this error: '
+                . 'https://github.com/ramsey/php-library-starter-kit/issues',
+        ]);
+
+        $console->newLine();
+
+        return (int) $throwable->getCode() ?: 1;
+    }
+
     public static function newApplication(): Application
     {
         return self::$application ?? new Application();
@@ -186,7 +217,7 @@ class Wizard extends Command
         $projectName = (string) preg_replace('/[^a-z0-9]/', '-', $projectName);
 
         $project = new Project($projectName, $appPath);
-        $setup = new Setup($project, $event, new Filesystem(), new Finder());
+        $setup = new Setup($project, $event, new Filesystem(), new Finder(), self::determineVerbosityLevel($event));
 
         $command = new self($setup);
 
@@ -195,5 +226,18 @@ class Wizard extends Command
         $application->setDefaultCommand((string) $command->getName(), true);
 
         $application->run(new StringInput('starter-kit'));
+    }
+
+    public static function determineVerbosityLevel(Event $event): int
+    {
+        if ($event->getIO()->isDebug()) {
+            return OutputInterface::VERBOSITY_DEBUG;
+        } elseif ($event->getIO()->isVeryVerbose()) {
+            return OutputInterface::VERBOSITY_VERY_VERBOSE;
+        } elseif ($event->getIO()->isVerbose()) {
+            return OutputInterface::VERBOSITY_VERBOSE;
+        }
+
+        return OutputInterface::VERBOSITY_NORMAL;
     }
 }

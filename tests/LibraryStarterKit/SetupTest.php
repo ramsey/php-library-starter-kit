@@ -11,6 +11,7 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
@@ -49,6 +50,7 @@ class SetupTest extends TestCase
             $event,
             $filesystem,
             $finder,
+            OutputInterface::VERBOSITY_NORMAL,
         );
     }
 
@@ -75,6 +77,11 @@ class SetupTest extends TestCase
     public function testGetProjectName(): void
     {
         $this->assertSame('a-project-name', $this->setup->getProjectName());
+    }
+
+    public function testGetVerbosity(): void
+    {
+        $this->assertSame(OutputInterface::VERBOSITY_NORMAL, $this->setup->getVerbosity());
     }
 
     public function testGetBuild(): void

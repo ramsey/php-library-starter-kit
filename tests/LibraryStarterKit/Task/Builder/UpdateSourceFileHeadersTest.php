@@ -15,6 +15,7 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateSourceFileHeaders;
 use Ramsey\Test\Dev\LibraryStarterKit\SnapshotsTool;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Ramsey\Test\Dev\LibraryStarterKit\WindowsSafeTextDriver;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -46,6 +47,7 @@ class UpdateSourceFileHeadersTest extends TestCase
             $this->mockery(Event::class),
             $this->mockery(Filesystem::class),
             $this->mockery(Finder::class),
+            OutputInterface::VERBOSITY_NORMAL,
         );
 
         $file1 = $this->mockery(SplFileInfo::class, [

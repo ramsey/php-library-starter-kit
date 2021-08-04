@@ -18,6 +18,7 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
+use RuntimeException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StringInput;
@@ -60,6 +61,7 @@ class WizardTest extends TestCase
 
         /** @var OutputInterface & MockInterface $output */
         $output = $this->mockery(OutputInterface::class);
+        $output->expects()->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
 
         /** @var Style & MockInterface $console */
         $console = $this->mockery(Style::class);
@@ -68,6 +70,7 @@ class WizardTest extends TestCase
         $setup = $this->mockery(Setup::class);
         $setup->expects()->getAppPath()->andReturn('/path/to/app');
         $setup->shouldReceive('getProject->getName')->andReturn('foo-project');
+        $setup->expects()->getVerbosity()->andReturn(OutputInterface::VERBOSITY_NORMAL);
 
         $setup
             ->expects()
@@ -107,6 +110,7 @@ class WizardTest extends TestCase
 
         /** @var OutputInterface & MockInterface $output */
         $output = $this->mockery(OutputInterface::class);
+        $output->expects()->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
 
         /** @var Style & MockInterface $console */
         $console = $this->mockery(Style::class);
@@ -117,6 +121,8 @@ class WizardTest extends TestCase
         $setup = $this->mockery(Setup::class, [
             'getProject' => $project,
         ]);
+
+        $setup->expects()->getVerbosity()->andReturn(OutputInterface::VERBOSITY_NORMAL);
 
         $setup
             ->shouldReceive('run')
@@ -179,6 +185,9 @@ class WizardTest extends TestCase
     }
 
     /**
+     * Use a separate process because we are setting a static application
+     * property for this test.
+     *
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
@@ -187,7 +196,11 @@ class WizardTest extends TestCase
         $vendorDir = (string) realpath(__DIR__ . '/../../vendor');
 
         /** @var Event & MockInterface $event */
-        $event = $this->mockery(Event::class);
+        $event = $this->mockery(Event::class, [
+            'getIO->isDebug' => false,
+            'getIO->isVeryVerbose' => false,
+            'getIO->isVerbose' => false,
+        ]);
         $event
             ->shouldReceive('getComposer->getConfig->get')
             ->with('vendor-dir')
@@ -212,5 +225,166 @@ class WizardTest extends TestCase
 
         Wizard::$application = $application;
         Wizard::start($event);
+    }
+
+    /**
+     * @dataProvider runWhenExceptionIsThrownWithVerbosityProvider
+     */
+    public function testRunWhenExceptionIsThrownWithVerbosity(
+        int $verbosity,
+        int $exceptionCode,
+        int $expectedReturn
+    ): void {
+        /** @var InputInterface & MockInterface $input */
+        $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
+
+        /** @var OutputInterface & MockInterface $output */
+        $output = $this->mockery(OutputInterface::class);
+        $output->expects()->setVerbosity($verbosity);
+
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
+
+        $project = new Project('my-project', '/my/project/path');
+
+        // phpcs:disable
+        $exceptionLine = __LINE__; $exception = new RuntimeException('a test exception message', $exceptionCode);
+        // phpcs:enable
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class, ['getProject' => $project]);
+        $setup->expects()->getVerbosity()->andReturn($verbosity);
+        $setup->shouldReceive('run')->once()->andThrow($exception);
+        $setup->expects()->path('.starter-kit-answers')->andReturn('/path/to/.starter-kit-answers');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
+        $styleFactory->expects()->factory($input, $output)->andReturn($console);
+
+        $console->shouldReceive('block');
+        $console->shouldReceive('newLine');
+        $console->shouldReceive('title')->once();
+        $console->shouldReceive('success')->never();
+        $console->shouldReceive('getVerbosity')->andReturn($verbosity);
+
+        $console
+            ->expects()
+            ->askQuestion(new IsInstanceOf(ConfirmationQuestion::class))
+            ->andReturnTrue();
+
+        $defaultAnswers = $this->answers;
+
+        /** @var Question & StarterKitQuestion $question */
+        foreach ((new InstallQuestions())->getQuestions($defaultAnswers) as $question) {
+            if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
+                continue;
+            }
+
+            $console
+                ->expects()
+                ->askQuestion(new IsInstanceOf(get_class($question))) // phpcs:ignore
+                ->andReturn($defaultAnswers->{$question->getName()});
+        }
+
+        $expectedErrorMessages = [
+            'a test exception message',
+            'At line ' . $exceptionLine . ' in ' . __FILE__,
+        ];
+
+        if ($verbosity === OutputInterface::VERBOSITY_DEBUG) {
+            $expectedErrorMessages[] = $exception->getTraceAsString();
+        }
+
+        $console->expects()->error($expectedErrorMessages);
+
+        $wizard = new Wizard($setup, $styleFactory);
+
+        $this->assertSame($expectedReturn, $wizard->run($input, $output));
+    }
+
+    /**
+     * @return array<array{verbosity: int, exceptionCode: int, expectedReturn: int}>
+     */
+    public function runWhenExceptionIsThrownWithVerbosityProvider(): array
+    {
+        return [
+            [
+                'verbosity' => OutputInterface::VERBOSITY_NORMAL,
+                'exceptionCode' => 0,
+                'expectedReturn' => 1,
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+                'exceptionCode' => 2,
+                'expectedReturn' => 2,
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+                'exceptionCode' => 3,
+                'expectedReturn' => 3,
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_DEBUG,
+                'exceptionCode' => 4,
+                'expectedReturn' => 4,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider determineVerbosityLevelProvider
+     */
+    public function testDetermineVerbosityLevel(
+        bool $isDebug,
+        bool $isVeryVerbose,
+        bool $isVerbose,
+        int $expectedVerbosity
+    ): void {
+        /** @var Event & MockInterface $event */
+        $event = $this->mockery(Event::class, [
+            'getIO->isDebug' => $isDebug,
+            'getIO->isVeryVerbose' => $isVeryVerbose,
+            'getIO->isVerbose' => $isVerbose,
+        ]);
+
+        $this->assertSame($expectedVerbosity, Wizard::determineVerbosityLevel($event));
+    }
+
+    /**
+     * @return array<array{isDebug: bool, isVeryVerbose: bool, isVerbose: bool, expectedVerbosity: int}>
+     */
+    public function determineVerbosityLevelProvider(): array
+    {
+        return [
+            [
+                'isDebug' => false,
+                'isVeryVerbose' => false,
+                'isVerbose' => false,
+                'expectedVerbosity' => OutputInterface::VERBOSITY_NORMAL,
+            ],
+            [
+                'isDebug' => true,
+                'isVeryVerbose' => false,
+                'isVerbose' => false,
+                'expectedVerbosity' => OutputInterface::VERBOSITY_DEBUG,
+            ],
+            [
+                'isDebug' => false,
+                'isVeryVerbose' => true,
+                'isVerbose' => false,
+                'expectedVerbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+            ],
+            [
+                'isDebug' => false,
+                'isVeryVerbose' => false,
+                'isVerbose' => true,
+                'expectedVerbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            ],
+        ];
     }
 }

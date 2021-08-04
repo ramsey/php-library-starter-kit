@@ -46,17 +46,20 @@ class Setup
     private Filesystem $filesystem;
     private Finder $finder;
     private Project $project;
+    private int $verbosity;
 
     public function __construct(
         Project $project,
         Event $event,
         Filesystem $filesystem,
-        Finder $finder
+        Finder $finder,
+        int $verbosity
     ) {
         $this->project = $project;
         $this->event = $event;
         $this->filesystem = $filesystem;
         $this->finder = $finder;
+        $this->verbosity = $verbosity;
     }
 
     /**
@@ -105,6 +108,14 @@ class Setup
     public function getProject(): Project
     {
         return $this->project;
+    }
+
+    /**
+     * Returns the verbosity level
+     */
+    public function getVerbosity(): int
+    {
+        return $this->verbosity;
     }
 
     /**
