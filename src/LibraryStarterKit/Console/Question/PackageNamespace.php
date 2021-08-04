@@ -85,6 +85,8 @@ class PackageNamespace extends Question implements StarterKitQuestion
 
         $packageName = str_replace('/', '\\', $packageName);
         $packageNameParts = explode('\\', $packageName);
+
+        /** @var string[] $packageNameParts */
         $packageNameParts = array_map($this->namify(), $packageNameParts);
 
         return implode('\\', $packageNameParts);
