@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.1.0 - 2021-08-05
+
+### Added
+
+- Use the author name and email address for git config, if necessary
+- Require the author email address
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Set the branch name *after* the initial commit to avoid errors on older versions of Git
+
 ## 3.0.3 - 2021-08-04
 
 ### Added
