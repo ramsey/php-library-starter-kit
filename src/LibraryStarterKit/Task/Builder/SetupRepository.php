@@ -44,7 +44,8 @@ class SetupRepository extends Builder
             ->installHooks()
             ->cleanBuildDir()
             ->gitAddAllFiles()
-            ->gitInitialCommit();
+            ->gitInitialCommit()
+            ->setGitBranchName();
     }
 
     private function getDefaultBranch(): string
@@ -70,11 +71,6 @@ class SetupRepository extends Builder
                     $this->getConsole()->write($buffer);
                 }
             });
-
-        $this
-            ->getEnvironment()
-            ->getProcess(['git', 'branch', '-M', $this->getDefaultBranch()])
-            ->mustRun($this->streamProcessOutput());
 
         return $this;
     }
@@ -116,6 +112,16 @@ class SetupRepository extends Builder
         $this
             ->getEnvironment()
             ->getProcess(['git', 'commit', '-n', '-m', self::COMMIT_MSG])
+            ->mustRun($this->streamProcessOutput());
+
+        return $this;
+    }
+
+    private function setGitBranchName(): self
+    {
+        $this
+            ->getEnvironment()
+            ->getProcess(['git', 'branch', '-M', $this->getDefaultBranch()])
             ->mustRun($this->streamProcessOutput());
 
         return $this;
