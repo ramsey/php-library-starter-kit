@@ -46,5 +46,8 @@ class AuthorEmail extends Question implements StarterKitQuestion
         );
 
         $this->answers = $answers;
+
+        // Require the author's email address.
+        $this->isOptional = false;
     }
 }
