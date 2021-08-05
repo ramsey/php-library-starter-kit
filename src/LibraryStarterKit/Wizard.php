@@ -44,6 +44,7 @@ use function preg_replace;
 use function realpath;
 use function sprintf;
 use function strtolower;
+use function trim;
 
 class Wizard extends Command
 {
@@ -69,6 +70,14 @@ class Wizard extends Command
 
         if ($this->answers->projectName === null) {
             $this->answers->projectName = $this->setup->getProject()->getName();
+        }
+
+        if ($this->answers->authorName === null) {
+            $this->answers->authorName = $this->getGitUserName();
+        }
+
+        if ($this->answers->authorEmail === null) {
+            $this->answers->authorEmail = $this->getGitUserEmail();
         }
     }
 
@@ -109,6 +118,28 @@ class Wizard extends Command
         ]);
 
         return 0;
+    }
+
+    private function getGitUserName(): ?string
+    {
+        $process = $this->getSetup()->getProcess(
+            ['git', 'config', 'user.name'],
+        );
+
+        $process->run();
+
+        return trim($process->getOutput()) ?: null;
+    }
+
+    private function getGitUserEmail(): ?string
+    {
+        $process = $this->getSetup()->getProcess(
+            ['git', 'config', 'user.email'],
+        );
+
+        $process->run();
+
+        return trim($process->getOutput()) ?: null;
     }
 
     private function confirmStart(SymfonyStyle $console): bool

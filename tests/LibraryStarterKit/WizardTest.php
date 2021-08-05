@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Process\Process;
 
 use function dirname;
 use function get_class;
@@ -43,6 +44,12 @@ class WizardTest extends TestCase
             ->expects()
             ->path('.starter-kit-answers')
             ->andReturn('/path/to/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
@@ -76,6 +83,12 @@ class WizardTest extends TestCase
             ->expects()
             ->path('.starter-kit-answers')
             ->andReturn('/path/to/app/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/app/.starter-kit-answers')->andReturnFalse();
@@ -138,6 +151,12 @@ class WizardTest extends TestCase
             ->expects()
             ->path('.starter-kit-answers')
             ->andReturn('/path/to/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
@@ -256,6 +275,12 @@ class WizardTest extends TestCase
         $setup->expects()->getVerbosity()->andReturn($verbosity);
         $setup->shouldReceive('run')->once()->andThrow($exception);
         $setup->expects()->path('.starter-kit-answers')->andReturn('/path/to/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();

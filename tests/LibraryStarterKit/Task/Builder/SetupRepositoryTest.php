@@ -14,6 +14,8 @@ use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Process;
 
+use function sprintf;
+
 class SetupRepositoryTest extends TestCase
 {
     /**
@@ -23,33 +25,53 @@ class SetupRepositoryTest extends TestCase
     {
         return [
             [
-                'configUserName' => '',
-                'configUserEmail' => '',
+                'configUserName' => 'Jane Doe',
+                'configUserEmail' => 'jdoe@example.com',
                 'configDefaultBranch' => '',
+                'authorName' => 'Jane Doe',
+                'authorEmail' => 'jdoe@example.com',
+                'expectedName' => 'Jane Doe',
+                'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'main',
             ],
             [
                 'configUserName' => '',
                 'configUserEmail' => '',
                 'configDefaultBranch' => 'my-custom-branch-name',
+                'authorName' => 'Jane Doe',
+                'authorEmail' => 'jdoe@example.com',
+                'expectedName' => 'Jane Doe',
+                'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'my-custom-branch-name',
             ],
             [
                 'configUserName' => 'Frodo Baggins',
                 'configUserEmail' => '',
                 'configDefaultBranch' => '',
+                'authorName' => 'Jane Doe',
+                'authorEmail' => 'jdoe@example.com',
+                'expectedName' => 'Jane Doe',
+                'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'main',
             ],
             [
                 'configUserName' => '',
                 'configUserEmail' => 'frodo@example.com',
                 'configDefaultBranch' => '',
+                'authorName' => 'Jane Doe',
+                'authorEmail' => 'jdoe@example.com',
+                'expectedName' => 'Jane Doe',
+                'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'main',
             ],
             [
                 'configUserName' => 'Samwise Gamgee',
                 'configUserEmail' => 'samwise@example.com',
                 'configDefaultBranch' => 'default',
+                'authorName' => 'Jane Doe',
+                'authorEmail' => 'jdoe@example.com',
+                'expectedName' => 'Jane Doe',
+                'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'default',
             ],
         ];
@@ -62,10 +84,14 @@ class SetupRepositoryTest extends TestCase
         string $configUserName,
         string $configUserEmail,
         string $configDefaultBranch,
+        string $authorName,
+        string $authorEmail,
+        string $expectedName,
+        string $expectedEmail,
         string $expectedDefaultBranch
     ): void {
-        $this->answers->authorName = 'Jane Doe';
-        $this->answers->authorEmail = 'jdoe@example.com';
+        $this->answers->authorName = $authorName;
+        $this->answers->authorEmail = $authorEmail;
 
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Setting up Git repository');
@@ -126,38 +152,18 @@ class SetupRepositoryTest extends TestCase
             ->getProcess(['git', 'init'])
             ->andReturn($processMustRunWritesOutput);
 
-        if ($configUserName === '') {
-            // If there is no global user.name set, then we expect this to be called.
+        if ($configUserName !== $authorName) {
             $environment
                 ->expects()
-                ->getProcess(['git', 'config', 'user.name', 'Jane Doe'])
+                ->getProcess(['git', 'config', 'user.name', $expectedName])
                 ->andReturn($processMustRunWithCallable);
-        } else {
-            $environment
-                ->expects()
-                ->getProcess(['git', 'config', 'user.name', 'Jane Doe'])
-                ->never();
-            $environment
-                ->expects()
-                ->getProcess(['git', 'config', 'user.name', $configUserName])
-                ->never();
         }
 
-        if ($configUserEmail === '') {
-            // If there is no global user.email set, then we expect this to be called.
+        if ($configUserEmail !== $authorEmail) {
             $environment
                 ->expects()
-                ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
+                ->getProcess(['git', 'config', 'user.email', $expectedEmail])
                 ->andReturn($processMustRunWithCallable);
-        } else {
-            $environment
-                ->expects()
-                ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
-                ->never();
-            $environment
-                ->expects()
-                ->getProcess(['git', 'config', 'user.email', $configUserEmail])
-                ->never();
         }
 
         $environment
@@ -188,6 +194,8 @@ class SetupRepositoryTest extends TestCase
                 '-n',
                 '-m',
                 'chore: initialize project using ramsey/php-library-starter-kit',
+                '--author',
+                sprintf('%s <%s>', $expectedName, $expectedEmail),
             ])
             ->andReturn($processMustRunWithCallable);
 

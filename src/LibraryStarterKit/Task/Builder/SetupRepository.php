@@ -25,6 +25,7 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use Symfony\Component\Process\Process;
 
+use function sprintf;
 use function trim;
 
 /**
@@ -132,9 +133,15 @@ class SetupRepository extends Builder
 
     private function gitInitialCommit(): self
     {
+        $author = sprintf(
+            '%s <%s>',
+            (string) $this->getAnswers()->authorName,
+            (string) $this->getAnswers()->authorEmail,
+        );
+
         $this
             ->getEnvironment()
-            ->getProcess(['git', 'commit', '-n', '-m', self::COMMIT_MSG])
+            ->getProcess(['git', 'commit', '-n', '-m', self::COMMIT_MSG, '--author', $author])
             ->mustRun($this->streamProcessOutput());
 
         return $this;
@@ -155,14 +162,14 @@ class SetupRepository extends Builder
         $userName = $this->getUserName();
         $userEmail = $this->getUserEmail();
 
-        if ($userName === '') {
+        if ($userName !== $this->getAnswers()->authorName) {
             $this
                 ->getEnvironment()
                 ->getProcess(['git', 'config', 'user.name', (string) $this->getAnswers()->authorName])
                 ->mustRun($this->streamProcessOutput());
         }
 
-        if ($userEmail === '') {
+        if ($userEmail !== $this->getAnswers()->authorEmail) {
             $this
                 ->getEnvironment()
                 ->getProcess(['git', 'config', 'user.email', (string) $this->getAnswers()->authorEmail])
