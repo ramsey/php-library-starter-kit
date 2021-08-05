@@ -40,7 +40,7 @@ class LicenseTest extends QuestionTestCase
 
         $question = new License($this->answers);
 
-        $this->assertSame(10, $question->getDefault());
+        $this->assertSame(11, $question->getDefault());
     }
 
     public function testGetChoices(): void
@@ -53,14 +53,15 @@ class LicenseTest extends QuestionTestCase
                 2 => 'Apache License 2.0',
                 3 => 'BSD 2-Clause "Simplified" License',
                 4 => 'BSD 3-Clause "New" or "Revised" License',
-                5 => 'GNU Affero General Public License v3.0 or later',
-                6 => 'GNU General Public License v3.0 or later',
-                7 => 'GNU Lesser General Public License v3.0 or later',
-                8 => 'Hippocratic License 2.1',
-                9 => 'MIT License',
-                10 => 'MIT No Attribution',
-                11 => 'Mozilla Public License 2.0',
-                12 => 'Unlicense',
+                5 => 'Creative Commons Zero v1.0 Universal',
+                6 => 'GNU Affero General Public License v3.0 or later',
+                7 => 'GNU General Public License v3.0 or later',
+                8 => 'GNU Lesser General Public License v3.0 or later',
+                9 => 'Hippocratic License 2.1',
+                10 => 'MIT License',
+                11 => 'MIT No Attribution',
+                12 => 'Mozilla Public License 2.0',
+                13 => 'Unlicense',
             ],
             $question->getChoices(),
         );
@@ -86,18 +87,20 @@ class LicenseTest extends QuestionTestCase
             ['value' => '2', 'expected' => 'Apache-2.0'],
             ['value' => '3', 'expected' => 'BSD-2-Clause'],
             ['value' => '4', 'expected' => 'BSD-3-Clause'],
-            ['value' => '5', 'expected' => 'AGPL-3.0-or-later'],
-            ['value' => '6', 'expected' => 'GPL-3.0-or-later'],
-            ['value' => '7', 'expected' => 'LGPL-3.0-or-later'],
-            ['value' => '8', 'expected' => 'Hippocratic-2.1'],
-            ['value' => '9', 'expected' => 'MIT'],
-            ['value' => '10', 'expected' => 'MIT-0'],
-            ['value' => '11', 'expected' => 'MPL-2.0'],
-            ['value' => '12', 'expected' => 'Unlicense'],
+            ['value' => '5', 'expected' => 'CC0-1.0'],
+            ['value' => '6', 'expected' => 'AGPL-3.0-or-later'],
+            ['value' => '7', 'expected' => 'GPL-3.0-or-later'],
+            ['value' => '8', 'expected' => 'LGPL-3.0-or-later'],
+            ['value' => '9', 'expected' => 'Hippocratic-2.1'],
+            ['value' => '10', 'expected' => 'MIT'],
+            ['value' => '11', 'expected' => 'MIT-0'],
+            ['value' => '12', 'expected' => 'MPL-2.0'],
+            ['value' => '13', 'expected' => 'Unlicense'],
             ['value' => 'Proprietary', 'expected' => 'Proprietary'],
             ['value' => 'Apache License 2.0', 'expected' => 'Apache-2.0'],
             ['value' => 'BSD 2-Clause "Simplified" License', 'expected' => 'BSD-2-Clause'],
             ['value' => 'BSD 3-Clause "New" or "Revised" License', 'expected' => 'BSD-3-Clause'],
+            ['value' => 'Creative Commons Zero v1.0 Universal', 'expected' => 'CC0-1.0'],
             ['value' => 'GNU Affero General Public License v3.0 or later', 'expected' => 'AGPL-3.0-or-later'],
             ['value' => 'GNU General Public License v3.0 or later', 'expected' => 'GPL-3.0-or-later'],
             ['value' => 'GNU Lesser General Public License v3.0 or later', 'expected' => 'LGPL-3.0-or-later'],
@@ -106,7 +109,7 @@ class LicenseTest extends QuestionTestCase
             ['value' => 'MIT No Attribution', 'expected' => 'MIT-0'],
             ['value' => 'Mozilla Public License 2.0', 'expected' => 'MPL-2.0'],
             ['value' => 'Unlicense', 'expected' => 'Unlicense'],
-            ['value' => '13', 'expected' => '13'],
+            ['value' => '14', 'expected' => '14'],
             ['value' => null, 'expected' => ''],
             ['value' => 'foo', 'expected' => 'foo'],
         ];
@@ -162,8 +165,8 @@ class LicenseTest extends QuestionTestCase
                 'message' => '"foo" is not a valid license choice.',
             ],
             [
-                'value' => '13',
-                'message' => '"13" is not a valid license choice.',
+                'value' => '14',
+                'message' => '"14" is not a valid license choice.',
             ],
         ];
     }
