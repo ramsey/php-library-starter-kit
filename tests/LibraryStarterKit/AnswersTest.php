@@ -7,7 +7,6 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 use Mockery\MockInterface;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
 
 use function json_encode;
 
@@ -136,40 +135,8 @@ class AnswersTest extends TestCase
 
     public function testLoadsExistingFileUponInstantiation(): void
     {
-        $file = $this->mockery(SplFileInfo::class);
-        $file->expects()->getContents()->andReturn(json_encode([
-            'authorHoldsCopyright' => true,
-            'authorEmail' => 'frodo@example.com',
-            'unknownProperty' => 'foobar',
-            'authorUrl' => 'https://example.com/the-fellowship/frodo',
-            'packageDescription' => 'A package to help you on your journey.',
-            'codeOfConduct' => 'Citizen-2.3',
-            'codeOfConductEmail' => 'council@example.com',
-            'projectName' => 'The Fellowship of the Ring',
-            'codeOfConductPoliciesUrl' => 'https://example.com/the-fellowship/conduct-policies',
-            'securityPolicyContactFormUrl' => 'https://example.com/security',
-            'codeOfConductReportingUrl' => 'https://example.com/the-fellowship/conduct-reporting',
-            'authorName' => 'Frodo Baggins',
-            'copyrightEmail' => 'fellowship@example.com',
-            'copyrightHolder' => 'The Fellowship',
-            'copyrightUrl' => 'https://example.com/the-fellowship',
-            'packageName' => 'fellowship/ring',
-            'securityPolicy' => true,
-            'anotherUnknownProperty' => 'baz',
-            'copyrightYear' => '2021',
-            'codeOfConductCommittee' => 'Council of the Wise',
-            'githubUsername' => 'frodo',
-            'securityPolicyContactEmail' => 'security@example.com',
-            'vendorName' => 'fellowship',
-            'license' => 'BSD-2-Clause',
-            'packageKeywords' => ['foo', 'bar'],
-            'packageNamespace' => 'Fellowship\\Ring',
-        ]));
-
-        $this->filesystem->expects()->exists('/path/to/file.json')->andReturnTrue();
-        $this->filesystem->expects()->getFile('/path/to/file.json')->andReturn($file);
-
-        $answers = new Answers('/path/to/file.json', $this->filesystem);
+        $filesystem = new Filesystem();
+        $answers = new Answers(__DIR__ . '/answers-test.json', $filesystem);
 
         $this->assertSame(
             [

@@ -1,0 +1,31 @@
+{
+    "authorHoldsCopyright": true,
+    "authorEmail": "frodo@example.com",
+    "unknownProperty": "foobar",
+    "authorUrl": "https://example.com/the-fellowship/frodo",
+    "packageDescription": "A package to help you on your journey.",
+    "codeOfConduct": "Citizen-2.3",
+    "codeOfConductEmail": "council@example.com",
+    "projectName": "The Fellowship of the Ring",
+    "codeOfConductPoliciesUrl": "https://example.com/the-fellowship/conduct-policies",
+    "securityPolicyContactFormUrl": "https://example.com/security",
+    "codeOfConductReportingUrl": "https://example.com/the-fellowship/conduct-reporting",
+    "authorName": "Frodo Baggins",
+    "copyrightEmail": "fellowship@example.com",
+    "copyrightHolder": "The Fellowship",
+    "copyrightUrl": "https://example.com/the-fellowship",
+    "packageName": "fellowship/ring",
+    "securityPolicy": true,
+    "anotherUnknownProperty": "baz",
+    "copyrightYear": "2021",
+    "codeOfConductCommittee": "Council of the Wise",
+    "githubUsername": "frodo",
+    "securityPolicyContactEmail": "security@example.com",
+    "vendorName": "fellowship",
+    "license": "BSD-2-Clause",
+    "packageKeywords": [
+        "foo",
+        "bar"
+    ],
+    "packageNamespace": "Fellowship\\Ring"
+}
