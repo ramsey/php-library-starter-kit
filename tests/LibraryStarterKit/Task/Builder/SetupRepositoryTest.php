@@ -16,8 +16,54 @@ use Symfony\Component\Process\Process;
 
 class SetupRepositoryTest extends TestCase
 {
-    public function testBuild(): void
+    /**
+     * @return array<array{configUserName: string, configUserEmail: string, configDefaultBranch: string, expectedDefaultBranch: string}>
+     */
+    public function buildProvider(): array
     {
+        return [
+            [
+                'configUserName' => '',
+                'configUserEmail' => '',
+                'configDefaultBranch' => '',
+                'expectedDefaultBranch' => 'main',
+            ],
+            [
+                'configUserName' => '',
+                'configUserEmail' => '',
+                'configDefaultBranch' => 'my-custom-branch-name',
+                'expectedDefaultBranch' => 'my-custom-branch-name',
+            ],
+            [
+                'configUserName' => 'Frodo Baggins',
+                'configUserEmail' => '',
+                'configDefaultBranch' => '',
+                'expectedDefaultBranch' => 'main',
+            ],
+            [
+                'configUserName' => '',
+                'configUserEmail' => 'frodo@example.com',
+                'configDefaultBranch' => '',
+                'expectedDefaultBranch' => 'main',
+            ],
+            [
+                'configUserName' => 'Samwise Gamgee',
+                'configUserEmail' => 'samwise@example.com',
+                'configDefaultBranch' => 'default',
+                'expectedDefaultBranch' => 'default',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider buildProvider
+     */
+    public function testBuild(
+        string $configUserName,
+        string $configUserEmail,
+        string $configDefaultBranch,
+        string $expectedDefaultBranch
+    ): void {
         $this->answers->authorName = 'Jane Doe';
         $this->answers->authorEmail = 'jdoe@example.com';
 
@@ -25,16 +71,23 @@ class SetupRepositoryTest extends TestCase
         $console->expects()->section('Setting up Git repository');
         $console->expects()->write('a string to write to the console');
 
-        // In this case, the local ~/.gitconfig does not have init.defaultBranch set.
+        $processConfigUserName = $this->mockery(Process::class);
+        $processConfigUserName->expects()->run()->andReturn($configUserName ? 0 : 1);
+        $processConfigUserName->expects()->getOutput()->andReturn($configUserName);
+
+        $processConfigUserEmail = $this->mockery(Process::class);
+        $processConfigUserEmail->expects()->run()->andReturn($configUserEmail ? 0 : 1);
+        $processConfigUserEmail->expects()->getOutput()->andReturn($configUserEmail);
+
         $processDefaultBranch = $this->mockery(Process::class);
-        $processDefaultBranch->expects()->run()->andReturn(1);
-        $processDefaultBranch->expects()->getOutput()->andReturn('');
+        $processDefaultBranch->expects()->run()->andReturn($configDefaultBranch ? 0 : 1);
+        $processDefaultBranch->expects()->getOutput()->andReturn($configDefaultBranch);
 
         $processMustRun = $this->mockery(Process::class);
         $processMustRun->expects()->mustRun();
 
         $processMustRunWithCallable = $this->mockery(Process::class);
-        $processMustRunWithCallable->expects()->mustRun(new IsCallable())->times(4);
+        $processMustRunWithCallable->shouldReceive('mustRun')->with(new IsCallable())->atLeast()->times(4);
 
         $environment = $this->mockery(Setup::class);
 
@@ -42,6 +95,16 @@ class SetupRepositoryTest extends TestCase
             ->expects()
             ->path('vendor')
             ->andReturn('/path/to/vendor');
+
+        $environment
+            ->expects()
+            ->getProcess(['git', 'config', 'user.name'])
+            ->andReturn($processConfigUserName);
+
+        $environment
+            ->expects()
+            ->getProcess(['git', 'config', 'user.email'])
+            ->andReturn($processConfigUserEmail);
 
         $environment
             ->expects()
@@ -63,9 +126,43 @@ class SetupRepositoryTest extends TestCase
             ->getProcess(['git', 'init'])
             ->andReturn($processMustRunWritesOutput);
 
+        if ($configUserName === '') {
+            // If there is no global user.name set, then we expect this to be called.
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.name', 'Jane Doe'])
+                ->andReturn($processMustRunWithCallable);
+        } else {
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.name', 'Jane Doe'])
+                ->never();
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.name', $configUserName])
+                ->never();
+        }
+
+        if ($configUserEmail === '') {
+            // If there is no global user.email set, then we expect this to be called.
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
+                ->andReturn($processMustRunWithCallable);
+        } else {
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.email', 'jdoe@example.com'])
+                ->never();
+            $environment
+                ->expects()
+                ->getProcess(['git', 'config', 'user.email', $configUserEmail])
+                ->never();
+        }
+
         $environment
             ->expects()
-            ->getProcess(['git', 'branch', '-M', 'main'])
+            ->getProcess(['git', 'branch', '-M', $expectedDefaultBranch])
             ->andReturn($processMustRunWithCallable);
 
         $environment

@@ -41,11 +41,12 @@ class SetupRepository extends Builder
 
         $this
             ->initializeRepository()
-            ->installHooks()
+            ->gitConfigUser()
             ->cleanBuildDir()
             ->gitAddAllFiles()
             ->gitInitialCommit()
-            ->setGitBranchName();
+            ->setGitBranchName()
+            ->installHooks();
     }
 
     private function getDefaultBranch(): string
@@ -59,6 +60,28 @@ class SetupRepository extends Builder
         $defaultBranch = trim($process->getOutput());
 
         return $defaultBranch ?: self::DEFAULT_BRANCH;
+    }
+
+    private function getUserName(): string
+    {
+        $process = $this->getEnvironment()->getProcess(
+            ['git', 'config', 'user.name'],
+        );
+
+        $process->run();
+
+        return trim($process->getOutput());
+    }
+
+    private function getUserEmail(): string
+    {
+        $process = $this->getEnvironment()->getProcess(
+            ['git', 'config', 'user.email'],
+        );
+
+        $process->run();
+
+        return trim($process->getOutput());
     }
 
     private function initializeRepository(): self
@@ -123,6 +146,28 @@ class SetupRepository extends Builder
             ->getEnvironment()
             ->getProcess(['git', 'branch', '-M', $this->getDefaultBranch()])
             ->mustRun($this->streamProcessOutput());
+
+        return $this;
+    }
+
+    private function gitConfigUser(): self
+    {
+        $userName = $this->getUserName();
+        $userEmail = $this->getUserEmail();
+
+        if ($userName === '') {
+            $this
+                ->getEnvironment()
+                ->getProcess(['git', 'config', 'user.name', (string) $this->getAnswers()->authorName])
+                ->mustRun($this->streamProcessOutput());
+        }
+
+        if ($userEmail === '') {
+            $this
+                ->getEnvironment()
+                ->getProcess(['git', 'config', 'user.email', (string) $this->getAnswers()->authorEmail])
+                ->mustRun($this->streamProcessOutput());
+        }
 
         return $this;
     }
