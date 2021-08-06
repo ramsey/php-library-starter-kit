@@ -27,9 +27,9 @@ directory that's created as a starting point for creating your own PHP libraries
 <!-- DESC_END -->
 
 <!-- COC_START -->
-This project adheres to a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-By participating in this project and its community, you are expected to uphold
-this code.
+This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
+By participating in this project and its community, you are expected to
+uphold this code.
 <!-- COC_END -->
 
 <!-- USAGE_START -->
