@@ -49,6 +49,7 @@ class UpdateReadme extends Builder
             '/<!-- USAGE_START -->(.*)<!-- USAGE_END -->/s' => $this->getUsage(),
             '/<!-- FAQ_START -->(.*)<!-- FAQ_END -->/s' => '',
             '/<!-- COPYRIGHT_START -->(.*)<!-- COPYRIGHT_END -->/s' => $this->getCopyright(),
+            '/<!-- SECURITY_START -->(.*)<!-- SECURITY_END -->/s' => $this->getSecurityStatement(),
         ];
 
         /** @var string[] $searches */
@@ -134,6 +135,18 @@ class UpdateReadme extends Builder
     {
         return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/copyright.md.twig',
+            $this->getAnswers()->getArrayCopy(),
+        );
+    }
+
+    private function getSecurityStatement(): string
+    {
+        if ($this->getAnswers()->securityPolicy === false) {
+            return '';
+        }
+
+        return $this->getEnvironment()->getTwigEnvironment()->render(
+            'readme/security.md.twig',
             $this->getAnswers()->getArrayCopy(),
         );
     }

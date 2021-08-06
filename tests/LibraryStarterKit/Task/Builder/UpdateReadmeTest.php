@@ -85,6 +85,11 @@ class UpdateReadmeTest extends TestCase
             ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
             ->andReturn('copyright info');
 
+        $twig
+            ->expects()
+            ->render('readme/security.md.twig', $this->answers->getArrayCopy())
+            ->andReturn('security info');
+
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
@@ -108,7 +113,7 @@ class UpdateReadmeTest extends TestCase
         $builder->build();
     }
 
-    public function testBuildWhenCodeOfConductIsNull(): void
+    public function testBuildWhenCodeOfConductIsNullAndSecurityPolicyIsFalse(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Updating README.md');
@@ -138,6 +143,7 @@ class UpdateReadmeTest extends TestCase
         $finder->expects()->name('README.md');
 
         $this->answers->codeOfConduct = null;
+        $this->answers->securityPolicy = false;
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';
 
@@ -167,6 +173,11 @@ class UpdateReadmeTest extends TestCase
             ->expects()
             ->render('readme/copyright.md.twig', $this->answers->getArrayCopy())
             ->andReturn('copyright info');
+
+        $twig
+            ->expects()
+            ->render('readme/security.md.twig', $this->answers->getArrayCopy())
+            ->never();
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
