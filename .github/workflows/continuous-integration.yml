@@ -92,8 +92,6 @@ jobs:
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@v1"
-        with:
-          dependency-versions: "${{ matrix.dependencies }}"
 
       - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:coverage:ci"
