@@ -15,7 +15,7 @@
     "scopeCase": "kebab",
     "scopeRequired": false,
     "scopes": [],
-    "descriptionCase": "lower",
+    "descriptionCase": null,
     "descriptionEndMark": "",
     "bodyRequired": false,
     "bodyWrapWidth": 72,
