@@ -248,6 +248,63 @@ class WizardTest extends TestCase
         $this->assertSame(0, $wizard->run($input, $output));
     }
 
+    public function testRunWhenUsingAnswersFileWhenSkipPromptsIsTrue(): void
+    {
+        $answersFile = __DIR__ . '/answers-test.json';
+
+        putenv('STARTER_KIT_ANSWERS_FILE=' . $answersFile);
+
+        /** @var InputInterface & MockInterface $input */
+        $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
+
+        /** @var OutputInterface & MockInterface $output */
+        $output = $this->mockery(OutputInterface::class);
+        $output->expects()->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
+
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
+
+        $project = new Project('my-project', '/my/project/path');
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class, [
+            'getProject' => $project,
+        ]);
+
+        $setup->expects()->getVerbosity()->andReturn(OutputInterface::VERBOSITY_NORMAL);
+
+        $setup
+            ->shouldReceive('run')
+            ->once()
+            ->withArgs(function (Style $style, Answers $answers) use ($console): bool {
+                $this->assertSame($console, $style);
+
+                return true;
+            });
+
+        $setup->expects()->getFilesystem()->andReturn(new Filesystem());
+
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
+        $styleFactory->expects()->factory($input, $output)->andReturn($console);
+
+        $console->shouldReceive('title')->once();
+        $console->shouldReceive('block');
+        $console->expects()->success([
+            'Congratulations! Your project, fellowship/ring, is ready!',
+            'Your project is available at /my/project/path.',
+        ]);
+
+        $console->shouldNotReceive('askQuestion');
+
+        $wizard = new Wizard($setup, $styleFactory);
+
+        $this->assertSame(0, $wizard->run($input, $output));
+
+        // Remove the environment variable to avoid affecting other tests.
+        putenv('STARTER_KIT_ANSWERS_FILE');
+    }
+
     public function testNewApplicationReturnsAnInstanceOfApplication(): void
     {
         $this->assertInstanceOf(Application::class, Wizard::newApplication());

@@ -66,6 +66,7 @@ final class Answers
     public bool $securityPolicy = true;
     public ?string $securityPolicyContactEmail = null;
     public ?string $securityPolicyContactFormUrl = null;
+    public bool $skipPrompts = false;
     public ?string $vendorName = null;
 
     private string $saveToPath;

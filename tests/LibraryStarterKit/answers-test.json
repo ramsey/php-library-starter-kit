@@ -27,5 +27,6 @@
         "foo",
         "bar"
     ],
-    "packageNamespace": "Fellowship\\Ring"
+    "packageNamespace": "Fellowship\\Ring",
+    "skipPrompts": true
 }

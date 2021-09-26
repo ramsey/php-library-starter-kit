@@ -98,21 +98,34 @@ class Wizard extends Command
 
         $console = $this->styleFactory->factory($input, $output);
         $console->title('Welcome to the PHP Library Starter Kit!');
-        $console->block(
-            'I\'ll ask you a series of questions about the library '
-            . 'you\'re creating. When finished, I\'ll set up a repository with '
-            . 'an initial set of files that you may customize to suit your '
-            . 'needs.',
-        );
+
+        if ($this->answers->skipPrompts === false) {
+            $console->block(
+                'I\'ll ask you a series of questions about the library '
+                . 'you\'re creating. When finished, I\'ll set up a repository with '
+                . 'an initial set of files that you may customize to suit your '
+                . 'needs.',
+            );
+        } else {
+            $console->block(
+                'You\'ve provided an answers file with \'skipPrompts: true\', '
+                . 'so I won\'t ask any questions. Instead, I\'ll go ahead and '
+                . 'start setting up a repository with an initial set of files '
+                . 'that you may customize to suit your needs.',
+            );
+        }
 
         $this->registerInterruptHandler($console);
 
         try {
-            if (!$this->confirmStart($console)) {
-                return 0;
+            if ($this->answers->skipPrompts === false) {
+                if (!$this->confirmStart($console)) {
+                    return 0;
+                }
+
+                $this->askQuestions($console);
             }
 
-            $this->askQuestions($console);
             $this->setup->run($console, $this->answers);
         } catch (Throwable $throwable) {
             return $this->handleException($throwable, $console);
