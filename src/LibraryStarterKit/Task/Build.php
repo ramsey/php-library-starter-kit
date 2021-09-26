@@ -25,6 +25,7 @@ namespace Ramsey\Dev\LibraryStarterKit\Task;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\Cleanup;
+use Ramsey\Dev\LibraryStarterKit\Task\Builder\FixStyle;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\InstallDependencies;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RenameTemplates;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\RunTests;
@@ -106,6 +107,7 @@ class Build
             new UpdateFunding($this),
             new InstallDependencies($this),
             new Cleanup($this),
+            new FixStyle($this),
             new SetupRepository($this),
             new RunTests($this),
         ];
