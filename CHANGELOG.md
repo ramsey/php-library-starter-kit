@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.3.0 - 2021-09-26
+
+### Added
+
+- Allow use of an existing answers file when creating new projects.
+
+  When using Composer's `create-project` command, users may now provide an environment variable (`STARTER_KIT_ANSWERS_FILE`) to indicate the location of an already-existing answers file to use when setting up a new library. This must be a JSON file including properties defined in `Ramsey\Dev\LibraryStarterKit\Answers`. To completely turn off the question prompts, include the property `skipPrompts: true`.
+
+  For example:
+
+  ```shell
+  STARTER_KIT_ANSWERS_FILE=/path/to/answers.json composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME
+  ```
+
+- Include a builder task (`Ramsey\Dev\LibraryStarterKit\Task\Builder\FixStyle`) that fixes any style issues before instantiating the new repository. This avoids coding standards errors caused by out-of-order `use` statements, etc.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 3.2.2 - 2021-08-11
 
 ### Added
