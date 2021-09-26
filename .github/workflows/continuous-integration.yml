@@ -116,6 +116,11 @@ jobs:
         dependencies:
           - "lowest"
           - "highest"
+        include:
+          - php-version: "8.1"
+            operating-system: "ubuntu-latest"
+            dependencies: "highest"
+            composer-options: "--ignore-platform-req=php"
 
     steps:
       - name: "Configure Git (for Windows)"
@@ -137,6 +142,7 @@ jobs:
         uses: "ramsey/composer-install@v1"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
+          composer-options: "${{ matrix.composer-options }}"
 
       - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:unit"
