@@ -29,6 +29,7 @@ use Symfony\Component\Process\Process;
 
 use function dirname;
 use function get_class;
+use function putenv;
 use function realpath;
 
 class WizardTest extends TestCase
@@ -59,6 +60,55 @@ class WizardTest extends TestCase
         $wizard = new Wizard($setup);
 
         $this->assertSame($setup, $wizard->getSetup());
+    }
+
+    public function testGetAnswersFileReturnsPathToLocalAnswersFile(): void
+    {
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class);
+
+        $setup->shouldReceive('getProject->getName')->andReturn('foo-project');
+
+        $setup
+            ->expects()
+            ->path('.starter-kit-answers')
+            ->twice()
+            ->andReturn('/path/to/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
+        $wizard = new Wizard($setup);
+
+        $this->assertSame('/path/to/.starter-kit-answers', $wizard->getAnswersFile());
+    }
+
+    public function testGetAnswersFileReturnsPathToEnvironmentAnswersFile(): void
+    {
+        $answersFile = __DIR__ . '/answers-test.json';
+
+        putenv('STARTER_KIT_ANSWERS_FILE=' . $answersFile);
+
+        $filesystem = new Filesystem();
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class);
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
+        $wizard = new Wizard($setup);
+
+        $this->assertSame($answersFile, $wizard->getAnswersFile());
+
+        // Remove the environment variable to avoid affecting other tests.
+        putenv('STARTER_KIT_ANSWERS_FILE');
     }
 
     public function testRunWhenUserChoosesNotToStart(): void

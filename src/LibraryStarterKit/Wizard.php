@@ -40,6 +40,7 @@ use Throwable;
 
 use function basename;
 use function dirname;
+use function getenv;
 use function preg_replace;
 use function realpath;
 use function sprintf;
@@ -64,7 +65,7 @@ class Wizard extends Command
         $this->styleFactory = $styleFactory ?? new StyleFactory();
 
         $this->answers = new Answers(
-            $this->setup->path(self::ANSWERS_FILE),
+            $this->getAnswersFile(),
             $this->setup->getFilesystem(),
         );
 
@@ -84,6 +85,11 @@ class Wizard extends Command
     public function getSetup(): Setup
     {
         return $this->setup;
+    }
+
+    public function getAnswersFile(): string
+    {
+        return getenv('STARTER_KIT_ANSWERS_FILE') ?: $this->setup->path(self::ANSWERS_FILE);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
