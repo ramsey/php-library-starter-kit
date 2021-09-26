@@ -203,13 +203,6 @@ class WizardTest extends TestCase
         $this->assertInstanceOf(Application::class, Wizard::newApplication());
     }
 
-    /**
-     * Use a separate process because we are setting a static application
-     * property for this test.
-     *
-     * @runInSeparateProcess
-     * @preserveGlobalState disabled
-     */
     public function testStart(): void
     {
         $vendorDir = (string) realpath(__DIR__ . '/../../vendor');
@@ -244,6 +237,9 @@ class WizardTest extends TestCase
 
         Wizard::$application = $application;
         Wizard::start($event);
+
+        // Restore static property to null to avoid conflicts with other tests.
+        Wizard::$application = null;
     }
 
     /**
