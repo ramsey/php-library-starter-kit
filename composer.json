@@ -1,7 +1,8 @@
 {
     "name": "ramsey/php-library-starter-kit",
-    "type": "project",
     "description": "A starter kit for quickly setting up a new PHP library package.",
+    "license": "MIT",
+    "type": "project",
     "keywords": [
         "builder",
         "library",
@@ -9,7 +10,6 @@
         "skeleton",
         "template"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "Ben Ramsey",
@@ -33,7 +33,30 @@
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
+            "Vendor\\SubNamespace\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
+            "Vendor\\Test\\SubNamespace\\": "tests/"
+        }
+    },
     "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "captainhook/plugin-composer": true,
+            "ramsey/devtools": true,
+            "ramsey/composer-repl": true
+        },
         "sort-packages": true
     },
     "extra": {
@@ -47,20 +70,6 @@
             "command-prefix": "dev"
         }
     },
-    "autoload": {
-        "psr-4": {
-            "Ramsey\\Dev\\LibraryStarterKit\\": "src/LibraryStarterKit/",
-            "Vendor\\SubNamespace\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Ramsey\\Test\\Dev\\LibraryStarterKit\\": "tests/LibraryStarterKit/",
-            "Vendor\\Test\\SubNamespace\\": "tests/"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-root-package-install": "git init",
         "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
