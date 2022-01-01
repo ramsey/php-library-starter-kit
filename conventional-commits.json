@@ -3,7 +3,6 @@
     "types": [
         "chore",
         "ci",
-        "deps",
         "docs",
         "feat",
         "fix",
