@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 3.4.0 - 2022-01-02
+
+### Added
+
+- Add the `allow-plugins` property to composer.json.
+- Tell Dependabot to update GitHub Actions.
+- Run GitHub Actions CI builds only on pushes to `main` and PRs based on `main`.
+
+### Changed
+
+- Remove "deps" as a type from conventional commits configuration.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Use v2 of ramsey/composer-install.
+- Fix a few package compatibility issues with PHP 8.1.
+
 ## 3.3.0 - 2021-09-26
 
 ### Added
