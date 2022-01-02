@@ -41,7 +41,6 @@ class RenameTemplates extends Builder
     {
         $this->getConsole()->section('Renaming template files');
 
-        /** @var SplFileInfo $template */
         foreach ($this->getTemplatesFinder() as $template) {
             $this->removeTemplateExtension($template);
         }

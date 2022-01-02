@@ -16,6 +16,8 @@ use function preg_replace;
 class WindowsSafeTextDriver implements Driver
 {
     /**
+     * @param string $data
+     *
      * @inheritDoc
      */
     public function serialize($data): string
@@ -32,6 +34,9 @@ class WindowsSafeTextDriver implements Driver
     }
 
     /**
+     * @param string $expected
+     * @param string $actual
+     *
      * @inheritDoc
      */
     public function match($expected, $actual): void

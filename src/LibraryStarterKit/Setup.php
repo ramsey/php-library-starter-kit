@@ -122,8 +122,6 @@ class Setup
      * Returns an instance used for executing a system command
      *
      * @param string[] $command
-     *
-     * @phpstan-ignore-next-line
      */
     public function getProcess(array $command): Process
     {

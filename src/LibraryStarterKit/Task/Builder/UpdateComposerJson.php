@@ -24,7 +24,6 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
-use Symfony\Component\Finder\SplFileInfo;
 
 use function in_array;
 use function json_decode;
@@ -37,6 +36,10 @@ use const JSON_UNESCAPED_UNICODE;
 
 /**
  * Updates values in the composer.json file
+ *
+ * @psalm-type ComposerAuthorType = array{name: string, email?: string | null, homepage?: string | null}
+ * @psalm-type ComposerAutoloadType = array{psr-4?: array<string, string>}
+ * @psalm-type ComposerType = array{name: string, description: string, type: string, keywords: string[], license: string | null, authors: ComposerAuthorType[], require?: array<string, string>, require-dev?: array<string, string>, autoload?: ComposerAutoloadType, autoload-dev?: ComposerAutoloadType, scripts?: array<string, string | string[]>, scripts-descriptions?: array<string, string>, suggest?: array<string, string>}
  */
 class UpdateComposerJson extends Builder
 {
@@ -63,7 +66,7 @@ class UpdateComposerJson extends Builder
         $this->getConsole()->section('Updating composer.json');
 
         /**
-         * @var array<string, mixed>|null $composer
+         * @psalm-var ComposerType|null $composer
          */
         $composer = json_decode($this->getComposerContents(), true);
         if ($composer === null) {
@@ -122,7 +125,6 @@ class UpdateComposerJson extends Builder
 
         $composerContents = null;
 
-        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $composerContents = $file->getContents();
 
@@ -137,12 +139,12 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @param array<string, mixed> $composer
+     * @psalm-param ComposerType $composer
      */
     private function buildAuthors(array &$composer): void
     {
-        $author = [];
-        $author['name'] = $this->getAnswers()->authorName;
+        /** @var ComposerAuthorType $author */
+        $author = ['name' => $this->getAnswers()->authorName];
 
         if (trim((string) $this->getAnswers()->authorEmail) !== '') {
             $author['email'] = $this->getAnswers()->authorEmail;
@@ -156,7 +158,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @param array<string, mixed> $composer
+     * @psalm-param ComposerType $composer
      */
     private function buildRequire(array &$composer): void
     {
@@ -164,17 +166,14 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        /** @var array<string, string> $require */
-        $require = $composer['require'];
-
         $composer['require'] = $this->filterPropertiesByWhitelist(
-            $require,
+            $composer['require'],
             self::WHITELIST_REQUIRE,
         );
     }
 
     /**
-     * @param array<string, mixed> $composer
+     * @psalm-param ComposerType $composer
      */
     private function buildRequireDev(array &$composer): void
     {
@@ -182,17 +181,14 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        /** @var array<string, string> $requireDev */
-        $requireDev = $composer['require-dev'];
-
         $composer['require-dev'] = $this->filterPropertiesByWhitelist(
-            $requireDev,
+            $composer['require-dev'],
             self::WHITELIST_REQUIRE_DEV,
         );
     }
 
     /**
-     * @param array<string, mixed> $composer
+     * @psalm-param ComposerType $composer
      */
     private function buildAutoload(array &$composer): void
     {
@@ -200,17 +196,14 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        /** @var array<string, string> $autoload */
-        $autoload = $composer['autoload']['psr-4'];
-
         $composer['autoload']['psr-4'] = $this->filterPropertiesByWhitelist(
-            $autoload,
+            $composer['autoload']['psr-4'],
             self::WHITELIST_AUTOLOAD,
         );
     }
 
     /**
-     * @param array<string, mixed> $composer
+     * @psalm-param ComposerType $composer
      */
     private function buildAutoloadDev(array &$composer): void
     {
@@ -218,11 +211,8 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        /** @var array<string, string> $autoloadDev */
-        $autoloadDev = $composer['autoload-dev']['psr-4'];
-
         $composer['autoload-dev']['psr-4'] = $this->filterPropertiesByWhitelist(
-            $autoloadDev,
+            $composer['autoload-dev']['psr-4'],
             self::WHITELIST_AUTOLOAD_DEV,
         );
     }

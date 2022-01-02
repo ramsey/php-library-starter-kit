@@ -95,7 +95,6 @@ class UpdateNamespace extends Builder
             ->depth('== 0')
             ->name('composer.json');
 
-        /** @var SplFileInfo $file */
         foreach ($composerFinder as $file) {
             $files[] = $file;
 

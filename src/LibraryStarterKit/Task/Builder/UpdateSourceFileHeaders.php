@@ -52,7 +52,6 @@ class UpdateSourceFileHeaders extends Builder
         $headerLines = array_filter($headerLines);
         $newFileHeader = implode("\n", $headerLines);
 
-        /** @var SplFileInfo $file */
         foreach ($this->getSourceFilesFinder() as $file) {
             $this->replaceSourceFileHeader($file, $newFileHeader);
         }

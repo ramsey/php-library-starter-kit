@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Question\Question;
 
 abstract class QuestionTestCase extends TestCase
 {
+    /**
+     * @return class-string<Question & StarterKitQuestion>
+     */
     abstract protected function getTestClass(): string;
 
     abstract protected function getQuestionName(): string;

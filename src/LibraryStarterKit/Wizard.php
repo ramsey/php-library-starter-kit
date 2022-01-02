@@ -261,7 +261,10 @@ class Wizard extends Command
 
     public static function start(Event $event): void
     {
-        $appPath = dirname((string) $event->getComposer()->getConfig()->get('vendor-dir'));
+        /** @var string $vendorDir */
+        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+
+        $appPath = dirname($vendorDir);
 
         $projectName = strtolower(basename((string) realpath($appPath)));
         $projectName = (string) preg_replace('/[^a-z0-9]/', '-', $projectName);

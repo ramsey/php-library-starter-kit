@@ -24,7 +24,6 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
-use Symfony\Component\Finder\SplFileInfo;
 
 use function array_keys;
 use function array_values;
@@ -81,7 +80,6 @@ class UpdateReadme extends Builder
 
         $readmeContents = null;
 
-        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $readmeContents = $file->getContents();
 
