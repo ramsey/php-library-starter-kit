@@ -20,11 +20,12 @@
     "require": {
         "php": "^7.4 || ^8",
         "ext-json": "*",
-        "symfony/console": "^5.1",
+        "mockery/mockery": "^1.4.4",
+        "symfony/console": "^5.2.4",
         "symfony/filesystem": "^5.1",
-        "symfony/finder": "^5.1",
-        "symfony/process": "^5.1",
-        "twig/twig": "^3.1"
+        "symfony/finder": "^5.3.7",
+        "symfony/process": "^5.3.7",
+        "twig/twig": "^3.3.3"
     },
     "require-dev": {
         "ramsey/devtools": "^1.7",
