@@ -2,7 +2,15 @@
 
 name: "build"
 
-on: ["pull_request", "push"]
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - "main"
 
 env:
   COMPOSER_ROOT_VERSION: "1.99.99"
