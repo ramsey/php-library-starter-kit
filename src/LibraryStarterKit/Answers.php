@@ -99,7 +99,7 @@ final class Answers
     /**
      * Returns the property values to replace tokens in template
      *
-     * @return mixed[]
+     * @return array<string | string[] | bool | null>
      */
     public function getValues(): array
     {
@@ -107,8 +107,9 @@ final class Answers
 
         $reflected = new ReflectionObject($this);
         foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            /** @psalm-var mixed */
-            $values[] = $property->getValue($this); // @phpstan-ignore-line
+            /** @var string | string[] | bool | null $value */
+            $value = $property->getValue($this);
+            $values[] = $value;
         }
 
         return $values;
@@ -117,7 +118,7 @@ final class Answers
     /**
      * Returns an array of key-value pairs of token names and values
      *
-     * @return array<string, mixed>
+     * @return array<string, string | string[] | bool | null>
      */
     public function getArrayCopy(): array
     {
@@ -125,8 +126,9 @@ final class Answers
 
         $reflected = new ReflectionObject($this);
         foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            /** @psalm-var mixed */
-            $answers[$property->getName()] = $property->getValue($this); // @phpstan-ignore-line
+            /** @var string | string[] | bool | null $value */
+            $value = $property->getValue($this);
+            $answers[$property->getName()] = $value;
         }
 
         return $answers;
