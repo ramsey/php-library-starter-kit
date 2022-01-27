@@ -42,6 +42,7 @@ class SetupTest extends TestCase
 
         /** @var Finder & MockInterface $finder */
         $finder = $this->mockery(Finder::class);
+        $finder->shouldReceive('create')->andReturn(clone $finder);
 
         $project = new Project('a-project-name', $this->appPath);
 

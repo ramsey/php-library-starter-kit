@@ -91,7 +91,7 @@ class Setup
      */
     public function getFinder(): Finder
     {
-        return $this->finder;
+        return $this->finder::create();
     }
 
     /**
