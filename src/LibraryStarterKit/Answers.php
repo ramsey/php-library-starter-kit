@@ -27,6 +27,8 @@ use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use ReflectionObject;
 use ReflectionProperty;
 
+use function array_keys;
+use function array_values;
 use function json_decode;
 use function json_encode;
 use function property_exists;
@@ -86,14 +88,7 @@ final class Answers
      */
     public function getTokens(): array
     {
-        $tokens = [];
-
-        $reflected = new ReflectionObject($this);
-        foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $tokens[] = $property->getName();
-        }
-
-        return $tokens;
+        return array_keys($this->getArrayCopy());
     }
 
     /**
@@ -103,16 +98,7 @@ final class Answers
      */
     public function getValues(): array
     {
-        $values = [];
-
-        $reflected = new ReflectionObject($this);
-        foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            /** @var string | string[] | bool | null $value */
-            $value = $property->getValue($this);
-            $values[] = $value;
-        }
-
-        return $values;
+        return array_values($this->getArrayCopy());
     }
 
     /**
