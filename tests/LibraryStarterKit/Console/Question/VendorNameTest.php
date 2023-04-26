@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\VendorName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -40,9 +41,7 @@ class VendorNameTest extends QuestionTestCase
         $this->assertSame('foo-bar-baz', $validator('foo-bar-baz'));
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidatorThrowsExceptionForInvalidValue(?string $value): void
     {
         $validator = (new VendorName($this->answers))->getValidator();
@@ -54,9 +53,9 @@ class VendorNameTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null}>
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             ['value' => null],

@@ -17,7 +17,7 @@ trait SnapshotsTool
     {
         $snapshotId = (new ReflectionClass($this))->getShortName()
             . '__'
-            . $this->getName()
+            . $this->nameWithDataSet()
             . '__'
             . $this->snapshotIncrementor;
 

@@ -7,6 +7,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 use ArrayObject;
 use Composer\Script\Event;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
@@ -26,9 +27,7 @@ class UpdateSourceFileHeadersTest extends TestCase
 {
     use SnapshotsTool;
 
-    /**
-     * @dataProvider licenseProvider
-     */
+    #[DataProvider('licenseProvider')]
     public function testBuild(string $license, ?string $copyrightEmail = null, ?string $copyrightUrl = null): void
     {
         $this->answers->packageName = 'fellowship/one-ring';
@@ -61,7 +60,7 @@ class UpdateSourceFileHeadersTest extends TestCase
         ]);
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject([$file1, $file2]),
+            'getIterator' => (new ArrayObject([$file1, $file2]))->getIterator(),
         ]);
         $finder->expects()->exclude(['LibraryStarterKit'])->andReturnSelf();
         $finder->expects()->in(['/path/to/app/src'])->andReturnSelf();
@@ -103,9 +102,9 @@ class UpdateSourceFileHeadersTest extends TestCase
     }
 
     /**
-     * @return array<int, array{license: string}>
+     * @return array<array{license: string, copyrightEmail?: string | null, copyrightUrl?: string | null}>
      */
-    public function licenseProvider(): array
+    public static function licenseProvider(): array
     {
         return [
             ['license' => 'AGPL-3.0-or-later'],

@@ -2,9 +2,8 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="./vendor/autoload.php"
-         cacheResultFile="./build/cache/phpunit.result.cache"
          colors="true"
-         verbose="true">
+         cacheDirectory="./build/cache/phpunit">
 
     <testsuites>
         <testsuite name="unit-tests">
@@ -12,10 +11,16 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage/>
+
+    <php>
+        <ini name="memory_limit" value="1G"/>
+    </php>
+
+    <source>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
-    </coverage>
+    </source>
 
 </phpunit>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConductReportingUrl;
 
 class CodeOfConductReportingUrlTest extends QuestionTestCase
@@ -23,9 +24,7 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
         return 'At what URL are your code of conduct reporting guidelines described?';
     }
 
-    /**
-     * @dataProvider provideSkipValues
-     */
+    #[DataProvider('provideSkipValues')]
     public function testShouldSkip(?string $choice, bool $expected): void
     {
         $question = new CodeOfConductReportingUrl($this->answers);
@@ -36,9 +35,9 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{choice: string | null, expected: bool}>
      */
-    public function provideSkipValues(): array
+    public static function provideSkipValues(): array
     {
         return [
             [

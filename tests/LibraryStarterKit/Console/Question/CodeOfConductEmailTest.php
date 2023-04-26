@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConductEmail;
 
 class CodeOfConductEmailTest extends QuestionTestCase
@@ -23,9 +24,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
         return 'What email address should people use to report code of conduct issues?';
     }
 
-    /**
-     * @dataProvider provideSkipValues
-     */
+    #[DataProvider('provideSkipValues')]
     public function testShouldSkip(?string $choice, bool $expected): void
     {
         $question = new CodeOfConductEmail($this->answers);
@@ -36,9 +35,9 @@ class CodeOfConductEmailTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{choice: string | null, expected: bool}>
      */
-    public function provideSkipValues(): array
+    public static function provideSkipValues(): array
     {
         return [
             [

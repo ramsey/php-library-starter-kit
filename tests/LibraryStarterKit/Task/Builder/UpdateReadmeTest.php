@@ -42,12 +42,12 @@ class UpdateReadmeTest extends TestCase
             });
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
+            'getIterator' => (new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->readmeContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
                 ],
-            ),
+            ))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -130,12 +130,12 @@ class UpdateReadmeTest extends TestCase
             });
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
+            'getIterator' => (new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->readmeContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
                 ],
-            ),
+            ))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -208,11 +208,7 @@ class UpdateReadmeTest extends TestCase
         $console->expects()->section('Updating README.md');
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
-                [
-                    $this->mockery(SplFileInfo::class, ['getContents' => null]),
-                ],
-            ),
+            'getIterator' => (new ArrayObject([]))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();

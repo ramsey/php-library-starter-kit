@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -56,9 +57,7 @@ class CodeOfConductTest extends QuestionTestCase
         );
     }
 
-    /**
-     * @dataProvider provideNormalizerTestValues
-     */
+    #[DataProvider('provideNormalizerTestValues')]
     public function testNormalizer(?string $value, string $expected): void
     {
         $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
@@ -67,9 +66,9 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, expected: string}>
      */
-    public function provideNormalizerTestValues(): array
+    public static function provideNormalizerTestValues(): array
     {
         return [
             ['value' => '1', 'expected' => 'None'],
@@ -86,9 +85,7 @@ class CodeOfConductTest extends QuestionTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideValidValues
-     */
+    #[DataProvider('provideValidValues')]
     public function testValidator(string $value, ?string $expected): void
     {
         $validator = (new CodeOfConduct($this->answers))->getValidator();
@@ -97,9 +94,9 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string, expected: string | null}>
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return [
             [
@@ -121,9 +118,7 @@ class CodeOfConductTest extends QuestionTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidatorThrowsExceptionForInvalidValues(?string $value, string $message): void
     {
         $validator = (new CodeOfConduct($this->answers))->getValidator();
@@ -135,9 +130,9 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, message: string}>
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             [

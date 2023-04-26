@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
+use Closure;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -17,14 +20,12 @@ use const DIRECTORY_SEPARATOR;
 
 class UpdateLicenseTest extends TestCase
 {
-    /**
-     * @dataProvider provideLicensesForTesting
-     */
+    #[DataProvider('provideLicensesForTesting')]
     public function testBuild(
         string $license,
         string $filename,
         string $contents,
-        callable $additionalChecks
+        callable $additionalChecks,
     ): void {
         $this->answers->license = $license;
 
@@ -37,12 +38,12 @@ class UpdateLicenseTest extends TestCase
 
         $twigEnvironment = $this->mockery(TwigEnvironment::class);
         $twigEnvironment
-            ->expects()
-            ->render(
+            ->expects('render')
+            ->with(
                 'license' . DIRECTORY_SEPARATOR . $license . '.twig',
                 $this->answers->getArrayCopy(),
             )
-            ->andReturn($contents);
+            ->andReturns($contents);
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -69,25 +70,29 @@ class UpdateLicenseTest extends TestCase
     }
 
     /**
-     * @return list<array<string, mixed>>
+     * @return array<array{license: string, filename: string, contents: string, additionalChecks: Closure}>
      */
-    public function provideLicensesForTesting(): array
+    public static function provideLicensesForTesting(): array
     {
         return [
             [
                 'license' => 'AGPL-3.0-or-later',
                 'filename' => 'COPYING',
                 'contents' => 'AGPL-3.0-or-later license contents',
-                'additionalChecks' => function ($twig, $filesystem, $answers) {
+                'additionalChecks' => function (
+                    TwigEnvironment & MockInterface $twig,
+                    Filesystem & MockInterface $filesystem,
+                    Answers $answers,
+                ) {
                     $twig
-                        ->expects()
-                        ->render(
+                        ->expects('render')
+                        ->with(
                             'license' . DIRECTORY_SEPARATOR . 'AGPL-3.0-or-later-NOTICE.twig',
                             $answers->getArrayCopy(),
                         )
-                        ->andReturn('AGPL-3.0-or-later notice contents');
+                        ->andReturns('AGPL-3.0-or-later notice contents');
 
-                    $filesystem->expects()->dumpFile(
+                    $filesystem->expects('dumpFile')->with(
                         '/path/to/app/NOTICE',
                         'AGPL-3.0-or-later notice contents',
                     );
@@ -109,16 +114,20 @@ class UpdateLicenseTest extends TestCase
                 'license' => 'GPL-3.0-or-later',
                 'filename' => 'COPYING',
                 'contents' => 'GPL-3.0-or-later license contents',
-                'additionalChecks' => function ($twig, $filesystem, $answers) {
+                'additionalChecks' => function (
+                    TwigEnvironment & MockInterface $twig,
+                    Filesystem & MockInterface $filesystem,
+                    Answers $answers,
+                ) {
                     $twig
-                        ->expects()
-                        ->render(
+                        ->expects('render')
+                        ->with(
                             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later-NOTICE.twig',
                             $answers->getArrayCopy(),
                         )
-                        ->andReturn('GPL-3.0-or-later notice contents');
+                        ->andReturns('GPL-3.0-or-later notice contents');
 
-                    $filesystem->expects()->dumpFile(
+                    $filesystem->expects('dumpFile')->with(
                         '/path/to/app/NOTICE',
                         'GPL-3.0-or-later notice contents',
                     );
@@ -128,29 +137,33 @@ class UpdateLicenseTest extends TestCase
                 'license' => 'LGPL-3.0-or-later',
                 'filename' => 'COPYING.LESSER',
                 'contents' => 'LGPL-3.0-or-later license contents',
-                'additionalChecks' => function ($twig, $filesystem, $answers) {
+                'additionalChecks' => function (
+                    TwigEnvironment & MockInterface $twig,
+                    Filesystem & MockInterface $filesystem,
+                    Answers $answers,
+                ) {
                     $twig
-                        ->expects()
-                        ->render(
+                        ->expects('render')
+                        ->with(
                             'license' . DIRECTORY_SEPARATOR . 'LGPL-3.0-or-later-NOTICE.twig',
                             $answers->getArrayCopy(),
                         )
-                        ->andReturn('LGPL-3.0-or-later notice contents');
+                        ->andReturns('LGPL-3.0-or-later notice contents');
 
-                    $filesystem->expects()->dumpFile(
+                    $filesystem->expects('dumpFile')->with(
                         '/path/to/app/NOTICE',
                         'LGPL-3.0-or-later notice contents',
                     );
 
                     $twig
-                        ->expects()
-                        ->render(
+                        ->expects('render')
+                        ->with(
                             'license' . DIRECTORY_SEPARATOR . 'GPL-3.0-or-later.twig',
                             $answers->getArrayCopy(),
                         )
-                        ->andReturn('GPL-3.0-or-later license contents');
+                        ->andReturns('GPL-3.0-or-later license contents');
 
-                    $filesystem->expects()->dumpFile(
+                    $filesystem->expects('dumpFile')->with(
                         '/path/to/app/COPYING',
                         'GPL-3.0-or-later license contents',
                     );
@@ -172,16 +185,20 @@ class UpdateLicenseTest extends TestCase
                 'license' => 'MPL-2.0',
                 'filename' => 'LICENSE',
                 'contents' => 'MPL-2.0 license contents',
-                'additionalChecks' => function ($twig, $filesystem, $answers) {
+                'additionalChecks' => function (
+                    TwigEnvironment & MockInterface $twig,
+                    Filesystem & MockInterface $filesystem,
+                    Answers $answers,
+                ) {
                     $twig
-                        ->expects()
-                        ->render(
+                        ->expects('render')
+                        ->with(
                             'license' . DIRECTORY_SEPARATOR . 'MPL-2.0-NOTICE.twig',
                             $answers->getArrayCopy(),
                         )
-                        ->andReturn('MPL-2.0 notice contents');
+                        ->andReturns('MPL-2.0 notice contents');
 
-                    $filesystem->expects()->dumpFile(
+                    $filesystem->expects('dumpFile')->with(
                         '/path/to/app/NOTICE',
                         'MPL-2.0 notice contents',
                     );

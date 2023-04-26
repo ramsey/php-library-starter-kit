@@ -7,6 +7,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 use Closure;
 use Hamcrest\Type\IsCallable;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\SetupRepository;
@@ -19,9 +20,9 @@ use function sprintf;
 class SetupRepositoryTest extends TestCase
 {
     /**
-     * @return array<array{configUserName: string, configUserEmail: string, configDefaultBranch: string, expectedDefaultBranch: string}>
+     * @return array<array{configUserName: string, configUserEmail: string, configDefaultBranch: string, authorName: string, authorEmail: string, expectedName: string, expectedEmail: string, expectedDefaultBranch: string}>
      */
-    public function buildProvider(): array
+    public static function buildProvider(): array
     {
         return [
             [
@@ -77,9 +78,7 @@ class SetupRepositoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider buildProvider
-     */
+    #[DataProvider('buildProvider')]
     public function testBuild(
         string $configUserName,
         string $configUserEmail,
@@ -88,7 +87,7 @@ class SetupRepositoryTest extends TestCase
         string $authorEmail,
         string $expectedName,
         string $expectedEmail,
-        string $expectedDefaultBranch
+        string $expectedDefaultBranch,
     ): void {
         $this->answers->authorName = $authorName;
         $this->answers->authorEmail = $authorEmail;

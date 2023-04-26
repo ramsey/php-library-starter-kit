@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\UrlValidatorTool;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 
 class UrlValidatorToolTest extends TestCase
 {
-    /**
-     * @dataProvider provideNullableValues
-     */
+    #[DataProvider('provideNullableValues')]
     public function testValidatorThrowsExceptionForEmptyValuesWhenQuestionIsNotOptional(?string $value): void
     {
         $question = new class () {
@@ -32,9 +31,7 @@ class UrlValidatorToolTest extends TestCase
         $validator($value);
     }
 
-    /**
-     * @dataProvider provideNullableValues
-     */
+    #[DataProvider('provideNullableValues')]
     public function testValidatorReturnsNullWhenQuestionIsOptional(?string $value): void
     {
         $question = new class () {
@@ -47,9 +44,9 @@ class UrlValidatorToolTest extends TestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null}>
      */
-    public function provideNullableValues(): array
+    public static function provideNullableValues(): array
     {
         return [
             ['value' => null],

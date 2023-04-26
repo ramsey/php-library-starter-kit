@@ -8,6 +8,7 @@ use Composer\Script\Event;
 use Hamcrest\Core\IsInstanceOf;
 use Hamcrest\Core\IsTypeOf;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
@@ -349,13 +350,11 @@ class WizardTest extends TestCase
         Wizard::$application = null;
     }
 
-    /**
-     * @dataProvider runWhenExceptionIsThrownWithVerbosityProvider
-     */
+    #[DataProvider('runWhenExceptionIsThrownWithVerbosityProvider')]
     public function testRunWhenExceptionIsThrownWithVerbosity(
         int $verbosity,
         int $exceptionCode,
-        int $expectedReturn
+        int $expectedReturn,
     ): void {
         /** @var InputInterface & MockInterface $input */
         $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
@@ -438,7 +437,7 @@ class WizardTest extends TestCase
     /**
      * @return array<array{verbosity: int, exceptionCode: int, expectedReturn: int}>
      */
-    public function runWhenExceptionIsThrownWithVerbosityProvider(): array
+    public static function runWhenExceptionIsThrownWithVerbosityProvider(): array
     {
         return [
             [
@@ -464,14 +463,12 @@ class WizardTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider determineVerbosityLevelProvider
-     */
+    #[DataProvider('determineVerbosityLevelProvider')]
     public function testDetermineVerbosityLevel(
         bool $isDebug,
         bool $isVeryVerbose,
         bool $isVerbose,
-        int $expectedVerbosity
+        int $expectedVerbosity,
     ): void {
         /** @var Event & MockInterface $event */
         $event = $this->mockery(Event::class, [
@@ -486,7 +483,7 @@ class WizardTest extends TestCase
     /**
      * @return array<array{isDebug: bool, isVeryVerbose: bool, isVerbose: bool, expectedVerbosity: int}>
      */
-    public function determineVerbosityLevelProvider(): array
+    public static function determineVerbosityLevelProvider(): array
     {
         return [
             [

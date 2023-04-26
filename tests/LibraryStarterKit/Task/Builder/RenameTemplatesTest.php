@@ -52,7 +52,7 @@ class RenameTemplatesTest extends TestCase
         ]);
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject([$file1]),
+            'getIterator' => (new ArrayObject([$file1]))->getIterator(),
         ]);
 
         $finder->expects()->ignoreDotFiles(false)->andReturnSelf();

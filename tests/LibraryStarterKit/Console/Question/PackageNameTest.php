@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -59,9 +60,7 @@ class PackageNameTest extends QuestionTestCase
         $this->assertSame('frodo/fellowship_ring', $validator('fellowship_ring'));
     }
 
-    /**
-     * @dataProvider provideInvalidPackageNames
-     */
+    #[DataProvider('provideInvalidPackageNames')]
     public function testValidatorThrowsExceptionForInvalidPackageNames(?string $value, ?string $vendorName): void
     {
         $validator = (new PackageName($this->answers))->getValidator();
@@ -75,9 +74,9 @@ class PackageNameTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, vendorName: string | null}>
      */
-    public function provideInvalidPackageNames(): array
+    public static function provideInvalidPackageNames(): array
     {
         return [
             [

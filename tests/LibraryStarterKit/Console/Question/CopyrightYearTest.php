@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightYear;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -41,9 +42,7 @@ class CopyrightYearTest extends QuestionTestCase
         $this->assertSame('2017', $validator('2017'));
     }
 
-    /**
-     * @dataProvider provideInvalidDateValues
-     */
+    #[DataProvider('provideInvalidDateValues')]
     public function testValidatorThrowsExceptionForInvalidValue(?string $value): void
     {
         $validator = (new CopyrightYear($this->answers))->getValidator();
@@ -55,9 +54,9 @@ class CopyrightYearTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null}>
      */
-    public function provideInvalidDateValues(): array
+    public static function provideInvalidDateValues(): array
     {
         return [
             ['value' => null],

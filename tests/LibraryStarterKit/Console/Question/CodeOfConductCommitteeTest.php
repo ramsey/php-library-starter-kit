@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConductCommittee;
 
 class CodeOfConductCommitteeTest extends QuestionTestCase
@@ -31,9 +32,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
         $this->assertNull($validator(null));
     }
 
-    /**
-     * @dataProvider provideSkipValues
-     */
+    #[DataProvider('provideSkipValues')]
     public function testShouldSkip(?string $choice, bool $expected): void
     {
         $question = new CodeOfConductCommittee($this->answers);
@@ -44,9 +43,9 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{choice: string | null, expected: bool}>
      */
-    public function provideSkipValues(): array
+    public static function provideSkipValues(): array
     {
         return [
             [

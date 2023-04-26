@@ -18,18 +18,13 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8",
-        "ext-json": "*",
-        "mockery/mockery": "^1.4.4",
-        "symfony/console": "^5.2.4",
-        "symfony/filesystem": "^5.1",
-        "symfony/finder": "^5.3.7",
-        "symfony/process": "^5.3.7",
-        "twig/twig": "^3.3.3"
+        "php": "^8.1",
+        "symfony/finder": "^6.2",
+        "twig/twig": "^3.5"
     },
     "require-dev": {
-        "ramsey/devtools": "^1.7",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "ramsey/devtools": "^2.0",
+        "spatie/phpunit-snapshot-assertions": "^5.0"
     },
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
@@ -50,13 +45,13 @@
     },
     "config": {
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
-            "phpstan/extension-installer": true,
+            "php-http/discovery": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ramsey/composer-repl": true,
+            "phpstan/extension-installer": true,
             "ergebnis/composer-normalize": true,
             "captainhook/plugin-composer": true,
-            "ramsey/devtools": true,
-            "ramsey/composer-repl": true
+            "ramsey/devtools": true
         },
         "sort-packages": true
     },
@@ -68,7 +63,8 @@
             "configFile": "conventional-commits.json"
         },
         "ramsey/devtools": {
-            "command-prefix": "dev"
+            "command-prefix": "dev",
+            "memory-limit": "-1"
         }
     },
     "scripts": {

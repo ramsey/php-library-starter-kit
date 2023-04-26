@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
@@ -67,9 +68,7 @@ class LicenseTest extends QuestionTestCase
         );
     }
 
-    /**
-     * @dataProvider provideNormalizerTestValues
-     */
+    #[DataProvider('provideNormalizerTestValues')]
     public function testNormalizer(?string $value, string $expected): void
     {
         $normalizer = (new License($this->answers))->getNormalizer();
@@ -78,9 +77,9 @@ class LicenseTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, expected: string}>
      */
-    public function provideNormalizerTestValues(): array
+    public static function provideNormalizerTestValues(): array
     {
         return [
             ['value' => '1', 'expected' => 'Proprietary'],
@@ -115,9 +114,7 @@ class LicenseTest extends QuestionTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideValidValues
-     */
+    #[DataProvider('provideValidValues')]
     public function testValidator(string $value): void
     {
         $validator = (new License($this->answers))->getValidator();
@@ -126,16 +123,14 @@ class LicenseTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{0: string}>
      */
-    public function provideValidValues(): array
+    public static function provideValidValues(): array
     {
         return array_map(fn (string $v): array => [$v], License::CHOICE_IDENTIFIER_MAP);
     }
 
-    /**
-     * @dataProvider provideInvalidValues
-     */
+    #[DataProvider('provideInvalidValues')]
     public function testValidatorThrowsExceptionForInvalidValues(?string $value, string $message): void
     {
         $validator = (new License($this->answers))->getValidator();
@@ -147,9 +142,9 @@ class LicenseTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, message: string}>
      */
-    public function provideInvalidValues(): array
+    public static function provideInvalidValues(): array
     {
         return [
             [

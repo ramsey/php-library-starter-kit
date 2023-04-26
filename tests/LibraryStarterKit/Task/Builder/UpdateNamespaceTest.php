@@ -6,6 +6,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -23,13 +24,11 @@ class UpdateNamespaceTest extends TestCase
 {
     use SnapshotsTool;
 
-    /**
-     * @dataProvider provideNamespaceTestValues
-     */
+    #[DataProvider('provideNamespaceTestValues')]
     public function testBuild(
         string $packageName,
         string $namespace,
-        string $testNamespace
+        string $testNamespace,
     ): void {
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Updating namespace');
@@ -53,7 +52,7 @@ class UpdateNamespaceTest extends TestCase
         ]);
 
         $finder1 = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject([$file1, $file2]),
+            'getIterator' => (new ArrayObject([$file1, $file2]))->getIterator(),
         ]);
         $finder1->expects()->exclude(['LibraryStarterKit'])->andReturnSelf();
         $finder1->expects()->in(
@@ -67,7 +66,7 @@ class UpdateNamespaceTest extends TestCase
         $finder1->expects()->name('*.php')->andReturnSelf();
 
         $finder2 = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject([$file3]),
+            'getIterator' => (new ArrayObject([$file3]))->getIterator(),
         ]);
         $finder2->expects()->in(['/path/to/app'])->andReturnSelf();
         $finder2->expects()->files()->andReturnSelf();
@@ -113,9 +112,9 @@ class UpdateNamespaceTest extends TestCase
     }
 
     /**
-     * @return array<array<array-key, string>>
+     * @return array<array{packageName: string, namespace: string, testNamespace: string}>
      */
-    public function provideNamespaceTestValues(): array
+    public static function provideNamespaceTestValues(): array
     {
         return [
             [

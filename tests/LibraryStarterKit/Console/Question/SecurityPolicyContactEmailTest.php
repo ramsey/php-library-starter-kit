@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SecurityPolicyContactEmail;
 
 class SecurityPolicyContactEmailTest extends QuestionTestCase
@@ -23,9 +24,7 @@ class SecurityPolicyContactEmailTest extends QuestionTestCase
         return 'What email address should researchers use to submit vulnerability reports?';
     }
 
-    /**
-     * @dataProvider provideSkipValues
-     */
+    #[DataProvider('provideSkipValues')]
     public function testShouldSkip(bool $choice, bool $expected): void
     {
         $question = new SecurityPolicyContactEmail($this->answers);
@@ -36,9 +35,9 @@ class SecurityPolicyContactEmailTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{choice: bool, expected: bool}>
      */
-    public function provideSkipValues(): array
+    public static function provideSkipValues(): array
     {
         return [
             [

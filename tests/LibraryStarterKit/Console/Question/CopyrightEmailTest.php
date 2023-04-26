@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightEmail;
 
 class CopyrightEmailTest extends QuestionTestCase
@@ -32,9 +33,7 @@ class CopyrightEmailTest extends QuestionTestCase
         $this->assertSame('samwise@example.com', $question->getDefault());
     }
 
-    /**
-     * @dataProvider provideSkipValues
-     */
+    #[DataProvider('provideSkipValues')]
     public function testShouldSkip(bool $choice, bool $expected): void
     {
         $question = new CopyrightEmail($this->answers);
@@ -45,9 +44,9 @@ class CopyrightEmailTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{choice: bool, expected: bool}>
      */
-    public function provideSkipValues(): array
+    public static function provideSkipValues(): array
     {
         return [
             [

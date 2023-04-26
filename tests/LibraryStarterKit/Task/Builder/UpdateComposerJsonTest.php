@@ -41,12 +41,12 @@ class UpdateComposerJsonTest extends TestCase
             });
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
+            'getIterator' => (new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => $this->composerContentsOriginal()]),
                     $this->mockery(SplFileInfo::class, ['getContents' => '']),
                 ],
-            ),
+            ))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -89,11 +89,11 @@ class UpdateComposerJsonTest extends TestCase
         $console->expects()->section('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(
+            'getIterator' => (new ArrayObject(
                 [
                     $this->mockery(SplFileInfo::class, ['getContents' => 'null']),
                 ],
-            ),
+            ))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -125,7 +125,7 @@ class UpdateComposerJsonTest extends TestCase
         $console->expects()->section('Updating composer.json');
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject(),
+            'getIterator' => (new ArrayObject())->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();
@@ -168,11 +168,11 @@ class UpdateComposerJsonTest extends TestCase
             });
 
         $finder = $this->mockery(Finder::class, [
-            'getIterator' => new ArrayObject([
+            'getIterator' => (new ArrayObject([
                 $this->mockery(SplFileInfo::class, [
                     'getContents' => $this->composerContentsOriginalMinimal(),
                 ]),
-            ]),
+            ]))->getIterator(),
         ]);
         $finder->expects()->in('/path/to/app')->andReturnSelf();
         $finder->expects()->files()->andReturnSelf();

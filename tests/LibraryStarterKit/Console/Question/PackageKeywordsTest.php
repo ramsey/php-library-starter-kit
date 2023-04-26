@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageKeywords;
 
 class PackageKeywordsTest extends QuestionTestCase
@@ -34,9 +35,8 @@ class PackageKeywordsTest extends QuestionTestCase
 
     /**
      * @param string[] $expected
-     *
-     * @dataProvider provideNormalizerTestValues
      */
+    #[DataProvider('provideNormalizerTestValues')]
     public function testNormalizer(?string $value, array $expected): void
     {
         $normalizer = (new PackageKeywords($this->answers))->getNormalizer();
@@ -45,9 +45,9 @@ class PackageKeywordsTest extends QuestionTestCase
     }
 
     /**
-     * @return mixed[]
+     * @return array<array{value: string | null, expected: string[]}>
      */
-    public function provideNormalizerTestValues(): array
+    public static function provideNormalizerTestValues(): array
     {
         return [
             [

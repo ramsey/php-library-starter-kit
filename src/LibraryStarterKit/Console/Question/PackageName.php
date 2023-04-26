@@ -3,17 +3,6 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * ramsey/php-library-starter-kit is open source software: you can
- * distribute it and/or modify it under the terms of the MIT License
- * (the "License"). You may not use this file except in
- * compliance with the License.
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- * implied. See the License for the specific language governing
- * permissions and limitations under the License.
- *
  * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
  * @license https://opensource.org/licenses/MIT MIT License
  */
@@ -27,7 +16,7 @@ use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Question\Question;
 
 use function preg_match;
-use function strpos;
+use function str_starts_with;
 use function strtolower;
 use function trim;
 
@@ -52,10 +41,7 @@ class PackageName extends Question implements StarterKitQuestion
         $this->answers = $answers;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getDefault()
+    public function getDefault(): float | bool | int | string | null
     {
         if ($this->getAnswers()->packageName !== null) {
             return $this->getAnswers()->packageName;
@@ -82,7 +68,7 @@ class PackageName extends Question implements StarterKitQuestion
 
             $data = strtolower((string) $data);
 
-            if ($vendorPrefix !== '' && strpos($data, $vendorPrefix) !== 0) {
+            if ($vendorPrefix !== '' && !str_starts_with($data, $vendorPrefix)) {
                 $data = $vendorPrefix . $data;
             }
 
