@@ -53,6 +53,10 @@ class CodeOfConductEmailTest extends QuestionTestCase
                 'expected' => false,
             ],
             [
+                'choice' => 'Contributor-2.1',
+                'expected' => false,
+            ],
+            [
                 'choice' => 'Citizen-2.3',
                 'expected' => false,
             ],

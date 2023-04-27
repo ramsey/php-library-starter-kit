@@ -40,6 +40,6 @@ class CodeOfConductReportingUrl extends Question implements SkippableQuestion, S
     public function shouldSkip(): bool
     {
         // This question is only applicable for the Citizen-2.3 code of conduct.
-        return $this->getAnswers()->codeOfConduct !== CodeOfConduct::CHOICE_IDENTIFIER_MAP[4];
+        return $this->getAnswers()->codeOfConduct !== CodeOfConduct::CHOICE_IDENTIFIER_MAP[5];
     }
 }

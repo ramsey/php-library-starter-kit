@@ -35,14 +35,16 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         1 => self::DEFAULT,
         2 => 'Contributor Covenant Code of Conduct, version 1.4',
         3 => 'Contributor Covenant Code of Conduct, version 2.0',
-        4 => 'Citizen Code of Conduct, version 2.3',
+        4 => 'Contributor Covenant Code of Conduct, version 2.1',
+        5 => 'Citizen Code of Conduct, version 2.3',
     ];
 
     public const CHOICE_IDENTIFIER_MAP = [
         1 => self::DEFAULT,
         2 => 'Contributor-1.4',
         3 => 'Contributor-2.0',
-        4 => 'Citizen-2.3',
+        4 => 'Contributor-2.1',
+        5 => 'Citizen-2.3',
     ];
 
     public function getName(): string
