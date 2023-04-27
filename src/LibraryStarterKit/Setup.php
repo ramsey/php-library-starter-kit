@@ -13,9 +13,6 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionNamedType;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
@@ -23,8 +20,6 @@ use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
-use function array_map;
-use function implode;
 use function preg_replace;
 
 use const DIRECTORY_SEPARATOR;
@@ -114,23 +109,6 @@ class Setup
      */
     public function getProcess(array $command): Process
     {
-        // Support backward-compatibility with older versions of symfony/process.
-        $reflectedProcess = new ReflectionClass(Process::class);
-
-        /** @var ReflectionMethod $reflectedConstructor */
-        $reflectedConstructor = $reflectedProcess->getConstructor();
-        $reflectedConstructorType = $reflectedConstructor->getParameters()[0]->getType();
-
-        if ($reflectedConstructorType instanceof ReflectionNamedType) {
-            if ($reflectedConstructorType->getName() !== 'array') {
-                $command = implode(' ', array_map('escapeshellarg', $command)); // @codeCoverageIgnore
-            }
-        }
-
-        /**
-         * @psalm-suppress PossiblyInvalidArgument
-         * @phpstan-ignore-next-line
-         */
         return new Process($command, $this->getProject()->getPath());
     }
 
