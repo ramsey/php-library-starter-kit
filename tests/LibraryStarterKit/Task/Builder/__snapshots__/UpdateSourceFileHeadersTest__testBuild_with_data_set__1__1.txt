@@ -16,7 +16,7 @@
  * permissions and limitations under the License.
  *
  * @copyright Copyright (c) Samwise Gamgee
- * @license https://opensource.org/licenses/Apache-2.0 Apache License, Version 2.0
+ * @license https://opensource.org/license/apache-2-0/ Apache License, Version 2.0
  */
 
 declare(strict_types=1);
