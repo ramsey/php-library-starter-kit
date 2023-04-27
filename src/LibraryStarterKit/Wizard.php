@@ -267,7 +267,7 @@ class Wizard extends Command
         $application->add($command);
         $application->setDefaultCommand((string) $command->getName(), true);
 
-        $application->run(new StringInput('starter-kit'));
+        $application->run(new StringInput(''));
     }
 
     public static function determineVerbosityLevel(Event $event): int
