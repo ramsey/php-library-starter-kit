@@ -6,6 +6,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -142,7 +143,7 @@ class UpdateReadmeTest extends TestCase
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('README.md');
 
-        $this->answers->codeOfConduct = null;
+        $this->answers->codeOfConduct = CodeOfConduct::DEFAULT;
         $this->answers->securityPolicy = false;
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';

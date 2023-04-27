@@ -35,7 +35,7 @@ final class Answers
     public bool $authorHoldsCopyright = true;
     public ?string $authorName = null;
     public ?string $authorUrl = null;
-    public ?string $codeOfConduct = CodeOfConduct::DEFAULT;
+    public string $codeOfConduct = CodeOfConduct::DEFAULT;
     public ?string $codeOfConductCommittee = null;
     public ?string $codeOfConductEmail = null;
     public ?string $codeOfConductPoliciesUrl = null;

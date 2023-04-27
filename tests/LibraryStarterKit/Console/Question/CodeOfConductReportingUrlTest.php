@@ -25,7 +25,7 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
     }
 
     #[DataProvider('provideSkipValues')]
-    public function testShouldSkip(?string $choice, bool $expected): void
+    public function testShouldSkip(string $choice, bool $expected): void
     {
         $question = new CodeOfConductReportingUrl($this->answers);
 
@@ -41,7 +41,7 @@ class CodeOfConductReportingUrlTest extends QuestionTestCase
     {
         return [
             [
-                'choice' => null,
+                'choice' => 'None',
                 'expected' => true,
             ],
             [

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\CodeOfConduct;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 
@@ -100,7 +101,7 @@ class UpdateReadme extends Builder
 
     private function getCodeOfConduct(): string
     {
-        if ($this->getAnswers()->codeOfConduct === null) {
+        if ($this->getAnswers()->codeOfConduct === CodeOfConduct::DEFAULT) {
             return '';
         }
 

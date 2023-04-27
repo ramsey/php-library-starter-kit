@@ -33,7 +33,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     }
 
     #[DataProvider('provideSkipValues')]
-    public function testShouldSkip(?string $choice, bool $expected): void
+    public function testShouldSkip(string $choice, bool $expected): void
     {
         $question = new CodeOfConductCommittee($this->answers);
 
@@ -43,13 +43,13 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{choice: string | null, expected: bool}>
+     * @return array<array{choice: string, expected: bool}>
      */
     public static function provideSkipValues(): array
     {
         return [
             [
-                'choice' => null,
+                'choice' => 'None',
                 'expected' => true,
             ],
             [

@@ -25,7 +25,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
     }
 
     #[DataProvider('provideSkipValues')]
-    public function testShouldSkip(?string $choice, bool $expected): void
+    public function testShouldSkip(string $choice, bool $expected): void
     {
         $question = new CodeOfConductEmail($this->answers);
 
@@ -35,7 +35,7 @@ class CodeOfConductEmailTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{choice: string | null, expected: bool}>
+     * @return array<array{choice: string, expected: bool}>
      */
     public static function provideSkipValues(): array
     {

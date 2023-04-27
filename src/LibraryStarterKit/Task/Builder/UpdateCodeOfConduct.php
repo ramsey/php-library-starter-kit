@@ -35,7 +35,7 @@ class UpdateCodeOfConduct extends Builder
         $this->getConsole()->section('Updating CODE_OF_CONDUCT.md');
 
         $codeOfConductTemplate = 'code-of-conduct' . DIRECTORY_SEPARATOR;
-        $codeOfConductTemplate .= $this->getAnswers()->codeOfConduct ?? '';
+        $codeOfConductTemplate .= $this->getAnswers()->codeOfConduct;
         $codeOfConductTemplate .= '.md.twig';
 
         $codeOfConduct = $this->getEnvironment()->getTwigEnvironment()->render(
