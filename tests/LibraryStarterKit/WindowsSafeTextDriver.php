@@ -7,6 +7,8 @@ namespace Ramsey\Test\Dev\LibraryStarterKit;
 use PHPUnit\Framework\Assert;
 use Spatie\Snapshots\Driver;
 
+use function assert;
+use function is_string;
 use function preg_replace;
 
 /**
@@ -15,17 +17,12 @@ use function preg_replace;
  */
 class WindowsSafeTextDriver implements Driver
 {
-    /**
-     * @param string $data
-     *
-     * @inheritDoc
-     */
-    public function serialize($data): string
+    public function serialize(mixed $data): string
     {
-        // Save snapshot only with lf line endings.
-        $data = (string) preg_replace('/\r\n/', "\n", $data);
+        assert(is_string($data));
 
-        return $data;
+        // Save snapshot only with lf line endings.
+        return (string) preg_replace('/\R/', "\n", $data);
     }
 
     public function extension(): string
@@ -33,17 +30,13 @@ class WindowsSafeTextDriver implements Driver
         return 'txt';
     }
 
-    /**
-     * @param string $expected
-     * @param string $actual
-     *
-     * @inheritDoc
-     */
-    public function match($expected, $actual): void
+    public function match(mixed $expected, mixed $actual): void
     {
+        assert(is_string($expected));
+
         // Make sure the expected string has lf line endings, so we can
         // compare accurately.
-        $expected = (string) preg_replace('/\r\n/', "\n", $expected);
+        $expected = (string) preg_replace('/\R/', "\n", $expected);
 
         Assert::assertEquals($expected, $this->serialize($actual));
     }
