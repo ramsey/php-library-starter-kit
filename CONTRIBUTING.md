@@ -169,6 +169,19 @@ composer test
 CaptainHook will automatically run all tests before pushing to the remote
 repository.
 
+### Running `create-project` Locally
+
+You can test Composer's `create-project` command locally to make sure the
+starter kit wizard runs properly with your changes. To do so, use a command
+similar to the following:
+
+```shell
+composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME \
+    --repository='{ "type": "path", "url": "/path/to/local/php-library-starter-kit", "options": { "symlink": false } }' \
+    --remove-vcs \
+    --stability=dev
+```
+
 [github]: https://github.com/ramsey/php-library-starter-kit
 [issues]: https://github.com/ramsey/php-library-starter-kit/issues
 [pull requests]: https://github.com/ramsey/php-library-starter-kit/pulls
