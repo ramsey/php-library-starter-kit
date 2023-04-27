@@ -32,19 +32,19 @@ use const JSON_UNESCAPED_UNICODE;
  */
 class UpdateComposerJson extends Builder
 {
-    private const WHITELIST_REQUIRE = [
+    private const ALLOWLIST_REQUIRE = [
         'php',
     ];
 
-    private const WHITELIST_REQUIRE_DEV = [
+    private const ALLOWLIST_REQUIRE_DEV = [
         'ramsey/devtools',
     ];
 
-    private const WHITELIST_AUTOLOAD = [
+    private const ALLOWLIST_AUTOLOAD = [
         'Vendor\\SubNamespace\\',
     ];
 
-    private const WHITELIST_AUTOLOAD_DEV = [
+    private const ALLOWLIST_AUTOLOAD_DEV = [
         'Vendor\\Test\\SubNamespace\\',
     ];
 
@@ -86,16 +86,16 @@ class UpdateComposerJson extends Builder
 
     /**
      * @param array<string, string> $data
-     * @param string[] $whitelist
+     * @param string[] $allowlist
      *
      * @return array<string, string>
      */
-    private function filterPropertiesByWhitelist(array $data, array $whitelist): array
+    private function filterPropertiesByAllowlist(array $data, array $allowlist): array
     {
         $filtered = [];
 
         foreach ($data as $property => $value) {
-            if (in_array($property, $whitelist)) {
+            if (in_array($property, $allowlist)) {
                 $filtered[$property] = $value;
             }
         }
@@ -155,9 +155,9 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        $composer['require'] = $this->filterPropertiesByWhitelist(
+        $composer['require'] = $this->filterPropertiesByAllowlist(
             $composer['require'],
-            self::WHITELIST_REQUIRE,
+            self::ALLOWLIST_REQUIRE,
         );
     }
 
@@ -170,9 +170,9 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        $composer['require-dev'] = $this->filterPropertiesByWhitelist(
+        $composer['require-dev'] = $this->filterPropertiesByAllowlist(
             $composer['require-dev'],
-            self::WHITELIST_REQUIRE_DEV,
+            self::ALLOWLIST_REQUIRE_DEV,
         );
     }
 
@@ -185,9 +185,9 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        $composer['autoload']['psr-4'] = $this->filterPropertiesByWhitelist(
+        $composer['autoload']['psr-4'] = $this->filterPropertiesByAllowlist(
             $composer['autoload']['psr-4'],
-            self::WHITELIST_AUTOLOAD,
+            self::ALLOWLIST_AUTOLOAD,
         );
     }
 
@@ -200,9 +200,9 @@ class UpdateComposerJson extends Builder
             return;
         }
 
-        $composer['autoload-dev']['psr-4'] = $this->filterPropertiesByWhitelist(
+        $composer['autoload-dev']['psr-4'] = $this->filterPropertiesByAllowlist(
             $composer['autoload-dev']['psr-4'],
-            self::WHITELIST_AUTOLOAD_DEV,
+            self::ALLOWLIST_AUTOLOAD_DEV,
         );
     }
 }
