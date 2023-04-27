@@ -132,7 +132,7 @@ customize it to fit your needs. I hope you find it helpful!
 <!-- COPYRIGHT_START -->
 ## Copyright and License
 
-The ramsey/php-library-starter-kit library is copyright © [Ben Ramsey](https://benramsey.com)
+ramsey/php-library-starter-kit is copyright © [Ben Ramsey](https://benramsey.com)
 and licensed for use under the terms of the
 MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
 <!-- COPYRIGHT_END -->
