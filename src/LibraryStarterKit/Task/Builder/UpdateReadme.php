@@ -41,7 +41,7 @@ class UpdateReadme extends Builder
             '/<!-- SECURITY_START -->(.*)<!-- SECURITY_END -->/s' => $this->getSecurityStatement(),
         ];
 
-        /** @var string[] $searches */
+        /** @var non-empty-string[] $searches */
         $searches = array_keys($replacements);
 
         /** @var string[] $replaces */

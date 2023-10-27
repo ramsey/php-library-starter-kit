@@ -139,6 +139,9 @@ class Setup
     {
         $pregReplaceFilter = new TwigFilter(
             'preg_replace',
+            /**
+             * @param non-empty-string $p
+             */
             fn (string $s, string $p, string $r): string => (string) preg_replace($p, $r, $s),
         );
 
