@@ -20,4 +20,10 @@ jobs:
         with:
           # This must be used as GitHub Actions token does not support pushing
           # to protected branches.
+          #
+          # Create a token with repository permissions:
+          # https://github.com/settings/tokens/new?scopes=repo&description=Merge+Me!+GitHub+Actions+Workflow
+          #
+          # Set MERGE_TOKEN as an environment variable on your repository:
+          # https://github.com/yourname/repo-name/settings/secrets/actions/new
           GITHUB_TOKEN: ${{ secrets.MERGE_TOKEN }}
