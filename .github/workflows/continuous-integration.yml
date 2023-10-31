@@ -77,8 +77,8 @@ jobs:
     # If you encounter "Resource not accessible by integration" errors on
     # GitHub Actions for this job, uncomment the following lines. Your
     # organization permissions may not be set to allow writing security events.
-    #permissions:
-    #  security-events: write
+    permissions:
+      security-events: write
 
     steps:
       - name: "Checkout repository"
