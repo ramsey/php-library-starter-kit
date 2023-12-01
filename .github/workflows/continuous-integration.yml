@@ -31,7 +31,7 @@ jobs:
         uses: "actions/checkout@v4.1.1"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.26.0"
+        uses: "shivammathur/setup-php@2.28.0"
         with:
           php-version: "latest"
           coverage: "none"
@@ -54,7 +54,7 @@ jobs:
         uses: "actions/checkout@v4.1.1"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.26.0"
+        uses: "shivammathur/setup-php@2.28.0"
         with:
           php-version: "latest"
           coverage: "none"
@@ -85,7 +85,7 @@ jobs:
         uses: "actions/checkout@v4.1.1"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.26.0"
+        uses: "shivammathur/setup-php@2.28.0"
         with:
           php-version: "latest"
           coverage: "none"
@@ -111,7 +111,7 @@ jobs:
         uses: "actions/checkout@v4.1.1"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.26.0"
+        uses: "shivammathur/setup-php@2.28.0"
         with:
           php-version: "latest"
           coverage: "pcov"
@@ -170,7 +170,7 @@ jobs:
         uses: "actions/checkout@v4.1.1"
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.26.0"
+        uses: "shivammathur/setup-php@2.28.0"
         with:
           php-version: "${{ matrix.php }}"
           coverage: "none"
