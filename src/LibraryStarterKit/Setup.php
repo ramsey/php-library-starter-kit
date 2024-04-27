@@ -13,6 +13,7 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
@@ -30,8 +31,13 @@ class Setup
     private Filesystem $filesystem;
     private Finder $finder;
     private Project $project;
+
+    /** @phpstan-var OutputInterface::VERBOSITY_* */
     private int $verbosity;
 
+    /**
+     * @phpstan-param OutputInterface::VERBOSITY_* $verbosity
+     */
     public function __construct(
         Project $project,
         Event $event,
@@ -96,6 +102,8 @@ class Setup
 
     /**
      * Returns the verbosity level
+     *
+     * @return OutputInterface::VERBOSITY_*
      */
     public function getVerbosity(): int
     {

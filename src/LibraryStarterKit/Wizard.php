@@ -78,6 +78,7 @@ class Wizard extends Command
 
     public function getAnswersFile(): string
     {
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         return getenv('STARTER_KIT_ANSWERS_FILE') ?: $this->setup->path(self::ANSWERS_FILE);
     }
 
@@ -270,6 +271,9 @@ class Wizard extends Command
         $application->run(new StringInput(''));
     }
 
+    /**
+     * @return OutputInterface::VERBOSITY_*
+     */
     public static function determineVerbosityLevel(Event $event): int
     {
         if ($event->getIO()->isDebug()) {
