@@ -37,7 +37,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@2.2.0"
+        uses: "ramsey/composer-install@3.0.0"
 
       - name: "Check syntax (php-parallel-lint)"
         run: "composer dev:lint:syntax"
@@ -61,7 +61,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@2.2.0"
+        uses: "ramsey/composer-install@3.0.0"
 
       - name: "Statically analyze code (PHPStan)"
         run: "composer dev:analyze:phpstan"
@@ -91,7 +91,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@2.2.0"
+        uses: "ramsey/composer-install@3.0.0"
 
       - name: "Analyze security of code (Psalm)"
         run: "./vendor/bin/psalm --taint-analysis --report=build/logs/psalm.sarif"
@@ -118,7 +118,7 @@ jobs:
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@2.2.0"
+        uses: "ramsey/composer-install@3.0.0"
 
       - name: "Run unit tests (PHPUnit)"
         run: "composer dev:test:coverage:ci"
@@ -176,7 +176,7 @@ jobs:
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@2.2.0"
+        uses: "ramsey/composer-install@3.0.0"
         with:
           dependency-versions: "${{ matrix.composer-deps }}"
           composer-options: "${{ matrix.composer-options }}"
