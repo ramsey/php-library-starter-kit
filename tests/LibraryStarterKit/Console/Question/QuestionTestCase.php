@@ -6,11 +6,12 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
+use Symfony\Component\Console\Question\Question;
 
 abstract class QuestionTestCase extends TestCase
 {
     /**
-     * @return class-string<StarterKitQuestion>
+     * @return class-string<StarterKitQuestion & Question>
      */
     abstract protected function getTestClass(): string;
 
@@ -26,6 +27,8 @@ abstract class QuestionTestCase extends TestCase
     public function testGetName(): void
     {
         $questionClass = $this->getTestClass();
+
+        /** @phpstan-ignore-next-line */
         $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionName(), $question->getName());
@@ -34,6 +37,8 @@ abstract class QuestionTestCase extends TestCase
     public function testGetQuestion(): void
     {
         $questionClass = $this->getTestClass();
+
+        /** @phpstan-ignore-next-line */
         $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionText(), $question->getQuestion());
@@ -42,6 +47,8 @@ abstract class QuestionTestCase extends TestCase
     public function testGetAnswers(): void
     {
         $questionClass = $this->getTestClass();
+
+        /** @phpstan-ignore-next-line */
         $question = new $questionClass($this->answers);
 
         $this->assertSame($this->answers, $question->getAnswers());
@@ -50,6 +57,8 @@ abstract class QuestionTestCase extends TestCase
     public function testGetDefault(): void
     {
         $questionClass = $this->getTestClass();
+
+        /** @phpstan-ignore-next-line */
         $question = new $questionClass($this->answers);
 
         $this->assertSame($this->getQuestionDefault(), $question->getDefault());
@@ -60,6 +69,8 @@ abstract class QuestionTestCase extends TestCase
         $this->answers->{$this->getQuestionName()} = 'foobar';
 
         $questionClass = $this->getTestClass();
+
+        /** @phpstan-ignore-next-line */
         $question = new $questionClass($this->answers);
 
         $this->assertSame('foobar', $question->getDefault());
