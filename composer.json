@@ -23,8 +23,8 @@
         "twig/twig": "^3.5"
     },
     "require-dev": {
-        "ramsey/devtools": "^2.0",
-        "spatie/phpunit-snapshot-assertions": "^5.0"
+        "ramsey/devtools": "^2.1",
+        "spatie/phpunit-snapshot-assertions": "^5.1"
     },
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
@@ -45,12 +45,12 @@
     },
     "config": {
         "allow-plugins": {
-            "php-http/discovery": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "ramsey/composer-repl": true,
-            "phpstan/extension-installer": true,
-            "ergebnis/composer-normalize": true,
             "captainhook/plugin-composer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "ramsey/composer-repl": true,
             "ramsey/devtools": true
         },
         "sort-packages": true
