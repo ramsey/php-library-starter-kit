@@ -63,6 +63,9 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         $this->answers = $answers;
     }
 
+    /**
+     * @return callable(string | null): string
+     */
     public function getNormalizer(): callable
     {
         $choiceMap = array_combine(self::CHOICES, self::CHOICE_IDENTIFIER_MAP);
@@ -76,6 +79,9 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         };
     }
 
+    /**
+     * @return callable(string | null): (string | null)
+     */
     public function getValidator(): callable
     {
         return function (?string $value): ?string {

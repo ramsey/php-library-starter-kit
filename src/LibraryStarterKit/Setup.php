@@ -27,29 +27,16 @@ use const DIRECTORY_SEPARATOR;
 
 class Setup
 {
-    private Event $event;
-    private Filesystem $filesystem;
-    private Finder $finder;
-    private Project $project;
-
-    /** @phpstan-var OutputInterface::VERBOSITY_* */
-    private int $verbosity;
-
     /**
      * @phpstan-param OutputInterface::VERBOSITY_* $verbosity
      */
     public function __construct(
-        Project $project,
-        Event $event,
-        Filesystem $filesystem,
-        Finder $finder,
-        int $verbosity,
+        private readonly Project $project,
+        private readonly Event $event,
+        private readonly Filesystem $filesystem,
+        private readonly Finder $finder,
+        private readonly int $verbosity,
     ) {
-        $this->project = $project;
-        $this->event = $event;
-        $this->filesystem = $filesystem;
-        $this->finder = $finder;
-        $this->verbosity = $verbosity;
     }
 
     /**

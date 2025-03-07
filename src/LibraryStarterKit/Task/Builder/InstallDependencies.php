@@ -22,7 +22,7 @@ class InstallDependencies extends Builder
     {
         $this->getConsole()->section('Installing dependencies');
 
-        // Remove lockfiles and vendor directories to start fresh.
+        // Remove lock files and vendor directories to start fresh.
         $this->getEnvironment()->getFilesystem()->remove([
             $this->getEnvironment()->path('composer.lock'),
             $this->getEnvironment()->path('vendor'),

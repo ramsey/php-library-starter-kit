@@ -20,11 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 abstract class Builder
 {
-    private Build $buildTask;
-
-    public function __construct(Build $buildTask)
+    public function __construct(private readonly Build $buildTask)
     {
-        $this->buildTask = $buildTask;
     }
 
     /**

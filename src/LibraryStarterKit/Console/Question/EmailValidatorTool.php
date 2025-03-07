@@ -25,6 +25,9 @@ trait EmailValidatorTool
 {
     private bool $isOptional = true;
 
+    /**
+     * @return callable(string | null): (string | null)
+     */
     public function getValidator(): callable
     {
         return function (?string $data): ?string {

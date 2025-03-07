@@ -60,13 +60,10 @@ final class Answers
     public bool $skipPrompts = false;
     public ?string $vendorName = null;
 
-    private string $saveToPath;
-    private Filesystem $filesystem;
-
-    public function __construct(string $saveToPath, Filesystem $filesystem)
-    {
-        $this->saveToPath = $saveToPath;
-        $this->filesystem = $filesystem;
+    public function __construct(
+        private readonly string $saveToPath,
+        private readonly Filesystem $filesystem,
+    ) {
         $this->loadFile();
     }
 

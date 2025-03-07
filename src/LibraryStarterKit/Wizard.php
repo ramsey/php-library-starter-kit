@@ -42,16 +42,13 @@ class Wizard extends Command
 
     public static ?Application $application = null;
 
-    private Setup $setup;
-    private StyleFactory $styleFactory;
     private Answers $answers;
 
-    public function __construct(Setup $setup, ?StyleFactory $styleFactory = null)
-    {
+    public function __construct(
+        private readonly Setup $setup,
+        private readonly StyleFactory $styleFactory = new StyleFactory(),
+    ) {
         parent::__construct('starter-kit');
-
-        $this->setup = $setup;
-        $this->styleFactory = $styleFactory ?? new StyleFactory();
 
         $this->answers = new Answers(
             $this->getAnswersFile(),

@@ -14,7 +14,7 @@ namespace Ramsey\Dev\LibraryStarterKit\Console\Question;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 
 use function filter_var;
-use function strpos;
+use function str_starts_with;
 use function trim;
 
 use const FILTER_VALIDATE_URL;
@@ -26,6 +26,9 @@ trait UrlValidatorTool
 {
     private bool $isOptional = true;
 
+    /**
+     * @return callable(string | null): (string | null)
+     */
     public function getValidator(): callable
     {
         return function (?string $data): ?string {
@@ -35,7 +38,7 @@ trait UrlValidatorTool
 
             if (
                 filter_var((string) $data, FILTER_VALIDATE_URL)
-                && strpos((string) $data, 'http') === 0
+                && str_starts_with((string) $data, 'http')
             ) {
                 return $data;
             }

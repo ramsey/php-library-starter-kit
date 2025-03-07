@@ -43,6 +43,9 @@ class PackageKeywords extends Question implements StarterKitQuestion
         $this->answers = $answers;
     }
 
+    /**
+     * @return callable(string | null): list<string>
+     */
     public function getNormalizer(): callable
     {
         return function (?string $answer): array {

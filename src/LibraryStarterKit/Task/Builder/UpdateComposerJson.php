@@ -14,11 +14,13 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 
+use function array_filter;
 use function in_array;
 use function json_decode;
 use function json_encode;
 use function trim;
 
+use const ARRAY_FILTER_USE_KEY;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
@@ -92,15 +94,7 @@ class UpdateComposerJson extends Builder
      */
     private function filterPropertiesByAllowlist(array $data, array $allowlist): array
     {
-        $filtered = [];
-
-        foreach ($data as $property => $value) {
-            if (in_array($property, $allowlist)) {
-                $filtered[$property] = $value;
-            }
-        }
-
-        return $filtered;
+        return array_filter($data, fn ($property) => in_array($property, $allowlist), ARRAY_FILTER_USE_KEY);
     }
 
     private function getComposerContents(): string

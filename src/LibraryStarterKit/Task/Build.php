@@ -36,18 +36,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class Build
 {
-    private Answers $answers;
-    private Setup $setup;
-    private SymfonyStyle $console;
-
     public function __construct(
-        Setup $setup,
-        SymfonyStyle $console,
-        Answers $answers,
+        private readonly Setup $setup,
+        private readonly SymfonyStyle $console,
+        private readonly Answers $answers,
     ) {
-        $this->setup = $setup;
-        $this->console = $console;
-        $this->answers = $answers;
     }
 
     public function getAnswers(): Answers

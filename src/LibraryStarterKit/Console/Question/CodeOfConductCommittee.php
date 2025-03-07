@@ -36,6 +36,9 @@ class CodeOfConductCommittee extends Question implements SkippableQuestion, Star
         $this->answers = $answers;
     }
 
+    /**
+     * @return callable(string | null): (string | null)
+     */
     public function getValidator(): callable
     {
         return fn (?string $data): ?string => $data;

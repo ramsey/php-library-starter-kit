@@ -13,7 +13,7 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
-use function strpos;
+use function str_starts_with;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -81,7 +81,7 @@ class UpdateLicense extends Builder
             $licenseContents,
         );
 
-        if (strpos($license, 'LGPL-3.0') === 0) {
+        if (str_starts_with($license, 'LGPL-3.0')) {
             $this->includeGplWithLesserGpl();
         }
     }

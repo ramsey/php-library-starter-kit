@@ -44,7 +44,7 @@ use Symfony\Component\Console\Question\Question as SymfonyQuestion;
 class InstallQuestions
 {
     /**
-     * @return array<StarterKitQuestion & SymfonyQuestion>
+     * @return list<StarterKitQuestion & SymfonyQuestion>
      */
     public function getQuestions(Answers $answers): array
     {

@@ -13,13 +13,10 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 class Project
 {
-    private string $name;
-    private string $path;
-
-    public function __construct(string $name, string $path)
-    {
-        $this->name = $name;
-        $this->path = $path;
+    public function __construct(
+        private readonly string $name,
+        private readonly string $path,
+    ) {
     }
 
     public function getName(): string
