@@ -22,14 +22,14 @@ class UpdateFunding extends Builder
     {
         $this->getConsole()->section('Updating .github/FUNDING.yml');
 
-        $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
+        $funding = $this->getEnvironment()->getTwigEnvironment()->render(
             'FUNDING.yml.twig',
             $this->getAnswers()->getArrayCopy(),
         );
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
             $this->getEnvironment()->path('.github/FUNDING.yml'),
-            $changelog,
+            $funding,
         );
     }
 }
