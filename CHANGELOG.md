@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.5.6 - 2025-03-07
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Partially revert commit dbec32c337e4bab527ca829db3d8cef3e7f08536; the attempt to define the full Symfony Qeustion interface on the custom StarterKitQuestion interface caused problems when using older versions of symfony/console.
+
 ## 3.5.5 - 2025-03-07
 
 ### Added
