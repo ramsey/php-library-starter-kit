@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.5.5 - 2025-03-07
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Modernize and update type declarations and annotations throughout (no BC breaks).
+
+- Ensure all tests and static analysis tools pass on PHP 8.3 and 8.4.
+
+- Update symfony/finder dependency to `^6.4 || ^7.2`.
+
+- Update twig/twig dependency to `^3.20`.
+
 ## 3.5.4 - 2023-10-31
 
 ### Added
