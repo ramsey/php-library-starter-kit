@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Partially revert commit dbec32c337e4bab527ca829db3d8cef3e7f08536; the attempt to define the full Symfony Qeustion interface on the custom StarterKitQuestion interface caused problems when using older versions of symfony/console.
+- Partially revert commit dbec32c337e4bab527ca829db3d8cef3e7f08536; the attempt to define the full Symfony Question interface on the custom StarterKitQuestion interface caused problems when using older versions of symfony/console.
 
 ## 3.5.5 - 2025-03-07
 
