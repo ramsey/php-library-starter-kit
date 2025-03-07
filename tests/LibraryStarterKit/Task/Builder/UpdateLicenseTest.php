@@ -70,7 +70,12 @@ class UpdateLicenseTest extends TestCase
     }
 
     /**
-     * @return array<array{license: string, filename: string, contents: string, additionalChecks: Closure}>
+     * @return list<array{
+     *     license: string,
+     *     filename: string,
+     *     contents: string,
+     *     additionalChecks: Closure(TwigEnvironment & MockInterface, Filesystem & MockInterface, Answers): void,
+     * }>
      */
     public static function provideLicensesForTesting(): array
     {
@@ -83,7 +88,7 @@ class UpdateLicenseTest extends TestCase
                     TwigEnvironment & MockInterface $twig,
                     Filesystem & MockInterface $filesystem,
                     Answers $answers,
-                ) {
+                ): void {
                     $twig
                         ->expects('render')
                         ->with(
@@ -118,7 +123,7 @@ class UpdateLicenseTest extends TestCase
                     TwigEnvironment & MockInterface $twig,
                     Filesystem & MockInterface $filesystem,
                     Answers $answers,
-                ) {
+                ): void {
                     $twig
                         ->expects('render')
                         ->with(
@@ -141,7 +146,7 @@ class UpdateLicenseTest extends TestCase
                     TwigEnvironment & MockInterface $twig,
                     Filesystem & MockInterface $filesystem,
                     Answers $answers,
-                ) {
+                ): void {
                     $twig
                         ->expects('render')
                         ->with(
@@ -189,7 +194,7 @@ class UpdateLicenseTest extends TestCase
                     TwigEnvironment & MockInterface $twig,
                     Filesystem & MockInterface $filesystem,
                     Answers $answers,
-                ) {
+                ): void {
                     $twig
                         ->expects('render')
                         ->with(

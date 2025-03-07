@@ -308,6 +308,7 @@ class WizardTest extends TestCase
 
     public function testNewApplicationReturnsAnInstanceOfApplication(): void
     {
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(Application::class, Wizard::newApplication());
     }
 
@@ -435,7 +436,7 @@ class WizardTest extends TestCase
     }
 
     /**
-     * @return array<array{verbosity: int, exceptionCode: int, expectedReturn: int}>
+     * @return list<array{verbosity: int, exceptionCode: int, expectedReturn: int}>
      */
     public static function runWhenExceptionIsThrownWithVerbosityProvider(): array
     {
@@ -481,7 +482,7 @@ class WizardTest extends TestCase
     }
 
     /**
-     * @return array<array{isDebug: bool, isVeryVerbose: bool, isVerbose: bool, expectedVerbosity: int}>
+     * @return list<array{isDebug: bool, isVeryVerbose: bool, isVerbose: bool, expectedVerbosity: int}>
      */
     public static function determineVerbosityLevelProvider(): array
     {

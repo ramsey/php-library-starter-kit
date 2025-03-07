@@ -74,7 +74,7 @@ class PackageNameTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null, vendorName: string | null}>
+     * @return list<array{value: string | null, vendorName: string | null}>
      */
     public static function provideInvalidPackageNames(): array
     {

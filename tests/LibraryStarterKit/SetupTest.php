@@ -30,7 +30,7 @@ class SetupTest extends TestCase
     {
         parent::setUp();
 
-        $this->appPath = dirname(dirname(dirname(__FILE__)));
+        $this->appPath = dirname(__FILE__, 3);
 
         /** @var Event & MockInterface $event */
         $event = $this->mockery(Event::class, [
@@ -62,16 +62,19 @@ class SetupTest extends TestCase
 
     public function testGetEvent(): void
     {
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(Event::class, $this->setup->getEvent());
     }
 
     public function testGetFilesystem(): void
     {
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(Filesystem::class, $this->setup->getFilesystem());
     }
 
     public function testGetFinder(): void
     {
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(Finder::class, $this->setup->getFinder());
     }
 
@@ -99,6 +102,7 @@ class SetupTest extends TestCase
 
     public function testGetTwigEnvironment(): void
     {
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(TwigEnvironment::class, $this->setup->getTwigEnvironment());
     }
 
@@ -123,6 +127,7 @@ class SetupTest extends TestCase
     {
         $process = $this->setup->getProcess(['ls', '-la']);
 
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(Process::class, $process);
     }
 

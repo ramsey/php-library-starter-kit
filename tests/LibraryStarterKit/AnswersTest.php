@@ -12,8 +12,7 @@ use function json_encode;
 
 class AnswersTest extends TestCase
 {
-    /** @var Filesystem|MockInterface */
-    private Filesystem $filesystem;
+    private Filesystem & MockInterface $filesystem;
 
     protected function setUp(): void
     {
@@ -178,7 +177,7 @@ class AnswersTest extends TestCase
         $this->filesystem->expects()->exists('/path/to/file.json')->andReturnFalse();
 
         $this->filesystem->shouldReceive('dumpFile')->withArgs(
-            function ($filename, $content) {
+            function (string $filename, string $content) {
                 $this->assertSame('/path/to/file.json', $filename);
                 $this->assertJsonStringEqualsJsonString(
                     (string) json_encode([

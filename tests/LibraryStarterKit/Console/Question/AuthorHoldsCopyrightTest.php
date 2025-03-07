@@ -23,10 +23,7 @@ class AuthorHoldsCopyrightTest extends QuestionTestCase
         return 'Are you the copyright holder?';
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getQuestionDefault()
+    protected function getQuestionDefault(): bool
     {
         return true;
     }

@@ -53,7 +53,7 @@ class VendorNameTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null}>
+     * @return list<array{value: string | null}>
      */
     public static function provideInvalidValues(): array
     {

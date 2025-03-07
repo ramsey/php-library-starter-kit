@@ -112,7 +112,7 @@ class UpdateNamespaceTest extends TestCase
     }
 
     /**
-     * @return array<array{packageName: string, namespace: string, testNamespace: string}>
+     * @return list<array{packageName: string, namespace: string, testNamespace: string}>
      */
     public static function provideNamespaceTestValues(): array
     {

@@ -23,10 +23,7 @@ class SecurityPolicyTest extends QuestionTestCase
         return 'Do you want to include a security policy?';
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getQuestionDefault()
+    protected function getQuestionDefault(): bool
     {
         return true;
     }

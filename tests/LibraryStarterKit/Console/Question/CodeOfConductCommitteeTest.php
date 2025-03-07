@@ -43,7 +43,7 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{choice: string, expected: bool}>
+     * @return list<array{choice: string, expected: bool}>
      */
     public static function provideSkipValues(): array
     {

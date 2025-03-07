@@ -27,10 +27,7 @@ class LicenseTest extends QuestionTestCase
         return 'Choose a license for your project';
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getQuestionDefault()
+    protected function getQuestionDefault(): int
     {
         return 1;
     }
@@ -77,7 +74,7 @@ class LicenseTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null, expected: string}>
+     * @return list<array{value: string | null, expected: string}>
      */
     public static function provideNormalizerTestValues(): array
     {

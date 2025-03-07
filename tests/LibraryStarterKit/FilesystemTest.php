@@ -14,6 +14,7 @@ class FilesystemTest extends TestCase
         $filesystem = new Filesystem();
         $file = $filesystem->getFile(__FILE__);
 
+        /** @phpstan-ignore-next-line */
         $this->assertInstanceOf(SplFileInfo::class, $file);
     }
 }

@@ -45,7 +45,7 @@ class PackageKeywordsTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null, expected: string[]}>
+     * @return list<array{value: string | null, expected: string[]}>
      */
     public static function provideNormalizerTestValues(): array
     {

@@ -20,7 +20,16 @@ use function sprintf;
 class SetupRepositoryTest extends TestCase
 {
     /**
-     * @return array<array{configUserName: string, configUserEmail: string, configDefaultBranch: string, authorName: string, authorEmail: string, expectedName: string, expectedEmail: string, expectedDefaultBranch: string}>
+     * @return list<array{
+     *     configUserName: string,
+     *     configUserEmail: string,
+     *     configDefaultBranch: string,
+     *     authorName: string,
+     *     authorEmail: string,
+     *     expectedName: string,
+     *     expectedEmail: string,
+     *     expectedDefaultBranch: string,
+     * }>
      */
     public static function buildProvider(): array
     {

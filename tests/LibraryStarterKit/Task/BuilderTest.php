@@ -15,11 +15,9 @@ class BuilderTest extends TestCase
 {
     private Builder $builder;
 
-    /** @var SymfonyStyle|MockInterface */
-    private SymfonyStyle $console;
+    private SymfonyStyle & MockInterface $console;
 
-    /** @var Setup|MockInterface */
-    private Setup $setup;
+    private Setup & MockInterface $setup;
 
     protected function setUp(): void
     {

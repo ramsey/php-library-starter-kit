@@ -25,10 +25,7 @@ class CodeOfConductTest extends QuestionTestCase
         return 'Choose a code of conduct for your project';
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getQuestionDefault()
+    protected function getQuestionDefault(): int
     {
         return 1;
     }
@@ -67,7 +64,7 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null, expected: string}>
+     * @return list<array{value: string | null, expected: string}>
      */
     public static function provideNormalizerTestValues(): array
     {
@@ -97,7 +94,7 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string, expected: string | null}>
+     * @return list<array{value: string, expected: string | null}>
      */
     public static function provideValidValues(): array
     {
@@ -137,7 +134,7 @@ class CodeOfConductTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null, message: string}>
+     * @return list<array{value: string | null, message: string}>
      */
     public static function provideInvalidValues(): array
     {

@@ -102,7 +102,11 @@ class UpdateSourceFileHeadersTest extends TestCase
     }
 
     /**
-     * @return array<array{license: string, copyrightEmail?: string | null, copyrightUrl?: string | null}>
+     * @return list<array{
+     *     license: string,
+     *     copyrightEmail?: string | null,
+     *     copyrightUrl?: string | null,
+     * }>
      */
     public static function licenseProvider(): array
     {

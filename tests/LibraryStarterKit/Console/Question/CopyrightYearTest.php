@@ -54,7 +54,7 @@ class CopyrightYearTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{value: string | null}>
+     * @return list<array{value: string | null}>
      */
     public static function provideInvalidDateValues(): array
     {

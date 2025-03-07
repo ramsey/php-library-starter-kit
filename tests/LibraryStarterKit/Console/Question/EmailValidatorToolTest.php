@@ -44,7 +44,7 @@ class EmailValidatorToolTest extends TestCase
     }
 
     /**
-     * @return array<array{value: string | null}>
+     * @return list<array{value: string | null}>
      */
     public static function provideNullableValues(): array
     {

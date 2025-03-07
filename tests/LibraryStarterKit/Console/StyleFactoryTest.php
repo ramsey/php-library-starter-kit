@@ -17,7 +17,9 @@ class StyleFactoryTest extends TestCase
         $input = new ArgvInput([]);
         $output = new NullOutput();
         $factory = new StyleFactory();
+        $style = $factory->factory($input, $output);
 
-        $this->assertInstanceOf(SymfonyStyle::class, $factory->factory($input, $output));
+        /** @phpstan-ignore-next-line */
+        $this->assertInstanceOf(SymfonyStyle::class, $style);
     }
 }

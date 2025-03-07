@@ -44,7 +44,7 @@ class CopyrightHolderTest extends QuestionTestCase
     }
 
     /**
-     * @return array<array{choice: bool, expected: bool}>
+     * @return list<array{choice: bool, expected: bool}>
      */
     public static function provideSkipValues(): array
     {

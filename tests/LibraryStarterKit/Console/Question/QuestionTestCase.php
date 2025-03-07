@@ -6,12 +6,11 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
-use Symfony\Component\Console\Question\Question;
 
 abstract class QuestionTestCase extends TestCase
 {
     /**
-     * @return class-string<Question & StarterKitQuestion>
+     * @return class-string<StarterKitQuestion>
      */
     abstract protected function getTestClass(): string;
 
@@ -19,10 +18,7 @@ abstract class QuestionTestCase extends TestCase
 
     abstract protected function getQuestionText(): string;
 
-    /**
-     * @return mixed
-     */
-    protected function getQuestionDefault()
+    protected function getQuestionDefault(): mixed
     {
         return null;
     }
