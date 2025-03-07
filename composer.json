@@ -19,8 +19,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "symfony/finder": "^6.2",
-        "twig/twig": "^3.5"
+        "symfony/finder": "^6.4 || ^7.2",
+        "twig/twig": "^3.20"
     },
     "require-dev": {
         "ramsey/devtools": "^2.1",
