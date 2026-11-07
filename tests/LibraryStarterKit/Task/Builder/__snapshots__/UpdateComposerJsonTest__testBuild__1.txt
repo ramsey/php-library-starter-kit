@@ -15,10 +15,19 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8"
+        "php": "^8.5"
     },
     "require-dev": {
-        "ramsey/devtools": "^1.5"
+        "captainhook/plugin-composer": "^5.3",
+        "ergebnis/composer-normalize": "^2.56",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-phpunit": "^2.1",
+        "phpunit/phpunit": "^12.5",
+        "ramsey/coding-standard": "^2.4",
+        "ramsey/composer-repl": "^1.5",
+        "ramsey/conventional-commits": "^1.7",
+        "roave/security-advisories": "dev-latest"
     },
     "config": {
         "sort-packages": true
@@ -42,5 +51,33 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "analyze": "vendor/bin/phpstan analyze --ansi -v --memory-limit=1G",
+        "coverage": [
+            "git clean -fx build/coverage/.",
+            "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html build/coverage/coverage-html",
+            "open build/coverage/coverage-html/index.html"
+        ],
+        "coverage-ci": "XDEBUG_MODE=coverage phpunit --colors=always --testdox --coverage-text --coverage-clover build/coverage/clover.xml",
+        "fix": [
+            "@composer normalize",
+            "vendor/bin/phpcbf --cache=build/phpcs-cache"
+        ],
+        "lint": [
+            "@composer validate --strict",
+            "@composer normalize --dry-run",
+            "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
+            "@analyze"
+        ],
+        "test": "vendor/bin/phpunit --colors=always"
+    },
+    "scripts-descriptions": {
+        "analyze": "Runs static analysis.",
+        "coverage": "Runs unit tests with code coverage analysis and opens the coverage report in a web browser.",
+        "coverage-ci": "Runs unit tests with code coverage analysis and outputs a Clover XML file.",
+        "fix": "Fixes coding standards violations and normalizes composer.json.",
+        "lint": "Runs coding standards checks and static analysis.",
+        "test": "Runs unit tests."
+    }
 }

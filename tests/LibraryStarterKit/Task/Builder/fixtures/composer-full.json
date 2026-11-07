@@ -18,17 +18,29 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8",
-        "ext-json": "*",
-        "symfony/console": "^5.1",
-        "symfony/filesystem": "^5.1",
-        "symfony/finder": "^5.1",
-        "symfony/process": "^5.1",
-        "twig/twig": "^3.1"
+        "php": "^8.5",
+        "symfony/console": "^8.1",
+        "symfony/filesystem": "^8.1",
+        "symfony/finder": "^8.1",
+        "symfony/process": "^8.1",
+        "twig/twig": "^3.30"
     },
     "require-dev": {
-        "ramsey/devtools": "^1.5",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "captainhook/plugin-composer": "^5.3",
+        "ergebnis/composer-normalize": "^2.56",
+        "fakerphp/faker": "^1.24",
+        "hamcrest/hamcrest-php": "^3.0",
+        "mockery/mockery": "^1.6",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-mockery": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.1",
+        "phpunit/phpunit": "^12.5",
+        "ramsey/coding-standard": "^2.4",
+        "ramsey/composer-repl": "^1.5",
+        "ramsey/conventional-commits": "^1.7",
+        "roave/security-advisories": "dev-latest",
+        "spatie/phpunit-snapshot-assertions": "^5.1"
     },
     "suggest": {
         "ext-foobar": "Foo bar"
@@ -61,9 +73,33 @@
     "scripts": {
         "post-root-package-install": "git init",
         "post-create-project-cmd": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
-        "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start"
+        "analyze": "vendor/bin/phpstan analyze --ansi -v --memory-limit=1G",
+        "coverage": [
+            "git clean -fx build/coverage/.",
+            "XDEBUG_MODE=coverage phpunit --colors=always --coverage-html build/coverage/coverage-html",
+            "open build/coverage/coverage-html/index.html"
+        ],
+        "coverage-ci": "XDEBUG_MODE=coverage phpunit --colors=always --testdox --coverage-text --coverage-clover build/coverage/clover.xml",
+        "fix": [
+            "@composer normalize",
+            "vendor/bin/phpcbf --cache=build/phpcs-cache"
+        ],
+        "lint": [
+            "@composer validate --strict",
+            "@composer normalize --dry-run",
+            "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
+            "@analyze"
+        ],
+        "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
+        "test": "vendor/bin/phpunit --colors=always"
     },
     "scripts-descriptions": {
-        "starter-kit": "Runs the PHP Library Starter Kit wizard."
+        "analyze": "Runs static analysis.",
+        "coverage": "Runs unit tests with code coverage analysis and opens the coverage report in a web browser.",
+        "coverage-ci": "Runs unit tests with code coverage analysis and outputs a Clover XML file.",
+        "fix": "Fixes coding standards violations and normalizes composer.json.",
+        "lint": "Runs coding standards checks and static analysis.",
+        "starter-kit": "Runs the PHP Library Starter Kit wizard.",
+        "test": "Runs unit tests."
     }
 }

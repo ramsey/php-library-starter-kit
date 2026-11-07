@@ -28,36 +28,74 @@ use const JSON_UNESCAPED_UNICODE;
 /**
  * Updates values in the composer.json file
  *
- * @psalm-type ComposerAuthorType = array{name: string, email?: string | null, homepage?: string | null}
- * @psalm-type ComposerAutoloadType = array{"psr-4"?: array<string, string>}
- * @psalm-type ComposerType = array{name: string, description: string, type: string, keywords: string[], license: string | null, authors: ComposerAuthorType[], require?: array<string, string>, require-dev?: array<string, string>, autoload?: ComposerAutoloadType, autoload-dev?: ComposerAutoloadType, scripts?: array<string, string | string[]>, scripts-descriptions?: array<string, string>, suggest?: array<string, string>}
+ * @phpstan-type ComposerAuthorType array{
+ *     name: string,
+ *     email?: string | null,
+ *     homepage?: string | null,
+ * }
+ * @phpstan-type ComposerAutoloadType array{
+ *     "psr-4"?: array<string, string>,
+ * }
+ * @phpstan-type ComposerType array{
+ *     name: string,
+ *     description: string,
+ *     type: string,
+ *     keywords: string[],
+ *     license: string | null,
+ *     authors: ComposerAuthorType[],
+ *     require?: array<string, string>,
+ *     require-dev?: array<string, string>,
+ *     autoload?: ComposerAutoloadType,
+ *     autoload-dev?: ComposerAutoloadType,
+ *     scripts?: array<string, string>,
+ *     scripts-descriptions?: array<string, string>,
+ *     suggest?: array<string, string>,
+ * }
  */
 class UpdateComposerJson extends Builder
 {
-    private const ALLOWLIST_REQUIRE = [
+    private const array ALLOWLIST_REQUIRE = [
         'php',
     ];
 
-    private const ALLOWLIST_REQUIRE_DEV = [
-        'ramsey/devtools',
+    private const array ALLOWLIST_REQUIRE_DEV = [
+        'captainhook/plugin-composer',
+        'ergebnis/composer-normalize',
+        'phpstan/extension-installer',
+        'phpstan/phpstan',
+        'phpstan/phpstan-phpunit',
+        'phpunit/phpunit',
+        'ramsey/coding-standard',
+        'ramsey/composer-repl',
+        'ramsey/conventional-commits',
+        'roave/security-advisories',
     ];
 
-    private const ALLOWLIST_AUTOLOAD = [
+    private const array ALLOWLIST_AUTOLOAD = [
         'Vendor\\SubNamespace\\',
     ];
 
-    private const ALLOWLIST_AUTOLOAD_DEV = [
+    private const array ALLOWLIST_AUTOLOAD_DEV = [
         'Vendor\\Test\\SubNamespace\\',
     ];
 
-    private const JSON_OPTIONS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+    private const array ALLOWLIST_SCRIPTS = [
+        'analyze',
+        'coverage',
+        'coverage-ci',
+        'fix',
+        'lint',
+        'test',
+    ];
+
+    private const int JSON_OPTIONS = JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
 
     public function build(): void
     {
         $this->getConsole()->section('Updating composer.json');
 
         /**
-         * @psalm-var ComposerType|null $composer
+         * @var ComposerType | null $composer
          */
         $composer = json_decode($this->getComposerContents(), true);
         if ($composer === null) {
@@ -75,9 +113,8 @@ class UpdateComposerJson extends Builder
         $this->buildRequireDev($composer);
         $this->buildAutoload($composer);
         $this->buildAutoloadDev($composer);
+        $this->buildScripts($composer);
 
-        unset($composer['scripts']);
-        unset($composer['scripts-descriptions']);
         unset($composer['suggest']);
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
@@ -122,7 +159,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @psalm-param ComposerType $composer
+     * @param ComposerType $composer
      */
     private function buildAuthors(array &$composer): void
     {
@@ -141,7 +178,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @psalm-param ComposerType $composer
+     * @param ComposerType $composer
      */
     private function buildRequire(array &$composer): void
     {
@@ -156,7 +193,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @psalm-param ComposerType $composer
+     * @param ComposerType $composer
      */
     private function buildRequireDev(array &$composer): void
     {
@@ -171,7 +208,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @psalm-param ComposerType $composer
+     * @param ComposerType $composer
      */
     private function buildAutoload(array &$composer): void
     {
@@ -186,7 +223,7 @@ class UpdateComposerJson extends Builder
     }
 
     /**
-     * @psalm-param ComposerType $composer
+     * @param ComposerType $composer
      */
     private function buildAutoloadDev(array &$composer): void
     {
@@ -198,5 +235,27 @@ class UpdateComposerJson extends Builder
             $composer['autoload-dev']['psr-4'],
             self::ALLOWLIST_AUTOLOAD_DEV,
         );
+    }
+
+    /**
+     * @param ComposerType $composer
+     */
+    private function buildScripts(array &$composer): void
+    {
+        if (!isset($composer['scripts'])) {
+            return;
+        }
+
+        $composer['scripts'] = $this->filterPropertiesByAllowlist(
+            $composer['scripts'],
+            self::ALLOWLIST_SCRIPTS,
+        );
+
+        if (isset($composer['scripts-descriptions'])) {
+            $composer['scripts-descriptions'] = $this->filterPropertiesByAllowlist(
+                $composer['scripts-descriptions'],
+                self::ALLOWLIST_SCRIPTS,
+            );
+        }
     }
 }
