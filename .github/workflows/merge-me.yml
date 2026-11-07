@@ -12,7 +12,7 @@ on:
 jobs:
   merge-me:
     name: "Merge me!"
-    runs-on: "ubuntu-latest"
+    runs-on: "ubuntu-24.04"
     steps:
       - name: "Auto-merge"
         if: ${{ github.event.workflow_run.conclusion == 'success' }}

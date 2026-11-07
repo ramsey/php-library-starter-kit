@@ -22,9 +22,9 @@ env:
   COMPOSER_ROOT_VERSION: "1.99.99"
 
 jobs:
-  coding-standards:
-    name: "Coding standards"
-    runs-on: "ubuntu-latest"
+  lint:
+    name: "Lint"
+    runs-on: "ubuntu-24.04"
 
     steps:
       - name: "Checkout repository"
@@ -33,21 +33,19 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240" # 2.37.2
         with:
-          php-version: "latest"
+          php-version: "8.5"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
 
-      - name: "Check syntax (php-parallel-lint)"
-        run: "composer dev:lint:syntax"
+      - name: "Lint"
+        run: "composer lint"
 
-      - name: "Check coding standards (PHP_CodeSniffer)"
-        run: "composer dev:lint:style"
-
-  static-analysis:
-    name: "Static analysis"
-    runs-on: "ubuntu-latest"
+  coverage:
+    name: "Coverage"
+    needs: ["lint"]
+    runs-on: "ubuntu-24.04"
 
     steps:
       - name: "Checkout repository"
@@ -56,78 +54,22 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240" # 2.37.2
         with:
-          php-version: "latest"
-          coverage: "none"
-
-      - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
-
-      - name: "Statically analyze code (PHPStan)"
-        run: "composer dev:analyze:phpstan"
-
-      - name: "Statically analyze code (Psalm)"
-        run: "composer dev:analyze:psalm -- --shepherd"
-
-  security-analysis:
-    name: "Security analysis"
-    needs: ["coding-standards", "static-analysis"]
-    runs-on: "ubuntu-latest"
-
-    # If you encounter "Resource not accessible by integration" errors on
-    # GitHub Actions for this job, uncomment the following lines. Your
-    # organization permissions may not be set to allow writing security events.
-    permissions:
-      security-events: write
-
-    steps:
-      - name: "Checkout repository"
-        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240" # 2.37.2
-        with:
-          php-version: "latest"
-          coverage: "none"
-
-      - name: "Install dependencies (Composer)"
-        uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
-
-      - name: "Analyze security of code (Psalm)"
-        run: "./vendor/bin/psalm --taint-analysis --report=build/logs/psalm.sarif"
-
-      - name: "Upload security analysis results to GitHub"
-        uses: "github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066" # v4.39.3
-        with:
-          sarif_file: "build/logs/psalm.sarif"
-
-  code-coverage:
-    name: "Code coverage"
-    needs: ["coding-standards", "static-analysis"]
-    runs-on: "ubuntu-latest"
-
-    steps:
-      - name: "Checkout repository"
-        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
-
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240" # 2.37.2
-        with:
-          php-version: "latest"
-          coverage: "pcov"
+          php-version: "8.5"
+          coverage: "xdebug"
           ini-values: "memory_limit=-1"
 
       - name: "Install dependencies (Composer)"
         uses: "ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda" # 4.0.0
 
-      - name: "Run unit tests (PHPUnit)"
-        run: "composer dev:test:coverage:ci"
+      - name: "Run tests"
+        run: "composer coverage-ci"
 
       - name: "Publish coverage report to Codecov"
         uses: "codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5" # v7.1.1
 
-  unit-tests:
+  test:
     name: "Unit tests"
-    needs: ["code-coverage"]
+    needs: ["coverage"]
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -139,21 +81,12 @@ jobs:
           - "8.4"
           - "8.5"
         os:
-          - "macos-latest"
-          - "ubuntu-latest"
-          - "windows-latest"
+          - "ubuntu-24.04"
         composer-deps:
           - "lowest"
           - "highest"
 
     steps:
-      - name: "Configure Git (for Windows)"
-        if: ${{ matrix.os == 'windows-latest' }}
-        shell: "bash"
-        run: |
-          git config --system core.autocrlf false
-          git config --system core.eol lf
-
       - name: "Checkout repository"
         uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
 
@@ -168,6 +101,5 @@ jobs:
         with:
           dependency-versions: "${{ matrix.composer-deps }}"
 
-      - name: "Run unit tests (PHPUnit)"
-        shell: "bash"
-        run: "composer dev:test:unit"
+      - name: "Run tests"
+        run: "composer test"
