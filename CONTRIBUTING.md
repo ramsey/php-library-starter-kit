@@ -72,8 +72,9 @@ When you do begin working on your feature, here are some guidelines to consider:
   We will use this description to update the CHANGELOG. If there is no
   description, or it does not adequately describe your feature, we may ask you
   to update the description.
-* ramsey/php-library-starter-kit follows a superset of **[PSR-12 coding standard][psr-12]**.
-  Please ensure your code does, too. _Hint: run `composer dev:lint` to check._
+* ramsey/php-library-starter-kit follows a superset of the
+  **[PER-CS coding standard][per-cs]**. Please ensure your code does, too.
+  _Hint: run `composer dev:lint` to check._
 * Please **write tests** for any new features you add.
 * Please **ensure that tests pass** before submitting your pull request.
   ramsey/php-library-starter-kit automatically runs tests for pull requests. However,
@@ -90,7 +91,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Developing
 
-To develop this project, you will need [PHP](https://www.php.net) 7.4 or greater
+To develop this project, you will need [PHP](https://www.php.net) 8.2 or greater
 and [Composer](https://getcomposer.org).
 
 After cloning this repository locally, execute the following commands:
@@ -117,8 +118,8 @@ composer list dev
 
 ### Coding Standards
 
-This project follows a superset of [PSR-12](https://www.php-fig.org/psr/psr-12/)
-coding standards, enforced by [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer).
+This project follows a superset of [PER-CS][] coding standards, enforced by
+[PHP_CodeSniffer][].
 
 CaptainHook will run coding standards checks before committing.
 
@@ -185,6 +186,7 @@ composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME \
 [github]: https://github.com/ramsey/php-library-starter-kit
 [issues]: https://github.com/ramsey/php-library-starter-kit/issues
 [pull requests]: https://github.com/ramsey/php-library-starter-kit/pulls
-[psr-12]: https://www.php-fig.org/psr/psr-12/
+[per-cs]: https://www.php-fig.org/per/coding-style/
+[php_codesniffer]: https://github.com/PHPCSStandards/PHP_CodeSniffer
 [gh-flow]: https://guides.github.com/introduction/flow/
 [conventional commits]: https://www.conventionalcommits.org/
