@@ -30,6 +30,7 @@ use Throwable;
 use function basename;
 use function dirname;
 use function getenv;
+use function method_exists;
 use function preg_replace;
 use function realpath;
 use function sprintf;
@@ -38,7 +39,7 @@ use function trim;
 
 class Wizard extends Command
 {
-    private const ANSWERS_FILE = '.starter-kit-answers';
+    private const string ANSWERS_FILE = '.starter-kit-answers';
 
     public static ?Application $application = null;
 
@@ -75,7 +76,6 @@ class Wizard extends Command
 
     public function getAnswersFile(): string
     {
-        /** @psalm-suppress RiskyTruthyFalsyComparison */
         return getenv('STARTER_KIT_ANSWERS_FILE') ?: $this->setup->path(self::ANSWERS_FILE);
     }
 
@@ -263,8 +263,11 @@ class Wizard extends Command
 
         $application = self::newApplication();
 
-        /** @psalm-suppress DeprecatedMethod */
-        $application->add($command);
+        if (method_exists($application, 'addCommand')) { /** @phpstan-ignore function.alreadyNarrowedType */
+            $application->addCommand($command);
+        } else {
+            $application->add($command); /** @phpstan-ignore method.notFound */
+        }
 
         $application->setDefaultCommand((string) $command->getName(), true);
 

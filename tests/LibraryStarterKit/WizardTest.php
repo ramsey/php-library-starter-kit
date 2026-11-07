@@ -332,7 +332,7 @@ class WizardTest extends TestCase
         $application = $this->mockery(Application::class);
 
         $application
-            ->shouldReceive('add')
+            ->shouldReceive('addCommand')
             ->once()
             ->withArgs(function (Wizard $command) use ($vendorDir): bool {
                 $this->assertSame('php-library-starter-kit', $command->getSetup()->getProject()->getName());
