@@ -10,8 +10,7 @@ class ExampleTest extends TestCase
 {
     public function testGreet(): void
     {
-        $example = $this->mockery(Example::class);
-        $example->shouldReceive('greet')->passthru();
+        $example = new Example();
 
         $this->assertSame('Hello, Friends!', $example->greet('Friends'));
     }

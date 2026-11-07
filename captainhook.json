@@ -17,6 +17,9 @@
         "enabled": true,
         "actions": [
             {
+                "action": "composer lint"
+            },
+            {
                 "action": "composer test"
             }
         ]
@@ -43,16 +46,7 @@
                 ]
             },
             {
-                "action": "composer dev:lint:syntax -- {$STAGED_FILES|of-type:php}",
-                "conditions": [
-                    {
-                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
-                        "args": ["php"]
-                    }
-                ]
-            },
-            {
-                "action": "composer dev:lint:style -- {$STAGED_FILES|of-type:php}",
+                "action": "./vendor/bin/phpcs -- {$STAGED_FILES|of-type:php}",
                 "conditions": [
                     {
                         "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
