@@ -262,7 +262,10 @@ class Wizard extends Command
         $command = new self($setup);
 
         $application = self::newApplication();
+
+        /** @psalm-suppress DeprecatedMethod */
         $application->add($command);
+
         $application->setDefaultCommand((string) $command->getName(), true);
 
         $application->run(new StringInput(''));

@@ -16,8 +16,10 @@ use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Question\Question;
 
 use function array_map;
+use function assert;
 use function explode;
 use function implode;
+use function is_string;
 use function preg_match;
 use function preg_replace;
 use function str_replace;
@@ -80,7 +82,9 @@ class PackageNamespace extends Question implements StarterKitQuestion
 
     public function getValidator(): callable
     {
-        return function (?string $data): string {
+        return function (mixed $data): string {
+            assert($data === null || is_string($data));
+
             $packageNameParts = explode('\\', (string) $data);
 
             foreach ($packageNameParts as $namePart) {
