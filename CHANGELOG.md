@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.6.0 - 2026-11-07
+
+### Added
+
+- Add an option to use the Contributor Covenant 3.0 as the code of conduct.
+
+### Changed
+
+- Bump the minimum PHP version to 8.2.
+
+- Update the generated CONTRIBUTING.md to reference the PER Coding Style (PER-CS) instead of PSR-12, and to require PHP 8.2 or greater for development.
+
+- Update the PHP_CodeSniffer repository link in CONTRIBUTING.md to point to PHPCSStandards/PHP_CodeSniffer.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Remove support for PHP 8.1.
+
+### Fixed
+
+- Use the GitHub username and project name, instead of the Composer package name, when building GitHub URLs in the generated CONTRIBUTING.md and HackerOne security policy.
+
 ## 3.5.6 - 2025-03-07
 
 ### Added
