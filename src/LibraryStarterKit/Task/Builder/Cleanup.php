@@ -25,7 +25,7 @@ class Cleanup extends Builder
     /**
      * The files and directories listed here are relative to the project root.
      */
-    private const CLEANUP_FILES = [
+    private const array CLEANUP_FILES = [
         'resources' . DIRECTORY_SEPARATOR . 'templates',
         'src' . DIRECTORY_SEPARATOR . 'LibraryStarterKit',
         'tests' . DIRECTORY_SEPARATOR . 'LibraryStarterKit',

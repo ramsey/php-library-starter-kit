@@ -26,7 +26,7 @@ class CopyrightYear extends Question implements StarterKitQuestion
 {
     use AnswersTool;
 
-    private const VALID_PATTERN = '/^\d{4}$/';
+    private const string VALID_PATTERN = '/^\d{4}$/';
 
     public function getName(): string
     {

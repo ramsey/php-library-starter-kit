@@ -26,7 +26,7 @@ use function preg_replace;
  */
 class UpdateSourceFileHeaders extends Builder
 {
-    private const HEADER_PATTERN = '%/\*\*.* \*/%sU';
+    private const string HEADER_PATTERN = '%/\*\*.* \*/%sU';
 
     public function build(): void
     {

@@ -29,9 +29,9 @@ class License extends ChoiceQuestion implements StarterKitQuestion
 {
     use AnswersTool;
 
-    public const DEFAULT = 'Proprietary';
+    public const string DEFAULT = 'Proprietary';
 
-    public const CHOICES = [
+    public const array CHOICES = [
         1 => self::DEFAULT,
         2 => 'Apache License 2.0',
         3 => 'BSD 2-Clause "Simplified" License',
@@ -47,7 +47,7 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         13 => 'Unlicense',
     ];
 
-    public const CHOICE_IDENTIFIER_MAP = [
+    public const array CHOICE_IDENTIFIER_MAP = [
         1 => self::DEFAULT,
         2 => 'Apache-2.0',
         3 => 'BSD-2-Clause',

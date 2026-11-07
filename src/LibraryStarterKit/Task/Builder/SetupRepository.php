@@ -22,8 +22,8 @@ use function trim;
  */
 class SetupRepository extends Builder
 {
-    private const COMMIT_MSG = 'chore: initialize project using ramsey/php-library-starter-kit';
-    private const DEFAULT_BRANCH = 'main';
+    private const string COMMIT_MSG = 'chore: initialize project using ramsey/php-library-starter-kit';
+    private const string DEFAULT_BRANCH = 'main';
 
     public function build(): void
     {
@@ -88,7 +88,7 @@ class SetupRepository extends Builder
         return $this;
     }
 
-    private function installHooks(): self
+    private function installHooks(): void
     {
         $captainHookPath = $this->getEnvironment()->path('vendor') . '/bin/captainhook';
 
@@ -96,8 +96,6 @@ class SetupRepository extends Builder
             ->getEnvironment()
             ->getProcess([$captainHookPath, 'install', '--force', '--skip-existing'])
             ->mustRun($this->streamProcessOutput());
-
-        return $this;
     }
 
     private function cleanBuildDir(): self
