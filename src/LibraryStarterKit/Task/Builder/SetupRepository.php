@@ -104,7 +104,7 @@ class SetupRepository extends Builder
     {
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'dev:build:clean'])
+            ->getProcess(['git', 'clean', '-fX', 'build/.'])
             ->mustRun();
 
         return $this;

@@ -21,13 +21,18 @@ class RunTestsTest extends TestCase
         $console->expects()->section('Running project tests...');
 
         $process = $this->mockery(Process::class);
-        $process->expects()->mustRun(new IsCallable());
+        $process->expects()->mustRun(new IsCallable())->twice();
 
         $environment = $this->mockery(Setup::class);
 
         $environment
             ->expects()
-            ->getProcess(['composer', 'dev:test:all'])
+            ->getProcess(['composer', 'lint'])
+            ->andReturn($process);
+
+        $environment
+            ->expects()
+            ->getProcess(['composer', 'test'])
             ->andReturn($process);
 
         /** @var Build & MockInterface $build */

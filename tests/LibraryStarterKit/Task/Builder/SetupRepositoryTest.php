@@ -186,7 +186,7 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['composer', 'dev:build:clean'])
+            ->getProcess(['git', 'clean', '-fX', 'build/.'])
             ->andReturn($processMustRun);
 
         $environment

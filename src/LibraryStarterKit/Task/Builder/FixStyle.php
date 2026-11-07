@@ -24,7 +24,7 @@ class FixStyle extends Builder
 
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'dev:lint:fix'])
+            ->getProcess(['composer', 'fix'])
             ->mustRun($this->streamProcessOutput());
     }
 }
