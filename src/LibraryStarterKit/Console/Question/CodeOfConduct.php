@@ -37,6 +37,7 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         3 => 'Contributor Covenant Code of Conduct, version 2.0',
         4 => 'Contributor Covenant Code of Conduct, version 2.1',
         5 => 'Citizen Code of Conduct, version 2.3',
+        6 => 'Contributor Covenant Code of Conduct, version 3.0',
     ];
 
     public const CHOICE_IDENTIFIER_MAP = [
@@ -45,6 +46,7 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         3 => 'Contributor-2.0',
         4 => 'Contributor-2.1',
         5 => 'Citizen-2.3',
+        6 => 'Contributor-3.0',
     ];
 
     public function getName(): string
