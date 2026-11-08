@@ -108,6 +108,8 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
      * Trims every entry, drops empty entries, and removes a leading "@" from
      * each GitHub Sponsors username
      *
+     * A string given to a platform that accepts a list is one entry.
+     *
      * @param string | list<string> $value
      *
      * @return string | list<string>
@@ -115,7 +117,11 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
     private function clean(string | array $value): string | array
     {
         if (!is_array($value)) {
-            return trim($value);
+            if (!$this->platform->acceptsList()) {
+                return trim($value);
+            }
+
+            $value = [$value];
         }
 
         $entries = array_map(fn (string $entry): string => trim($entry), $value);

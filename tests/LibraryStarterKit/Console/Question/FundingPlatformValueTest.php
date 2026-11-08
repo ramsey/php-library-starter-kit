@@ -159,6 +159,16 @@ class FundingPlatformValueTest extends TestCase
         $this->assertSame(['github' => '', 'custom' => ''], $patreon('  '));
     }
 
+    public function testValidatorCleansAStringGivenToGithub(): void
+    {
+        $this->answers->funding = ['github' => '', 'patreon' => 'ramsey'];
+        $github = (new FundingPlatformValue($this->answers, FundingPlatform::Github))->getValidator();
+
+        $this->assertSame(['github' => ['octocat'], 'patreon' => 'ramsey'], $github('@octocat'));
+        $this->assertSame(['patreon' => 'ramsey'], $github('@'));
+        $this->assertSame(['patreon' => 'ramsey'], $github('  '));
+    }
+
     public function testValidatorCountsOnlyNonEmptyEntriesAgainstTheLimit(): void
     {
         $this->answers->funding = ['github' => ''];
