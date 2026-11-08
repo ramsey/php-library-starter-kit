@@ -39,7 +39,7 @@ class Funding extends ConfirmationQuestion implements StarterKitQuestion
     public function __construct(Answers $answers)
     {
         parent::__construct(
-            'Do you want to add a FUNDING.yml file to display a sponsor button on GitHub?',
+            'Do you want a FUNDING.yml file for a GitHub sponsor button?',
             $answers->funding !== null,
         );
 

@@ -9,6 +9,7 @@ use Ramsey\Test\Dev\LibraryStarterKit\TestCase;
 
 use function array_filter;
 use function array_values;
+use function mb_strlen;
 
 class FundingPlatformTest extends TestCase
 {
@@ -51,18 +52,26 @@ class FundingPlatformTest extends TestCase
         }
     }
 
+    public function testEveryPromptFitsInEightyColumns(): void
+    {
+        foreach (FundingPlatform::cases() as $platform) {
+            // Symfony indents the question by one space and ends it with ":".
+            $this->assertLessThanOrEqual(80, mb_strlen(' ' . $platform->prompt() . ':'));
+        }
+    }
+
     public function testPromptsForListAndPatternedPlatformsNameWhatToEnter(): void
     {
         $this->assertSame(
-            'Which GitHub Sponsors usernames should the button link to? Enter up to four, comma-separated',
+            'Which GitHub Sponsors usernames? Enter up to four, comma-separated',
             FundingPlatform::Github->prompt(),
         );
         $this->assertSame(
-            'What is your Tidelift package, as PLATFORM-NAME/PACKAGE-NAME (for example, packagist/acme/awesome)?',
+            'What is your Tidelift package? For example, packagist/acme/awesome',
             FundingPlatform::Tidelift->prompt(),
         );
         $this->assertSame(
-            'Which custom funding URLs should the button link to? Enter up to four, comma-separated',
+            'Which custom funding URLs? Enter up to four, comma-separated',
             FundingPlatform::Custom->prompt(),
         );
     }

@@ -21,7 +21,7 @@ class FundingTest extends QuestionTestCase
 
     protected function getQuestionText(): string
     {
-        return 'Do you want to add a FUNDING.yml file to display a sponsor button on GitHub?';
+        return 'Do you want a FUNDING.yml file for a GitHub sponsor button?';
     }
 
     protected function getQuestionDefault(): bool

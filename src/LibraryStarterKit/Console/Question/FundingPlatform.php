@@ -85,20 +85,17 @@ enum FundingPlatform: string
     {
         return match ($this) {
             self::CommunityBridge => 'What is your LFX Mentorship project name?',
-            self::Github => 'Which GitHub Sponsors usernames should the button link to? '
-                . 'Enter up to four, comma-separated',
+            self::Github => 'Which GitHub Sponsors usernames? Enter up to four, comma-separated',
             self::IssueHunt => 'What is your IssueHunt username?',
             self::KoFi => 'What is your Ko-fi username?',
             self::Liberapay => 'What is your Liberapay username?',
             self::OpenCollective => 'What is your Open Collective username?',
             self::Patreon => 'What is your Patreon username?',
-            self::Tidelift => 'What is your Tidelift package, as PLATFORM-NAME/PACKAGE-NAME '
-                . '(for example, packagist/acme/awesome)?',
+            self::Tidelift => 'What is your Tidelift package? For example, packagist/acme/awesome',
             self::Polar => 'What is your Polar username?',
             self::BuyMeACoffee => 'What is your Buy Me a Coffee username?',
             self::ThanksDev => 'What is your thanks.dev identifier, as u/gh/USERNAME?',
-            self::Custom => 'Which custom funding URLs should the button link to? '
-                . 'Enter up to four, comma-separated',
+            self::Custom => 'Which custom funding URLs? Enter up to four, comma-separated',
         };
     }
 }
