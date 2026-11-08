@@ -66,6 +66,7 @@ class UpdateComposerJson extends Builder
     private const array ALLOWLIST_REQUIRE_DEV = [
         'captainhook/plugin-composer',
         'ergebnis/composer-normalize',
+        'infection/infection',
         'phpstan/extension-installer',
         'phpstan/phpstan',
         'phpstan/phpstan-phpunit',
@@ -90,6 +91,7 @@ class UpdateComposerJson extends Builder
         'coverage-ci',
         'fix',
         'lint',
+        'mutation',
         'test',
     ];
 

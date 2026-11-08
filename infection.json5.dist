@@ -1,0 +1,24 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src",
+        ],
+    },
+    "timeout": 10,
+    "threads": "auto",
+    "logs": {
+        "text": "build/logs/infection.log",
+        "summary": "build/logs/infection-summary.log",
+        "json": "build/logs/infection.json",
+        "html": "build/logs/infection.html",
+    },
+    "tmpDir": "build/cache/infection",
+    "minMsi": 90,
+    "minCoveredMsi": 95,
+    "mutators": {
+        "@default": true,
+    },
+    "timeoutsAsEscaped": true,
+    "maxTimeouts": 10,
+}

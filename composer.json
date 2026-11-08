@@ -29,6 +29,7 @@
         "ergebnis/composer-normalize": "^2.56",
         "fakerphp/faker": "^1.24",
         "hamcrest/hamcrest-php": "^3.0",
+        "infection/infection": "^0.35",
         "mockery/mockery": "^1.6",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.3",
@@ -63,6 +64,7 @@
             "captainhook/plugin-composer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "ergebnis/composer-normalize": true,
+            "infection/extension-installer": true,
             "phpstan/extension-installer": true,
             "ramsey/composer-repl": true
         },
@@ -88,14 +90,15 @@
         "coverage-ci": "XDEBUG_MODE=coverage phpunit --colors=always --testdox --coverage-text --coverage-clover build/coverage/clover.xml",
         "fix": [
             "@composer normalize",
-            "vendor/bin/phpcbf --cache=build/phpcs-cache"
+            "vendor/bin/phpcbf --cache=build/cache/phpcs.cache"
         ],
         "lint": [
             "@composer validate --strict",
             "@composer normalize --dry-run",
-            "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
+            "vendor/bin/phpcs --colors --cache=build/cache/phpcs.cache",
             "@analyze"
         ],
+        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0 --formatter=progress",
         "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
         "test": "vendor/bin/phpunit --colors=always"
     },
@@ -105,6 +108,7 @@
         "coverage-ci": "Runs unit tests with code coverage analysis and outputs a Clover XML file.",
         "fix": "Fixes coding standards violations and normalizes composer.json.",
         "lint": "Runs coding standards checks and static analysis.",
+        "mutation": "Runs mutation testing.",
         "starter-kit": "Runs the PHP Library Starter Kit wizard.",
         "test": "Runs unit tests."
     }

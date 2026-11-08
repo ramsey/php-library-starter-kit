@@ -20,6 +20,7 @@
     "require-dev": {
         "captainhook/plugin-composer": "^5.3",
         "ergebnis/composer-normalize": "^2.56",
+        "infection/infection": "^0.35",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.3",
         "phpstan/phpstan-phpunit": "^2.1",
@@ -70,6 +71,7 @@
             "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
             "@analyze"
         ],
+        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0 --formatter=progress",
         "test": "vendor/bin/phpunit --colors=always"
     },
     "scripts-descriptions": {
@@ -78,6 +80,7 @@
         "coverage-ci": "Runs unit tests with code coverage analysis and outputs a Clover XML file.",
         "fix": "Fixes coding standards violations and normalizes composer.json.",
         "lint": "Runs coding standards checks and static analysis.",
+        "mutation": "Runs mutation testing.",
         "test": "Runs unit tests."
     }
 }
