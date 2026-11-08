@@ -36,7 +36,8 @@ use function trim;
  * platform keys, separated by commas. The answer is the whole funding map,
  * with the chosen platform keys in the order of the FundingPlatform cases. A
  * platform that already has a value keeps it, and a new platform starts with
- * an empty one.
+ * an empty one. An empty answer is null, as if the person had answered no to
+ * the Funding question; the question says so when no platforms are saved.
  */
 class FundingPlatforms extends ChoiceQuestion implements KeepsAnswerWhenSkipped, StarterKitQuestion
 {
@@ -60,8 +61,9 @@ class FundingPlatforms extends ChoiceQuestion implements KeepsAnswerWhenSkipped,
             }
         }
 
+        // With platforms saved, Enter keeps them, so the hint would be wrong.
         parent::__construct(
-            'Which funding platforms do you want to include?',
+            'Which funding platforms do you want to include?' . ($default === [] ? ' Press Enter for none' : ''),
             $choices,
             implode(',', $default) ?: null,
         );
@@ -100,18 +102,18 @@ class FundingPlatforms extends ChoiceQuestion implements KeepsAnswerWhenSkipped,
     }
 
     /**
-     * @return callable(string | list<string>): array<string, string | list<string>>
+     * @return callable(string | list<string>): (array<string, string | list<string>> | null)
      */
     public function getValidator(): callable
     {
-        return function (string | array $keys): array {
+        return function (string | array $keys): ?array {
             /** @var string | list<string> $keys */
             if (is_string($keys)) {
                 $keys = ($this->getNormalizer())($keys);
             }
 
             if ($keys === []) {
-                throw new InvalidConsoleInput('Choose at least one funding platform');
+                return null;
             }
 
             foreach ($keys as $key) {

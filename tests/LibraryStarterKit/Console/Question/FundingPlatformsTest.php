@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatform;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatformValue;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatforms;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -30,7 +32,17 @@ class FundingPlatformsTest extends QuestionTestCase
 
     protected function getQuestionText(): string
     {
-        return 'Which funding platforms do you want to include?';
+        return 'Which funding platforms do you want to include? Press Enter for none';
+    }
+
+    public function testQuestionLeavesOutTheHintWhenPlatformsAreSaved(): void
+    {
+        $this->answers->funding = ['github' => ['ramsey']];
+
+        $this->assertSame(
+            'Which funding platforms do you want to include?',
+            (new FundingPlatforms($this->answers))->getQuestion(),
+        );
     }
 
     public function testGetDefaultWhenAnswerAlreadySet(): void
@@ -115,14 +127,36 @@ class FundingPlatformsTest extends QuestionTestCase
         $validator(['github', 'paypal']);
     }
 
-    public function testValidatorRefusesNoPlatforms(): void
+    public function testValidatorReturnsNullForNoPlatforms(): void
     {
+        $this->answers->funding = [];
         $validator = (new FundingPlatforms($this->answers))->getValidator();
 
-        $this->expectException(InvalidConsoleInput::class);
-        $this->expectExceptionMessageIsOrContains('Choose at least one funding platform');
+        $this->assertNull($validator([]));
+        $this->assertNull($validator(' , '));
+    }
 
-        $validator([]);
+    public function testPressingEnterWithNothingSavedDropsTheFundingFile(): void
+    {
+        $this->answers->funding = [];
+
+        [$answer, $display] = $this->ask(new FundingPlatforms($this->answers), "\n");
+
+        $this->assertNull($answer);
+        $this->assertStringNotContainsString('ERROR', $display);
+
+        $this->answers->funding = $answer;
+        $this->assertTrue((new FundingPlatformValue($this->answers, FundingPlatform::Github))->shouldSkip());
+    }
+
+    public function testPressingEnterKeepsSavedPlatforms(): void
+    {
+        $this->answers->funding = ['github' => ['ramsey'], 'tidelift' => 'packagist/ramsey/uuid'];
+
+        $this->assertSame(
+            ['github' => ['ramsey'], 'tidelift' => 'packagist/ramsey/uuid'],
+            $this->ask(new FundingPlatforms($this->answers), "\n")[0],
+        );
     }
 
     public function testValidatorWorksWhenFundingIsNull(): void
@@ -136,23 +170,7 @@ class FundingPlatformsTest extends QuestionTestCase
     {
         $this->answers->funding = [];
 
-        $stream = fopen('php://memory', 'r+');
-        $this->assertNotFalse($stream);
-        fwrite($stream, "2, Tidelift\n");
-        rewind($stream);
-
-        $input = new ArrayInput([]);
-        $input->setStream($stream);
-        $output = new BufferedOutput();
-
-        $question = new FundingPlatforms($this->answers);
-
-        // Autocompletion reads the terminal one key at a time, which a test
-        // stream cannot do.
-        $question->setAutocompleterValues(null);
-
-        $answer = (new SymfonyStyle($input, $output))->askQuestion($question);
-        $display = $output->fetch();
+        [$answer, $display] = $this->ask(new FundingPlatforms($this->answers), "2, Tidelift\n");
 
         $this->assertSame(['github' => '', 'tidelift' => ''], $answer);
         $this->assertStringContainsString('[2 ] GitHub Sponsors', $display);
@@ -161,5 +179,30 @@ class FundingPlatformsTest extends QuestionTestCase
         foreach (explode("\n", $display) as $line) {
             $this->assertLessThanOrEqual(80, mb_strlen($line));
         }
+    }
+
+    /**
+     * Asks the question through Symfony, with the typed text as input
+     *
+     * @return array{mixed, string} the answer and what the console printed
+     */
+    private function ask(FundingPlatforms $question, string $typed): array
+    {
+        $stream = fopen('php://memory', 'r+');
+        $this->assertNotFalse($stream);
+        fwrite($stream, $typed);
+        rewind($stream);
+
+        $input = new ArrayInput([]);
+        $input->setStream($stream);
+        $output = new BufferedOutput();
+
+        // Autocompletion reads the terminal one key at a time, which a test
+        // stream cannot do.
+        $question->setAutocompleterValues(null);
+
+        $answer = (new SymfonyStyle($input, $output))->askQuestion($question);
+
+        return [$answer, $output->fetch()];
     }
 }
