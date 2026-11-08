@@ -4,23 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [4.1.0] - 2026-11-08
 
 ### Added
 
 - Ask whether the project wants a `.github/FUNDING.yml` sponsor button and, if so, which funding platforms and values to list, with a `funding` property in the answers file; the file is written only when a platform was chosen.
 
-### Changed
+### Fixed
 
 - Name the minimum PHP version in `CONTRIBUTING.md` from the generated `composer.json` instead of a fixed version.
 - Link the README's license badge to the license file written for the chosen license, such as `COPYING.LESSER` for the LGPL.
-
-### Fixed
-
 - Export-ignore `infection.json5.dist` in generated projects.
 - Name PHP versions the generated project supports in the bug report template.
 - Write `proprietary` in lowercase as the license in a generated `composer.json`, so `composer validate --strict` accepts it.
-- Leave `keywords` out of a generated `composer.json` when no keywords were given. `composer normalize` removed the empty list and updated the lock file before the Git repository existed, and the CaptainHook plugin then stopped project setup.
+- Leave `keywords` out of a generated `composer.json` when no keywords were given, so project setup no longer stops at the style fix.
 
 ## [4.0.0] - 2026-11-08
 
@@ -350,7 +347,7 @@ composer create-project --remove-vcs ramsey/php-library-starter-kit target-direc
 
 You will be walked through a series of questions, and your PHP library source files will be located in `target-directory`, when completed. Change to that directory, `git init`, and off you go!
 
-[unreleased]: https://github.com/ramsey/php-library-starter-kit/compare/4.0.0...HEAD
+[4.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/4.0.0...4.1.0
 [4.0.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.6.0...4.0.0
 [3.6.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.6...3.6.0
 [3.5.6]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.5...3.5.6
