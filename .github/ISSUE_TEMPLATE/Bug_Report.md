@@ -28,7 +28,7 @@ framework you are using. This will help us to quickly debug the issue.
 ## Environment details
 <!-- Provide details about the system where you're using this package. -->
 - version of this package: *e.g. 1.0.0, 1.0.1, 1.1.0*
-- PHP version: *e.g. 8.5.12, 8.4.27, 8.3.36*
+- PHP version: *e.g. 8.5.0, 8.5.12*
 - OS: *e.g. Windows 11 (version 26H2), Linux (Ubuntu 24.04), macOS 27 (27.2)*
 
 ## Additional context
