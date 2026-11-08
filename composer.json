@@ -40,7 +40,8 @@
         "ramsey/composer-repl": "^1.5.1",
         "ramsey/conventional-commits": "^1.7",
         "roave/security-advisories": "dev-latest",
-        "spatie/phpunit-snapshot-assertions": "^5.4"
+        "spatie/phpunit-snapshot-assertions": "^5.4",
+        "symfony/yaml": "^8.1.11"
     },
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
