@@ -46,7 +46,7 @@ use const JSON_UNESCAPED_UNICODE;
  *     name: string,
  *     description: string,
  *     type: string,
- *     keywords: string[],
+ *     keywords?: string[],
  *     license: string | null,
  *     authors: ComposerAuthorType[],
  *     require?: array<string, string>,
@@ -114,6 +114,12 @@ class UpdateComposerJson extends Builder
         $composer['description'] = (string) $this->getAnswers()->packageDescription;
         $composer['type'] = 'library';
         $composer['keywords'] = $this->getAnswers()->packageKeywords;
+
+        // composer normalize removes an empty list.
+        if ($composer['keywords'] === []) {
+            unset($composer['keywords']);
+        }
+
         // Composer accepts a closed-source license only as lowercase
         // "proprietary".
         $composer['license'] = $this->getAnswers()->license === License::DEFAULT

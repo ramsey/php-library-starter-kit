@@ -277,6 +277,40 @@ class UpdateComposerJsonTest extends TestCase
     #[TestWith(['MPL-2.0', 'MPL-2.0'])]
     public function testBuildWritesALicenseComposerAccepts(string $answer, string $expected): void
     {
+        $this->answers->license = $answer;
+
+        // Composer accepts a closed-source license only as lowercase
+        // "proprietary".
+        $this->assertSame($expected, $this->buildComposerJson()['license']);
+    }
+
+    public function testBuildLeavesOutKeywordsWhenThereAreNone(): void
+    {
+        $this->answers->license = 'MIT';
+        $this->answers->packageKeywords = [];
+
+        // composer normalize removes an empty list, which would change the
+        // file again while the project is being set up.
+        $this->assertArrayNotHasKey('keywords', $this->buildComposerJson());
+    }
+
+    public function testBuildWritesTheKeywords(): void
+    {
+        $this->answers->license = 'MIT';
+        $this->answers->packageKeywords = ['foo', 'bar'];
+
+        $this->assertSame(['foo', 'bar'], $this->buildComposerJson()['keywords']);
+    }
+
+    /**
+     * Builds composer.json from the minimal fixture and the answers
+     *
+     * @return array<string, mixed> the decoded composer.json the builder wrote
+     */
+    private function buildComposerJson(): array
+    {
+        $written = [];
+
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Updating composer.json');
 
@@ -284,13 +318,9 @@ class UpdateComposerJsonTest extends TestCase
         $filesystem
             ->shouldReceive('dumpFile')
             ->once()
-            ->withArgs(function (string $path, string $contents) use ($expected) {
-                /** @var array{license: string} $composer */
-                $composer = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
-
-                // Composer accepts a closed-source license only as lowercase
-                // "proprietary".
-                $this->assertSame($expected, $composer['license']);
+            ->withArgs(function (string $path, string $contents) use (&$written) {
+                /** @var array<string, mixed> $written */
+                $written = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 
                 return true;
             });
@@ -306,8 +336,6 @@ class UpdateComposerJsonTest extends TestCase
         $finder->expects()->files()->andReturnSelf();
         $finder->expects()->depth('== 0')->andReturnSelf();
         $finder->expects()->name('composer.json');
-
-        $this->answers->license = $answer;
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
@@ -327,6 +355,8 @@ class UpdateComposerJsonTest extends TestCase
         ]);
 
         (new UpdateComposerJson($build))->build();
+
+        return $written;
     }
 
     private function composerContentsOriginal(): string

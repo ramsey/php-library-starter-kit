@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 - Export-ignore `infection.json5.dist` in generated projects.
 - Name PHP versions the generated project supports in the bug report template.
 - Write `proprietary` in lowercase as the license in a generated `composer.json`, so `composer validate --strict` accepts it.
+- Leave `keywords` out of a generated `composer.json` when no keywords were given. `composer normalize` removed the empty list and updated the lock file before the Git repository existed, and the CaptainHook plugin then stopped project setup.
 
 ## [4.0.0] - 2026-11-08
 
