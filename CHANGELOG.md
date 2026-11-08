@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Ask whether the project wants a `.github/FUNDING.yml` sponsor button and, if so, which funding platforms and values to list, with a `funding` property in the answers file; the file is written only when a platform was chosen.
+
+### Changed
+
+- Name the minimum PHP version in `CONTRIBUTING.md` from the generated `composer.json` instead of a fixed version.
+- Link the README's license badge to the license file written for the chosen license, such as `COPYING.LESSER` for the LGPL.
+
+### Fixed
+
+- Export-ignore `infection.json5.dist` in generated projects.
+- Name PHP versions the generated project supports in the bug report template.
+
 ## [4.0.0] - 2026-11-08
 
 ### Added
