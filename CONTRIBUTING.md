@@ -4,13 +4,13 @@ Contributions are welcome. This project accepts pull requests on [GitHub].
 
 This project adheres to a [code of conduct]. By participating in this project and its community, you are expected to uphold this code.
 
-## Communication Channels
+## Communication channels
 
 You can find help and discussion in the following places:
 
 * GitHub Issues: <https://github.com/ramsey/php-library-starter-kit/issues>
 
-## Reporting Bugs
+## Reporting bugs
 
 Report bugs using the project's [issue tracker][issues].
 
@@ -42,13 +42,13 @@ When submitting a bug report, please include enough information to reproduce the
 
   Provide any additional context that may help us debug the problem.
 
-## Fixing Bugs
+## Fixing bugs
 
 This project welcomes pull requests to fix bugs!
 
 If you see a bug report that you'd like to fix, please feel free to do so. Following the directions and guidelines described in the "Adding New Features" section below, you may create bugfix branches and send pull requests.
 
-## Adding New Features
+## Adding new features
 
 If you have an idea for a new feature, it's a good idea to check out the [issues] or active [pull requests] first to see if anyone is already working on the feature. If not, feel free to submit an issue first, asking whether the feature is beneficial to the project. This will save you from doing a lot of development work only to have your feature rejected. We don't enjoy rejecting your hard work, but some features don't fit with the goals of the project.
 
@@ -80,7 +80,7 @@ Now, you are ready to develop!
 
 This project uses [CaptainHook] to validate all staged changes prior to commit.
 
-### Coding Standards
+### Coding standards
 
 This project follows a superset of [PER-CS] coding standards, enforced by [PHP_CodeSniffer].
 
@@ -96,7 +96,7 @@ composer lint
 composer fix
 ```
 
-### Static Analysis
+### Static analysis
 
 This project uses [PHPStan] to perform static analysis of PHP code.
 
@@ -108,7 +108,7 @@ You may run static analysis manually with the following command:
 composer analyze
 ```
 
-### Running Tests
+### Running tests
 
 The following must pass before we will accept a pull request. If this does not pass, it will result in a complete build failure. Before you can run this, be sure to `composer install`.
 
@@ -120,7 +120,17 @@ composer test
 
 CaptainHook will automatically run all tests before pushing to the remote repository.
 
-### Running `create-project` Locally
+### Mutation testing
+
+This project uses [Infection] to perform mutation testing, which checks that the tests detect small changes made to the code. GitHub Actions runs mutation tests for pull requests.
+
+You may run mutation tests manually with the following command:
+
+```bash
+composer mutation
+```
+
+### Running `create-project` locally
 
 You can test Composer's `create-project` command locally to make sure the starter kit wizard runs properly with your changes. To do so, use a command similar to the following:
 
@@ -137,6 +147,7 @@ composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME \
 [conventional commits]: https://www.conventionalcommits.org/
 [gh-flow]: https://guides.github.com/introduction/flow/
 [github]: https://github.com/ramsey/php-library-starter-kit
+[infection]: https://infection.github.io
 [issues]: https://github.com/ramsey/php-library-starter-kit/issues
 [per-cs]: https://www.php-fig.org/per/coding-style/
 [php]: https://www.php.net
