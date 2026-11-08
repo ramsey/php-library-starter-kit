@@ -75,22 +75,9 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
      */
     public function getNormalizer(): callable
     {
-        return function (?string $answer): string | array {
-            if (!$this->platform->acceptsList()) {
-                return trim($answer ?? '');
-            }
-
-            $entries = array_map(
-                fn (string $entry): string => trim($entry),
-                explode(',', $answer ?? ''),
-            );
-
-            if ($this->platform === FundingPlatform::Github) {
-                $entries = array_map(fn (string $entry): string => ltrim($entry, '@'), $entries);
-            }
-
-            return array_values(array_filter($entries, fn (string $entry): bool => $entry !== ''));
-        };
+        return fn (?string $answer): string | array => $this->clean(
+            $this->platform->acceptsList() ? explode(',', $answer ?? '') : ($answer ?? ''),
+        );
     }
 
     /**
@@ -101,7 +88,7 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
         return function (string | array $value): array {
             /** @var string | list<string> $value */
             $funding = $this->answers->funding ?? [];
-            $value = $this->shapeValue($value);
+            $value = $this->shapeValue($this->clean($value));
 
             if ($value === '' || $value === []) {
                 unset($funding[$this->platform->value]);
@@ -115,6 +102,29 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
 
             return $funding;
         };
+    }
+
+    /**
+     * Trims every entry, drops empty entries, and removes a leading "@" from
+     * each GitHub Sponsors username
+     *
+     * @param string | list<string> $value
+     *
+     * @return string | list<string>
+     */
+    private function clean(string | array $value): string | array
+    {
+        if (!is_array($value)) {
+            return trim($value);
+        }
+
+        $entries = array_map(fn (string $entry): string => trim($entry), $value);
+
+        if ($this->platform === FundingPlatform::Github) {
+            $entries = array_map(fn (string $entry): string => trim(ltrim($entry, '@')), $entries);
+        }
+
+        return array_values(array_filter($entries, fn (string $entry): bool => $entry !== ''));
     }
 
     /**
@@ -165,7 +175,7 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
         }
 
         if ($this->platform === FundingPlatform::Tidelift) {
-            if (preg_match('#^(npm|pypi|rubygems|maven|packagist|nuget)/\S+$#', $value) !== 1) {
+            if (preg_match('#^(npm|pypi|rubygems|maven|packagist|nuget)/\S+\z#', $value) !== 1) {
                 throw new InvalidConsoleInput(sprintf(
                     'A Tidelift value is PLATFORM-NAME/PACKAGE-NAME, where the platform is npm, pypi, rubygems, '
                     . 'maven, packagist, or nuget; "%s" given',
@@ -173,7 +183,7 @@ class FundingPlatformValue extends Question implements SkippableQuestion, Starte
                 ));
             }
         } elseif ($this->platform === FundingPlatform::ThanksDev) {
-            if (preg_match('#^u/gh/\S+$#', $value) !== 1) {
+            if (preg_match('#^u/gh/\S+\z#', $value) !== 1) {
                 throw new InvalidConsoleInput(sprintf(
                     'A thanks.dev value is u/gh/USERNAME; "%s" given',
                     $value,

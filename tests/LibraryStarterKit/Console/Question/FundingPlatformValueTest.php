@@ -142,6 +142,42 @@ class FundingPlatformValueTest extends TestCase
         $validator(['a', 'b']);
     }
 
+    public function testValidatorCleansAValueGivenDirectly(): void
+    {
+        $this->answers->funding = ['github' => '', 'patreon' => '', 'custom' => ''];
+
+        $github = (new FundingPlatformValue($this->answers, FundingPlatform::Github))->getValidator();
+        $patreon = (new FundingPlatformValue($this->answers, FundingPlatform::Patreon))->getValidator();
+
+        $this->assertSame(['github' => ['octocat'], 'patreon' => '', 'custom' => ''], $github(['@octocat']));
+        $this->assertSame(['github' => ['octocat'], 'patreon' => '', 'custom' => ''], $github([' @ octocat ']));
+        $this->assertSame(['github' => ['a'], 'patreon' => '', 'custom' => ''], $github(['a', '']));
+        $this->assertSame(['patreon' => '', 'custom' => ''], $github(['']));
+        $this->assertSame(['patreon' => '', 'custom' => ''], $github([' ']));
+        $this->assertSame(['patreon' => '', 'custom' => ''], $github(['@']));
+        $this->assertSame(['github' => '', 'patreon' => 'ramsey', 'custom' => ''], $patreon(' ramsey '));
+        $this->assertSame(['github' => '', 'custom' => ''], $patreon('  '));
+    }
+
+    public function testValidatorCountsOnlyNonEmptyEntriesAgainstTheLimit(): void
+    {
+        $this->answers->funding = ['github' => ''];
+        $validator = (new FundingPlatformValue($this->answers, FundingPlatform::Github))->getValidator();
+
+        $this->assertSame(
+            ['github' => ['a', 'b', 'c', 'd']],
+            $validator(['a', '', 'b', ' ', 'c', '@', 'd']),
+        );
+    }
+
+    public function testValidatorTrimsASingleValueBeforeCheckingIt(): void
+    {
+        $this->answers->funding = ['tidelift' => ''];
+        $validator = (new FundingPlatformValue($this->answers, FundingPlatform::Tidelift))->getValidator();
+
+        $this->assertSame(['tidelift' => 'npm/foo'], $validator("npm/foo\n"));
+    }
+
     /**
      * @param string | list<string> $value
      */
@@ -206,6 +242,18 @@ class FundingPlatformValueTest extends TestCase
             'value' => 'octo-package',
             'message' => 'A Tidelift value is PLATFORM-NAME/PACKAGE-NAME, where the platform is npm, pypi, '
                 . 'rubygems, maven, packagist, or nuget; "octo-package" given',
+        ];
+
+        yield 'tidelift with a newline inside' => [
+            'platform' => FundingPlatform::Tidelift,
+            'value' => "npm/foo\nbar",
+            'message' => 'A Tidelift value is PLATFORM-NAME/PACKAGE-NAME',
+        ];
+
+        yield 'thanks.dev with a newline inside' => [
+            'platform' => FundingPlatform::ThanksDev,
+            'value' => "u/gh/octo\ncat",
+            'message' => 'A thanks.dev value is u/gh/USERNAME',
         ];
 
         yield 'thanks.dev without the prefix' => [
