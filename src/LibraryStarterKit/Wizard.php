@@ -259,7 +259,7 @@ class Wizard extends Command
         $appPath = dirname($vendorDir);
 
         $projectName = strtolower(basename((string) realpath($appPath)));
-        $projectName = (string) preg_replace('/[^a-z0-9]/', '-', $projectName);
+        $projectName = preg_replace('/[^a-z0-9]/', '-', $projectName) ?? '';
 
         $project = new Project($projectName, $appPath);
         $setup = new Setup($project, $event, new Filesystem(), new Finder(), self::determineVerbosityLevel($event));

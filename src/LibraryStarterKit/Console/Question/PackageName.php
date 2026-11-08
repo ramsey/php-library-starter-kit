@@ -54,9 +54,9 @@ class PackageName extends Question implements StarterKitQuestion
             return $this->getAnswers()->packageName;
         }
 
-        $packageName = (string) $this->getAnswers()->vendorName
+        $packageName = $this->getAnswers()->vendorName
             . '/'
-            . (string) $this->getAnswers()->projectName;
+            . $this->getAnswers()->projectName;
 
         if (trim($packageName) === '/') {
             return null;

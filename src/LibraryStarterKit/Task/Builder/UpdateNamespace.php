@@ -22,7 +22,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use function array_filter;
 use function array_keys;
 use function array_shift;
-use function array_values;
 use function explode;
 use function implode;
 use function iterator_to_array;
@@ -37,7 +36,7 @@ class UpdateNamespace extends Builder
     {
         $this->getConsole()->section('Updating namespace');
 
-        $packageName = (string) $this->getAnswers()->packageName;
+        $packageName = $this->getAnswers()->packageName ?? '';
         $namespaceParts = explode(
             '\\',
             (string) $this->getAnswers()->packageNamespace,
@@ -108,7 +107,7 @@ class UpdateNamespace extends Builder
 
         $updatedContents = str_replace(
             array_keys($replacements),
-            array_values($replacements),
+            $replacements,
             $contents,
         );
 

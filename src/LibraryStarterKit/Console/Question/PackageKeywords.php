@@ -54,7 +54,7 @@ class PackageKeywords extends Question implements StarterKitQuestion
     public function getNormalizer(): callable
     {
         return function (?string $answer): array {
-            if ($answer === null || trim($answer) === '') {
+            if ($answer === null) {
                 return [];
             }
 

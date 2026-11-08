@@ -78,11 +78,13 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         $choiceMap = array_combine(self::CHOICES, self::CHOICE_IDENTIFIER_MAP);
 
         return function (?string $value) use ($choiceMap): string {
-            if (ctype_digit((string) $value)) {
-                return (string) (self::CHOICE_IDENTIFIER_MAP[(int) $value] ?? $value);
+            $choice = (string) $value;
+
+            if (ctype_digit($choice)) {
+                return self::CHOICE_IDENTIFIER_MAP[(int) $choice] ?? $choice;
             }
 
-            return (string) ($choiceMap[trim((string) $value)] ?? $value);
+            return $choiceMap[trim($choice)] ?? $choice;
         };
     }
 

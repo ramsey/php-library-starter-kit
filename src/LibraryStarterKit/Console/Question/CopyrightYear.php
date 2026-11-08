@@ -56,8 +56,10 @@ class CopyrightYear extends Question implements StarterKitQuestion
     public function getValidator(): callable
     {
         return function (?string $data): string {
-            if (preg_match(self::VALID_PATTERN, trim((string) $data)) === 1) {
-                return (string) $data;
+            $year = (string) $data;
+
+            if (preg_match(self::VALID_PATTERN, trim($year)) === 1) {
+                return $year;
             }
 
             throw new InvalidConsoleInput('You must enter a valid, 4-digit year.');

@@ -76,7 +76,6 @@ class PackageNamespace extends Question implements StarterKitQuestion
             return null;
         }
 
-        $packageName = str_replace('/', '\\', $packageName);
         $packageNameParts = explode('\\', $packageName);
 
         /** @var string[] $packageNameParts */
@@ -90,7 +89,8 @@ class PackageNamespace extends Question implements StarterKitQuestion
         return function (mixed $data): string {
             assert($data === null || is_string($data));
 
-            $packageNameParts = explode('\\', (string) $data);
+            $namespace = (string) $data;
+            $packageNameParts = explode('\\', $namespace);
 
             foreach ($packageNameParts as $namePart) {
                 if (!preg_match(self::VALID_PATTERN, $namePart)) {
@@ -100,7 +100,7 @@ class PackageNamespace extends Question implements StarterKitQuestion
                 }
             }
 
-            return (string) $data;
+            return $namespace;
         };
     }
 

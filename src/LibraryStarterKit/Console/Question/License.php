@@ -92,11 +92,13 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         $choiceMap = array_combine(self::CHOICES, self::CHOICE_IDENTIFIER_MAP);
 
         return function (?string $value) use ($choiceMap): string {
-            if (ctype_digit((string) $value)) {
-                return (string) (self::CHOICE_IDENTIFIER_MAP[(int) $value] ?? $value);
+            $choice = (string) $value;
+
+            if (ctype_digit($choice)) {
+                return self::CHOICE_IDENTIFIER_MAP[(int) $choice] ?? $choice;
             }
 
-            return (string) ($choiceMap[trim((string) $value)] ?? $value);
+            return $choiceMap[trim($choice)] ?? $choice;
         };
     }
 
@@ -106,14 +108,14 @@ class License extends ChoiceQuestion implements StarterKitQuestion
     public function getValidator(): callable
     {
         return function (?string $value): string {
-            if (!in_array($value, self::CHOICE_IDENTIFIER_MAP)) {
+            if ($value === null || !in_array($value, self::CHOICE_IDENTIFIER_MAP)) {
                 throw new InvalidConsoleInput(sprintf(
                     '"%s" is not a valid license choice.',
                     (string) $value,
                 ));
             }
 
-            return (string) $value;
+            return $value;
         };
     }
 }
