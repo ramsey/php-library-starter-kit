@@ -6,6 +6,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\TestWith;
 use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Build;
@@ -270,6 +271,62 @@ class UpdateComposerJsonTest extends TestCase
         $builder = new UpdateComposerJson($build);
 
         $builder->build();
+    }
+
+    #[TestWith(['Proprietary', 'proprietary'])]
+    #[TestWith(['MPL-2.0', 'MPL-2.0'])]
+    public function testBuildWritesALicenseComposerAccepts(string $answer, string $expected): void
+    {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Updating composer.json');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem
+            ->shouldReceive('dumpFile')
+            ->once()
+            ->withArgs(function (string $path, string $contents) use ($expected) {
+                /** @var array{license: string} $composer */
+                $composer = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+
+                // Composer accepts a closed-source license only as lowercase
+                // "proprietary".
+                $this->assertSame($expected, $composer['license']);
+
+                return true;
+            });
+
+        $finder = $this->mockery(Finder::class, [
+            'getIterator' => (new ArrayObject([
+                $this->mockery(SplFileInfo::class, [
+                    'getContents' => $this->composerContentsOriginalMinimal(),
+                ]),
+            ]))->getIterator(),
+        ]);
+        $finder->expects()->in('/path/to/app')->andReturnSelf();
+        $finder->expects()->files()->andReturnSelf();
+        $finder->expects()->depth('== 0')->andReturnSelf();
+        $finder->expects()->name('composer.json');
+
+        $this->answers->license = $answer;
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFilesystem' => $filesystem,
+            'getFinder' => $finder,
+        ]);
+
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $this->answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        (new UpdateComposerJson($build))->build();
     }
 
     private function composerContentsOriginal(): string

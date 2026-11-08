@@ -16,6 +16,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
+use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 
@@ -113,7 +114,11 @@ class UpdateComposerJson extends Builder
         $composer['description'] = (string) $this->getAnswers()->packageDescription;
         $composer['type'] = 'library';
         $composer['keywords'] = $this->getAnswers()->packageKeywords;
-        $composer['license'] = $this->getAnswers()->license;
+        // Composer accepts a closed-source license only as lowercase
+        // "proprietary".
+        $composer['license'] = $this->getAnswers()->license === License::DEFAULT
+            ? 'proprietary'
+            : $this->getAnswers()->license;
 
         $this->buildAuthors($composer);
         $this->buildRequire($composer);
