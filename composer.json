@@ -34,7 +34,7 @@
         "phpstan/phpstan": "^2.3",
         "phpstan/phpstan-mockery": "^2.0",
         "phpstan/phpstan-phpunit": "^2.1",
-        "phpunit/phpunit": "^12.5",
+        "phpunit/phpunit": "^13.4",
         "ramsey/coding-standard": "^2.4",
         "ramsey/composer-repl": "^1.5",
         "ramsey/conventional-commits": "^1.7",
