@@ -80,4 +80,19 @@ class TemplatesTest extends TestCase
         yield 'MIT' => ['license' => 'MIT', 'filename' => 'LICENSE'];
         yield 'Unlicense' => ['license' => 'Unlicense', 'filename' => 'UNLICENSE'];
     }
+
+    public function testContributingNamesTheMinimumPhpVersion(): void
+    {
+        $this->answers->githubUsername = 'acme';
+        $this->answers->projectName = 'awesome';
+        $this->answers->packageName = 'acme/awesome';
+
+        $rendered = $this->twig->render(
+            'CONTRIBUTING.md.twig',
+            $this->answers->getArrayCopy() + ['phpVersion' => '8.5'],
+        );
+
+        $this->assertStringContainsString('you will need [PHP] 8.5 or greater and [Composer].', $rendered);
+        $this->assertStringNotContainsString('8.2', $rendered);
+    }
 }
