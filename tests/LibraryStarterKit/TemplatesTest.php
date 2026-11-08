@@ -14,6 +14,7 @@ use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder\UpdateLicense;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 use Twig\Environment as TwigEnvironment;
 
 use function dirname;
@@ -52,7 +53,7 @@ class TemplatesTest extends TestCase
         $this->twig = $setup->getTwigEnvironment();
     }
 
-    public function testFundingWritesGitHubsExampleForm(): void
+    public function testFundingWritesEveryValueAsJson(): void
     {
         $this->answers->funding = [
             'github' => ['octocat', 'surftocat'],
@@ -62,7 +63,7 @@ class TemplatesTest extends TestCase
         ];
 
         $this->assertSame(
-            "github: [octocat, surftocat]\npatreon: octocat\ntidelift: npm/octo-package\n"
+            "github: [\"octocat\",\"surftocat\"]\npatreon: \"octocat\"\ntidelift: \"npm/octo-package\"\n"
             . "custom: [\"https://www.paypal.me/octocat\",\"https://octocat.com\"]\n",
             $this->twig->render('FUNDING.yml.twig', $this->answers->getArrayCopy()),
         );
@@ -73,9 +74,33 @@ class TemplatesTest extends TestCase
         $this->answers->funding = ['github' => ['ramsey']];
 
         $this->assertSame(
-            "github: [ramsey]\n",
+            "github: [\"ramsey\"]\n",
             $this->twig->render('FUNDING.yml.twig', $this->answers->getArrayCopy()),
         );
+    }
+
+    #[DataProvider('fundingValuesThatPlainYamlWouldBreak')]
+    public function testFundingWritesValuesThatPlainYamlWouldBreakAsJsonStrings(
+        string $value,
+        string $expectedLine,
+    ): void {
+        $this->answers->funding = ['ko_fi' => $value];
+
+        $rendered = $this->twig->render('FUNDING.yml.twig', $this->answers->getArrayCopy());
+
+        $this->assertSame($expectedLine . "\n", $rendered);
+        $this->assertSame(['ko_fi' => $value], Yaml::parse($rendered));
+    }
+
+    /**
+     * @return iterable<string, array{value: string, expectedLine: string}>
+     */
+    public static function fundingValuesThatPlainYamlWouldBreak(): iterable
+    {
+        yield 'leading at sign' => ['value' => '@ramsey', 'expectedLine' => 'ko_fi: "@ramsey"'];
+        yield 'space and hash' => ['value' => 'ramsey # note', 'expectedLine' => 'ko_fi: "ramsey # note"'];
+        yield 'colon and space' => ['value' => 'a: b', 'expectedLine' => 'ko_fi: "a: b"'];
+        yield 'non-ASCII' => ['value' => 'Zoë Müller', 'expectedLine' => 'ko_fi: "Zoë Müller"'];
     }
 
     #[DataProvider('licenseBadgeLinks')]
