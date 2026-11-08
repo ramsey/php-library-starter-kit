@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Add mutation testing with [Infection](https://infection.github.io) to generated projects, including a `composer mutation` script, an `infection.json5.dist` file, and a GitHub Actions job.
+- Add an SPDX license identifier to the source file headers of generated projects, except when the license is proprietary.
+- Start the generated CHANGELOG.md with an Unreleased section and a link that compares the latest release with `HEAD`.
+
+### Changed
+
+- Require PHP 8.5 or greater, Symfony 8.1 or greater, and PHPUnit 13 or greater.
+- Replace ramsey/devtools with [PHPStan](https://phpstan.org), [PHPUnit](https://phpunit.de), [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer), and the [Ramsey coding standard](https://github.com/ramsey/coding-standard) in generated projects. The `dev:*` Composer commands become the `analyze`, `coverage`, `coverage-ci`, `fix`, `lint`, `mutation`, and `test` scripts.
+- Run `composer lint`, `composer test`, and `composer fix`, in place of the `dev:*` commands, while setting up a project.
+- Replace the `@copyright` and `@license` tags in the source file headers of generated projects with a copyright line and a license notice, wrapped at 80 characters.
+- Use © instead of (c) in the copyright statements of generated license files and source file headers.
+- Simplify the generated GitHub Actions workflow to lint, coverage, mutation, and test jobs that run on Ubuntu.
+- Stop hard-wrapping paragraphs in the generated README.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, and SECURITY.md, and use sentence case in the generated README.md headings.
+- Wrap the reporting email address in the generated Contributor Covenant 1.4 code of conduct in angle brackets so it renders as a link.
+
+### Removed
+
+- Remove support for PHP 8.2, 8.3, and 8.4.
+- Remove Psalm and ramsey/devtools from generated projects, along with the Psalm configuration, the Shepherd badge, and the Psalm entries in `.gitattributes`.
+- Remove "All rights reserved" from the generated BSD 2-Clause and BSD 3-Clause licenses, and the CC0 button image from the generated README.md.
+
+### Fixed
+
+- Use `addCommand()` when the installed Symfony Console provides it, and `add()` otherwise.
+
 ## [3.6.0] - 2026-11-07
 
 ### Added
@@ -303,6 +332,7 @@ composer create-project --remove-vcs ramsey/php-library-starter-kit target-direc
 
 You will be walked through a series of questions, and your PHP library source files will be located in `target-directory`, when completed. Change to that directory, `git init`, and off you go!
 
+[unreleased]: https://github.com/ramsey/php-library-starter-kit/compare/3.6.0...HEAD
 [3.6.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.6...3.6.0
 [3.5.6]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.5...3.5.6
 [3.5.5]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.4...3.5.5
