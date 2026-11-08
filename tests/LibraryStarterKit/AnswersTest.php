@@ -42,6 +42,7 @@ class AnswersTest extends TestCase
                 'copyrightHolder',
                 'copyrightUrl',
                 'copyrightYear',
+                'funding',
                 'githubUsername',
                 'license',
                 'packageDescription',
@@ -72,6 +73,7 @@ class AnswersTest extends TestCase
                 null,
                 null,
                 'None',
+                null,
                 null,
                 null,
                 null,
@@ -118,6 +120,7 @@ class AnswersTest extends TestCase
                 'copyrightHolder' => null,
                 'copyrightUrl' => null,
                 'copyrightYear' => null,
+                'funding' => null,
                 'githubUsername' => null,
                 'license' => 'Proprietary',
                 'packageDescription' => null,
@@ -155,6 +158,7 @@ class AnswersTest extends TestCase
                 'copyrightHolder' => 'The Fellowship',
                 'copyrightUrl' => 'https://example.com/the-fellowship',
                 'copyrightYear' => '2021',
+                'funding' => ['github' => ['frodo'], 'custom' => ['https://example.com/donate']],
                 'githubUsername' => 'frodo',
                 'license' => 'BSD-2-Clause',
                 'packageDescription' => 'A package to help you on your journey.',
@@ -194,6 +198,7 @@ class AnswersTest extends TestCase
                         'copyrightHolder' => 'The Fellowship',
                         'copyrightUrl' => 'https://example.com/the-fellowship',
                         'copyrightYear' => '2021',
+                        'funding' => ['github' => ['frodo'], 'custom' => ['https://example.com/donate']],
                         'githubUsername' => 'frodo',
                         'license' => 'BSD-2-Clause',
                         'packageDescription' => 'A package to help you on your journey.',
@@ -228,6 +233,7 @@ class AnswersTest extends TestCase
         $answers->copyrightHolder = 'The Fellowship';
         $answers->copyrightUrl = 'https://example.com/the-fellowship';
         $answers->copyrightYear = '2021';
+        $answers->funding = ['github' => ['frodo'], 'custom' => ['https://example.com/donate']];
         $answers->githubUsername = 'frodo';
         $answers->license = 'BSD-2-Clause';
         $answers->packageDescription = 'A package to help you on your journey.';

@@ -49,6 +49,10 @@ final class Answers
     public ?string $copyrightHolder = null;
     public ?string $copyrightUrl = null;
     public ?string $copyrightYear = null;
+
+    /** @var array<string, string | list<string>> | null */
+    public ?array $funding = null;
+
     public ?string $githubUsername = null;
     public ?string $license = License::DEFAULT;
     public ?string $packageDescription = null;
@@ -85,7 +89,7 @@ final class Answers
     /**
      * Returns the property values to replace tokens in template
      *
-     * @return array<string | string[] | bool | null>
+     * @return array<string | string[] | array<string, string | string[]> | bool | null>
      */
     public function getValues(): array
     {
@@ -95,7 +99,7 @@ final class Answers
     /**
      * Returns an array of key-value pairs of token names and values
      *
-     * @return array<string, string | string[] | bool | null>
+     * @return array<string, string | string[] | array<string, string | string[]> | bool | null>
      */
     public function getArrayCopy(): array
     {
@@ -103,7 +107,7 @@ final class Answers
 
         $reflected = new ReflectionObject($this);
         foreach ($reflected->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            /** @var string | string[] | bool | null $value */
+            /** @var string | string[] | array<string, string | string[]> | bool | null $value */
             $value = $property->getValue($this);
             $answers[$property->getName()] = $value;
         }

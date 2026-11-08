@@ -1,6 +1,10 @@
 {
     "authorHoldsCopyright": true,
     "authorEmail": "frodo@example.com",
+    "funding": {
+        "github": ["frodo"],
+        "custom": ["https://example.com/donate"]
+    },
     "unknownProperty": "foobar",
     "authorUrl": "https://example.com/the-fellowship/frodo",
     "packageDescription": "A package to help you on your journey.",

@@ -48,6 +48,8 @@ To skip the question prompts, make sure you include the `skipPrompts` property i
 
 The answers file is a JSON object, consisting of all the public properties found in `Ramsey\Dev\LibraryStarterKit\Answers`.
 
+The `funding` answer is `null` for no sponsor button, or an object whose keys are the platform keys of GitHub's `FUNDING.yml` (`github`, `patreon`, `open_collective`, `ko_fi`, `tidelift`, `community_bridge`, `liberapay`, `issuehunt`, `polar`, `buy_me_a_coffee`, `thanks_dev`, `custom`) and whose values are a list of up to four names for `github`, a list of up to four URLs for `custom`, and one string otherwise, such as `{"github": ["example"], "tidelift": "packagist/acme/awesome"}`.
+
 For example:
 
 ```json
@@ -65,6 +67,7 @@ For example:
     "copyrightHolder": "Acme, Inc.",
     "copyrightUrl": "https://example.com/acme",
     "copyrightYear": "2021",
+    "funding": null,
     "githubUsername": "example",
     "license": "MIT",
     "packageDescription": "An awesome library that does stuff.",
