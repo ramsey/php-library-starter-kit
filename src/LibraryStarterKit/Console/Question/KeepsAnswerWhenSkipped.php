@@ -17,7 +17,8 @@ declare(strict_types=1);
 namespace Ramsey\Dev\LibraryStarterKit\Console\Question;
 
 /**
- * A skippable question whose answer is left as it is when the wizard skips it, instead of being set to the question's default
+ * A skippable question whose answer is left as it is when the wizard skips it,
+ * instead of being set to the question's default
  */
 interface KeepsAnswerWhenSkipped extends SkippableQuestion
 {

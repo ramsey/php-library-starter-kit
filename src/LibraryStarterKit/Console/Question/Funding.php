@@ -24,8 +24,8 @@ use function assert;
 /**
  * Asks whether the project wants a FUNDING.yml file
  *
- * A yes answers with the existing funding map, or an empty map if there is
- * none yet. A no answers with null.
+ * Yes returns the existing funding map, or an empty map if there is none yet;
+ * no returns null.
  */
 class Funding extends ConfirmationQuestion implements StarterKitQuestion
 {
@@ -47,7 +47,6 @@ class Funding extends ConfirmationQuestion implements StarterKitQuestion
 
         $default = $this->getNormalizer();
 
-        // Symfony's ConfirmationQuestion always sets a normalizer.
         assert($default !== null);
 
         $this->setNormalizer(
