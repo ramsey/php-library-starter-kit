@@ -52,6 +52,32 @@ class TemplatesTest extends TestCase
         $this->twig = $setup->getTwigEnvironment();
     }
 
+    public function testFundingWritesGitHubsExampleForm(): void
+    {
+        $this->answers->funding = [
+            'github' => ['octocat', 'surftocat'],
+            'patreon' => 'octocat',
+            'tidelift' => 'npm/octo-package',
+            'custom' => ['https://www.paypal.me/octocat', 'https://octocat.com'],
+        ];
+
+        $this->assertSame(
+            "github: [octocat, surftocat]\npatreon: octocat\ntidelift: npm/octo-package\n"
+            . "custom: [\"https://www.paypal.me/octocat\",\"https://octocat.com\"]\n",
+            $this->twig->render('FUNDING.yml.twig', $this->answers->getArrayCopy()),
+        );
+    }
+
+    public function testFundingWritesASingleGithubUsernameAsAList(): void
+    {
+        $this->answers->funding = ['github' => ['ramsey']];
+
+        $this->assertSame(
+            "github: [ramsey]\n",
+            $this->twig->render('FUNDING.yml.twig', $this->answers->getArrayCopy()),
+        );
+    }
+
     #[DataProvider('licenseBadgeLinks')]
     public function testBadgesLinkTheLicenseBadgeToTheLicenseFile(string $license, string $filename): void
     {

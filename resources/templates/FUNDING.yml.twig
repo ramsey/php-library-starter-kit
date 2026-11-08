@@ -1,0 +1,9 @@
+{% for platform, value in funding %}
+{% if platform == 'custom' %}
+{{ platform }}: {{ value|json_encode(constant('JSON_UNESCAPED_SLASHES')) }}
+{% elseif value is iterable %}
+{{ platform }}: [{{ value|join(', ') }}]
+{% else %}
+{{ platform }}: {{ value }}
+{% endif %}
+{% endfor %}

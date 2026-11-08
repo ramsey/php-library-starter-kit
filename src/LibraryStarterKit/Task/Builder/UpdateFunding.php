@@ -19,13 +19,19 @@ namespace Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 
 /**
- * Replaces this project's FUNDING.yml file with an empty one for the new project
+ * Writes the new project's .github/FUNDING.yml when funding platforms were chosen
  */
 class UpdateFunding extends Builder
 {
     public function build(): void
     {
-        $this->getConsole()->section('Updating .github/FUNDING.yml');
+        if ($this->getAnswers()->funding === null || $this->getAnswers()->funding === []) {
+            $this->getConsole()->section('Skipping .github/FUNDING.yml');
+
+            return;
+        }
+
+        $this->getConsole()->section('Writing .github/FUNDING.yml');
 
         $funding = $this->getEnvironment()->getTwigEnvironment()->render(
             'FUNDING.yml.twig',

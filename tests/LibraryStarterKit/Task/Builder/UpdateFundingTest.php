@@ -15,10 +15,12 @@ use Twig\Environment as TwigEnvironment;
 
 class UpdateFundingTest extends TestCase
 {
-    public function testBuild(): void
+    public function testBuildWritesTheFileWhenPlatformsWereChosen(): void
     {
+        $this->answers->funding = ['github' => ['ramsey']];
+
         $console = $this->mockery(SymfonyStyle::class);
-        $console->expects()->section('Updating .github/FUNDING.yml');
+        $console->expects()->section('Writing .github/FUNDING.yml');
 
         $filesystem = $this->mockery(Filesystem::class);
         $filesystem
@@ -38,6 +40,39 @@ class UpdateFundingTest extends TestCase
             ->render('FUNDING.yml.twig', $this->answers->getArrayCopy())
             ->andReturn('fundingContents');
 
+        $this->buildWith($console, $filesystem, $twig);
+    }
+
+    public function testBuildSkipsTheFileWhenFundingIsNull(): void
+    {
+        $this->assertNull($this->answers->funding);
+
+        $this->assertBuildSkips();
+    }
+
+    public function testBuildSkipsTheFileWhenNoPlatformWasChosen(): void
+    {
+        $this->answers->funding = [];
+
+        $this->assertBuildSkips();
+    }
+
+    private function assertBuildSkips(): void
+    {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Skipping .github/FUNDING.yml');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->shouldReceive('dumpFile')->never();
+
+        $twig = $this->mockery(TwigEnvironment::class);
+        $twig->shouldReceive('render')->never();
+
+        $this->buildWith($console, $filesystem, $twig);
+    }
+
+    private function buildWith(SymfonyStyle $console, Filesystem $filesystem, TwigEnvironment $twig): void
+    {
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
             'getFilesystem' => $filesystem,
