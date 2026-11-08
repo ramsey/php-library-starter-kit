@@ -18,27 +18,27 @@ namespace Ramsey\Dev\LibraryStarterKit\Console\Question;
 
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
-use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-use function array_filter;
-use function array_keys;
-use function array_map;
-use function array_pop;
-use function array_values;
+use function array_key_exists;
 use function explode;
 use function implode;
 use function in_array;
+use function is_string;
 use function sprintf;
+use function strcasecmp;
 use function trim;
 
 /**
  * Asks which funding platforms to include in the FUNDING.yml file
  *
- * The answer is the whole funding map, with the chosen platform keys in the
- * order of the FundingPlatform cases. A platform that already has a value
- * keeps it, and a new platform starts with an empty one.
+ * The platforms are listed by number, and people may enter numbers, names, or
+ * platform keys, separated by commas. The answer is the whole funding map,
+ * with the chosen platform keys in the order of the FundingPlatform cases. A
+ * platform that already has a value keeps it, and a new platform starts with
+ * an empty one.
  */
-class FundingPlatforms extends Question implements KeepsAnswerWhenSkipped, StarterKitQuestion
+class FundingPlatforms extends ChoiceQuestion implements KeepsAnswerWhenSkipped, StarterKitQuestion
 {
     use AnswersTool;
 
@@ -49,11 +49,24 @@ class FundingPlatforms extends Question implements KeepsAnswerWhenSkipped, Start
 
     public function __construct(Answers $answers)
     {
+        $choices = [];
+        $default = [];
+
+        foreach (FundingPlatform::cases() as $index => $platform) {
+            $choices[$index + 1] = $platform->label();
+
+            if (array_key_exists($platform->value, $answers->funding ?? [])) {
+                $default[] = $index + 1;
+            }
+        }
+
         parent::__construct(
-            'Which funding platforms do you want to include? Enter comma-separated platform keys ('
-            . implode(', ', FundingPlatform::keys()) . ')',
-            implode(',', array_keys($answers->funding ?? [])) ?: null,
+            'Which funding platforms do you want to include?',
+            $choices,
+            implode(',', $default) ?: null,
         );
+
+        $this->setMultiselect(true);
 
         $this->answers = $answers;
     }
@@ -64,43 +77,48 @@ class FundingPlatforms extends Question implements KeepsAnswerWhenSkipped, Start
     }
 
     /**
+     * Returns the platform key for each entry, or the entry itself when it
+     * names no platform
+     *
      * @return callable(string | null): list<string>
      */
     public function getNormalizer(): callable
     {
         return function (?string $answer): array {
-            if ($answer === null) {
-                return [];
+            $keys = [];
+
+            foreach (explode(',', $answer ?? '') as $entry) {
+                $entry = trim($entry);
+
+                if ($entry !== '') {
+                    $keys[] = $this->findKey($entry);
+                }
             }
 
-            return array_values(
-                array_filter(
-                    array_map(
-                        fn ($v) => trim($v),
-                        explode(',', $answer),
-                    ),
-                ),
-            );
+            return $keys;
         };
     }
 
     /**
-     * @return callable(list<string>): array<string, string | list<string>>
+     * @return callable(string | list<string>): array<string, string | list<string>>
      */
     public function getValidator(): callable
     {
-        return function (array $keys): array {
-            /** @var list<string> $keys */
+        return function (string | array $keys): array {
+            /** @var string | list<string> $keys */
+            if (is_string($keys)) {
+                $keys = ($this->getNormalizer())($keys);
+            }
+
+            if ($keys === []) {
+                throw new InvalidConsoleInput('Choose at least one funding platform');
+            }
+
             foreach ($keys as $key) {
                 if (FundingPlatform::tryFrom($key) === null) {
-                    $all = FundingPlatform::keys();
-                    $last = array_pop($all);
-
                     throw new InvalidConsoleInput(sprintf(
-                        '"%s" is not a funding platform; choose from %s, and %s',
+                        '"%s" is not a funding platform; enter numbers or names from the list',
                         $key,
-                        implode(', ', $all),
-                        $last,
                     ));
                 }
             }
@@ -116,5 +134,24 @@ class FundingPlatforms extends Question implements KeepsAnswerWhenSkipped, Start
 
             return $funding;
         };
+    }
+
+    /**
+     * Returns the key of the platform an entry names by its number in the
+     * list, its name, or its key, ignoring case
+     */
+    private function findKey(string $entry): string
+    {
+        foreach (FundingPlatform::cases() as $index => $platform) {
+            if (
+                $entry === (string) ($index + 1)
+                || strcasecmp($entry, $platform->label()) === 0
+                || strcasecmp($entry, $platform->value) === 0
+            ) {
+                return $platform->value;
+            }
+        }
+
+        return $entry;
     }
 }
