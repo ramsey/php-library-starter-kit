@@ -254,6 +254,12 @@ class FundingPlatformValueTest extends TestCase
                 . 'rubygems, maven, packagist, or nuget; "octo-package" given',
         ];
 
+        yield 'tidelift with text before the platform' => [
+            'platform' => FundingPlatform::Tidelift,
+            'value' => 'xnpm/foo',
+            'message' => 'A Tidelift value is PLATFORM-NAME/PACKAGE-NAME',
+        ];
+
         yield 'tidelift with a newline inside' => [
             'platform' => FundingPlatform::Tidelift,
             'value' => "npm/foo\nbar",
@@ -264,6 +270,18 @@ class FundingPlatformValueTest extends TestCase
             'platform' => FundingPlatform::ThanksDev,
             'value' => "u/gh/octo\ncat",
             'message' => 'A thanks.dev value is u/gh/USERNAME',
+        ];
+
+        yield 'thanks.dev with text before the prefix' => [
+            'platform' => FundingPlatform::ThanksDev,
+            'value' => 'xu/gh/octocat',
+            'message' => 'A thanks.dev value is u/gh/USERNAME',
+        ];
+
+        yield 'custom a url with text before the scheme' => [
+            'platform' => FundingPlatform::Custom,
+            'value' => ['xhttps://octocat.com'],
+            'message' => '"xhttps://octocat.com" is not a URL beginning with "http://" or "https://"',
         ];
 
         yield 'thanks.dev without the prefix' => [

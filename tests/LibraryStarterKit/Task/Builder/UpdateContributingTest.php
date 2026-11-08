@@ -18,7 +18,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
+use function array_map;
 use function file_get_contents;
+use function str_repeat;
 
 class UpdateContributingTest extends TestCase
 {
@@ -119,16 +121,86 @@ class UpdateContributingTest extends TestCase
         yield 'php has no major.minor' => ['composerContents' => '{"require": {"php": ">=8"}}'];
     }
 
+    public function testBuildUsesTheFirstComposerJsonFileFound(): void
+    {
+        $usable = '{"require": {"php": ">=8.4"}}';
+
+        $twig = $this->mockery(TwigEnvironment::class);
+        $twig
+            ->expects()
+            ->render('CONTRIBUTING.md.twig', $this->answers->getArrayCopy() + ['phpVersion' => '8.4'])
+            ->andReturn('contributingContents');
+
+        $this->buildWith($this->composerJsonFinderFor([$usable, '{']), $twig);
+    }
+
+    public function testBuildReadsComposerJsonNestedAsDeepAsFiveHundredTwelveLevels(): void
+    {
+        $twig = $this->mockery(TwigEnvironment::class);
+        $twig
+            ->expects()
+            ->render('CONTRIBUTING.md.twig', $this->answers->getArrayCopy() + ['phpVersion' => '8.4'])
+            ->andReturn('contributingContents');
+
+        $this->buildWith($this->composerJsonFinderFor([$this->nestedComposerJson(510)]), $twig);
+    }
+
+    public function testBuildThrowsWhenComposerJsonIsNestedDeeperThanFiveHundredTwelveLevels(): void
+    {
+        $twig = $this->mockery(TwigEnvironment::class);
+        $twig->shouldNotReceive('render');
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessageIsOrContains('Unable to determine the minimum PHP version from composer.json');
+
+        $this->buildWith($this->composerJsonFinderFor([$this->nestedComposerJson(511)]), $twig);
+    }
+
+    private function nestedComposerJson(int $levels): string
+    {
+        return '{"require": {"php": ">=8.4"}, "extra": ' . str_repeat('[', $levels) . str_repeat(']', $levels) . '}';
+    }
+
+    private function buildWith(Finder $finder, TwigEnvironment $twig): void
+    {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Updating CONTRIBUTING.md');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->shouldReceive('dumpFile')->zeroOrMoreTimes();
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFilesystem' => $filesystem,
+            'getFinder' => $finder,
+            'getTwigEnvironment' => $twig,
+        ]);
+
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $this->answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        (new UpdateContributing($task))->build();
+    }
+
     /**
-     * @param string | null $composerContents The contents of composer.json, or null for no composer.json file
+     * @param list<string> $composerContents The contents of each composer.json file the finder finds
      *
      * @return Finder & MockInterface
      */
-    private function composerJsonFinder(?string $composerContents): Finder
+    private function composerJsonFinderFor(array $composerContents): Finder
     {
-        $files = $composerContents === null
-            ? []
-            : [$this->mockery(SplFileInfo::class, ['getContents' => $composerContents])];
+        $files = array_map(
+            fn (string $contents) => $this->mockery(SplFileInfo::class, ['getContents' => $contents]),
+            $composerContents,
+        );
 
         $finder = $this->mockery(Finder::class, [
             'getIterator' => (new ArrayObject($files))->getIterator(),
@@ -139,5 +211,15 @@ class UpdateContributingTest extends TestCase
         $finder->expects()->name('composer.json');
 
         return $finder;
+    }
+
+    /**
+     * @param string | null $composerContents The contents of composer.json, or null for no composer.json file
+     *
+     * @return Finder & MockInterface
+     */
+    private function composerJsonFinder(?string $composerContents): Finder
+    {
+        return $this->composerJsonFinderFor($composerContents === null ? [] : [$composerContents]);
     }
 }

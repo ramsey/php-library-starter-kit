@@ -50,4 +50,20 @@ class FundingPlatformTest extends TestCase
             $this->assertNotSame('', $platform->prompt());
         }
     }
+
+    public function testPromptsForListAndPatternedPlatformsNameWhatToEnter(): void
+    {
+        $this->assertSame(
+            'Which GitHub Sponsors usernames should the button link to? Enter up to four, comma-separated',
+            FundingPlatform::Github->prompt(),
+        );
+        $this->assertSame(
+            'What is your Tidelift package, as PLATFORM-NAME/PACKAGE-NAME (for example, packagist/acme/awesome)?',
+            FundingPlatform::Tidelift->prompt(),
+        );
+        $this->assertSame(
+            'Which custom funding URLs should the button link to? Enter up to four, comma-separated',
+            FundingPlatform::Custom->prompt(),
+        );
+    }
 }

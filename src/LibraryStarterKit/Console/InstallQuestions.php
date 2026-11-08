@@ -30,6 +30,10 @@ use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightEmail;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightHolder;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightUrl;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\CopyrightYear;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\Funding;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatform;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatformValue;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatforms;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\GithubUsername;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\License;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageDescription;
@@ -42,6 +46,8 @@ use Ramsey\Dev\LibraryStarterKit\Console\Question\SecurityPolicyContactFormUrl;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\VendorName;
 use Symfony\Component\Console\Question\Question as SymfonyQuestion;
+
+use function array_map;
 
 /**
  * A list of questions to ask the user upon installation
@@ -75,6 +81,12 @@ class InstallQuestions
             new CodeOfConductCommittee($answers),
             new CodeOfConductPoliciesUrl($answers),
             new CodeOfConductReportingUrl($answers),
+            new Funding($answers),
+            new FundingPlatforms($answers),
+            ...array_map(
+                fn (FundingPlatform $platform): FundingPlatformValue => new FundingPlatformValue($answers, $platform),
+                FundingPlatform::cases(),
+            ),
             new PackageKeywords($answers),
             new PackageNamespace($answers),
         ];

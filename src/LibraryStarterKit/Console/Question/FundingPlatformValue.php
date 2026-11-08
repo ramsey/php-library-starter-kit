@@ -42,7 +42,7 @@ use const FILTER_VALIDATE_URL;
  * The answer is the whole funding map, with this platform's value set, or its
  * key removed when the value is empty.
  */
-class FundingPlatformValue extends Question implements SkippableQuestion, StarterKitQuestion
+class FundingPlatformValue extends Question implements KeepsAnswerWhenSkipped, StarterKitQuestion
 {
     use AnswersTool;
 

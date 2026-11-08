@@ -12,6 +12,8 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\AuthorName;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\FundingPlatformValue;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Style;
@@ -30,6 +32,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Process\Process;
 
+use function array_filter;
+use function array_values;
 use function basename;
 use function dirname;
 use function function_exists;
@@ -41,6 +45,7 @@ use function preg_replace;
 use function putenv;
 use function realpath;
 use function rmdir;
+use function str_starts_with;
 use function strtolower;
 use function sys_get_temp_dir;
 use function uniqid;
@@ -288,6 +293,44 @@ class WizardTest extends TestCase
         $wizard = new Wizard($setup, $styleFactory);
 
         $this->assertSame(0, $wizard->run($input, $output));
+    }
+
+    public function testRunKeepsTheFundingMapWhenFundingQuestionsAreSkipped(): void
+    {
+        $map = ['github' => ['ramsey']];
+        $asked = [];
+        $seen = [];
+
+        $this->runWizardAnswering(
+            fn (StarterKitQuestion $question): mixed => $question->getName() === 'funding' ? $map : null,
+            function (Answers $answers) use (&$seen): void {
+                $seen = $answers->funding;
+            },
+            $asked,
+        );
+
+        $this->assertSame($map, $seen);
+        $this->assertSame(
+            ['funding', 'funding', 'funding:github'],
+            array_values(array_filter($asked, fn (string $name): bool => str_starts_with($name, 'funding'))),
+        );
+    }
+
+    public function testRunSetsSkippedQuestionsToTheirDefaults(): void
+    {
+        $asked = [];
+        $copyrightHolder = null;
+
+        $this->runWizardAnswering(
+            fn (Question $question): mixed => $question instanceof AuthorName ? 'Jane Doe' : null,
+            function (Answers $answers) use (&$copyrightHolder): void {
+                $copyrightHolder = $answers->copyrightHolder;
+            },
+            $asked,
+        );
+
+        $this->assertNotContains('copyrightHolder', $asked);
+        $this->assertSame('Jane Doe', $copyrightHolder);
     }
 
     public function testRunWhenUsingAnswersFileWhenSkipPromptsIsTrue(): void
@@ -732,5 +775,83 @@ class WizardTest extends TestCase
                 'expectedVerbosity' => OutputInterface::VERBOSITY_VERBOSE,
             ],
         ];
+    }
+
+    /**
+     * Runs the wizard with the user choosing to start, answering each question
+     * with the value the callback returns for it
+     *
+     * @param Closure(Question & StarterKitQuestion): mixed $answer Returns null to give the default answer
+     * @param Closure(Answers): void $inspect
+     * @param list<string> $asked The names of the questions asked, filled in by this method
+     */
+    private function runWizardAnswering(Closure $answer, Closure $inspect, array &$asked): void
+    {
+        /** @var InputInterface & MockInterface $input */
+        $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
+
+        /** @var OutputInterface & MockInterface $output */
+        $output = $this->mockery(OutputInterface::class);
+        $output->expects()->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
+
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
+
+        $project = new Project('my-project', '/my/project/path');
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class, [
+            'getProject' => $project,
+        ]);
+
+        $setup->expects()->getVerbosity()->andReturn(OutputInterface::VERBOSITY_NORMAL);
+        $setup->shouldReceive('run')->once()->withArgs(function (Style $style, Answers $answers) use ($inspect): bool {
+            $inspect($answers);
+
+            return true;
+        });
+        $setup->expects()->path('.starter-kit-answers')->andReturn('/path/to/.starter-kit-answers');
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->expects()->run()->twice();
+        $nullProcess->expects()->getOutput()->twice()->andReturn('');
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nullProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($nullProcess);
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
+        $styleFactory->expects()->factory($input, $output)->andReturn($console);
+
+        $console->expects()->title('Welcome to the PHP Library Starter Kit!');
+        $console->expects()->block(self::INTRO_BLOCK);
+        $console->expects()->success(new IsTypeOf('array'));
+
+        $console
+            ->shouldReceive('askQuestion')
+            ->andReturnUsing(function (Question $question) use ($answer, &$asked): mixed {
+                if (!$question instanceof StarterKitQuestion) {
+                    // The wizard's opening "get started" question.
+                    return true;
+                }
+
+                $name = $question->getName();
+
+                if ($question instanceof FundingPlatformValue) {
+                    $name .= ':' . $question->platform->value;
+                }
+
+                $asked[] = $name;
+
+                // A null from the callback means "use the default answer."
+                return $answer($question) ?? $this->answers->{$question->getName()};
+            });
+
+        $wizard = new Wizard($setup, $styleFactory);
+
+        $this->assertSame(0, $wizard->run($input, $output));
     }
 }

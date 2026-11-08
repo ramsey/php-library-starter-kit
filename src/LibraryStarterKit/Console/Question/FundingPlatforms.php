@@ -38,7 +38,7 @@ use function trim;
  * order of the FundingPlatform cases. A platform that already has a value
  * keeps it, and a new platform starts with an empty one.
  */
-class FundingPlatforms extends Question implements SkippableQuestion, StarterKitQuestion
+class FundingPlatforms extends Question implements KeepsAnswerWhenSkipped, StarterKitQuestion
 {
     use AnswersTool;
 

@@ -18,6 +18,7 @@ namespace Ramsey\Dev\LibraryStarterKit;
 
 use Composer\Script\Event;
 use Ramsey\Dev\LibraryStarterKit\Console\InstallQuestions;
+use Ramsey\Dev\LibraryStarterKit\Console\Question\KeepsAnswerWhenSkipped;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\SkippableQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\StarterKitQuestion;
 use Ramsey\Dev\LibraryStarterKit\Console\StyleFactory;
@@ -176,7 +177,9 @@ class Wizard extends Command
          */
         foreach ((new InstallQuestions())->getQuestions($this->answers) as $question) {
             if ($question instanceof SkippableQuestion && $question->shouldSkip()) {
-                $this->answers->{$question->getName()} = $question->getDefault();
+                if (!$question instanceof KeepsAnswerWhenSkipped) {
+                    $this->answers->{$question->getName()} = $question->getDefault();
+                }
 
                 continue;
             }
