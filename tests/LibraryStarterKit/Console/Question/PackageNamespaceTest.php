@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use AssertionError;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageNamespace;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
+
+use function ini_get;
 
 class PackageNamespaceTest extends QuestionTestCase
 {
@@ -68,5 +71,28 @@ class PackageNamespaceTest extends QuestionTestCase
         $this->expectExceptionMessage('You must enter a valid library namespace.');
 
         $validator('1Foo');
+    }
+
+    public function testValidatorThrowsExceptionForNull(): void
+    {
+        $validator = (new PackageNamespace($this->answers))->getValidator();
+
+        $this->expectException(InvalidConsoleInput::class);
+        $this->expectExceptionMessage('You must enter a valid library namespace.');
+
+        $validator(null);
+    }
+
+    public function testValidatorRejectsValueThatIsNotAString(): void
+    {
+        if (ini_get('zend.assertions') !== '1') {
+            $this->markTestSkipped('Assertions are not enabled.');
+        }
+
+        $validator = (new PackageNamespace($this->answers))->getValidator();
+
+        $this->expectException(AssertionError::class);
+
+        $validator(123);
     }
 }

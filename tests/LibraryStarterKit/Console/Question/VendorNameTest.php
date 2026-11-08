@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
+use AssertionError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\VendorName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
+
+use function ini_get;
 
 class VendorNameTest extends QuestionTestCase
 {
@@ -63,5 +66,35 @@ class VendorNameTest extends QuestionTestCase
             ['value' => 'foo---bar'],
             ['value' => 'foo/bar'],
         ];
+    }
+
+    public function testGetDefaultPrefersExistingVendorName(): void
+    {
+        $question = new VendorName($this->answers);
+
+        $this->answers->vendorName = 'fellowship';
+        $this->answers->githubUsername = 'frodo';
+
+        $this->assertSame('fellowship', $question->getDefault());
+    }
+
+    public function testValidatorLowercasesValue(): void
+    {
+        $validator = (new VendorName($this->answers))->getValidator();
+
+        $this->assertSame('foo-bar', $validator('Foo-BAR'));
+    }
+
+    public function testValidatorRejectsValueThatIsNotAString(): void
+    {
+        if (ini_get('zend.assertions') !== '1') {
+            $this->markTestSkipped('Assertions are not enabled.');
+        }
+
+        $validator = (new VendorName($this->answers))->getValidator();
+
+        $this->expectException(AssertionError::class);
+
+        $validator(123);
     }
 }

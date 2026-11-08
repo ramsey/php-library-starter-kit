@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use ArrayObject;
+use Closure;
 use Composer\Script\Event;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,6 +23,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 use function file_get_contents;
+use function ini_get;
+use function ini_set;
 
 class UpdateSourceFileHeadersTest extends TestCase
 {
@@ -99,6 +102,124 @@ class UpdateSourceFileHeadersTest extends TestCase
         $builder = new UpdateSourceFileHeaders($task);
 
         $builder->build();
+    }
+
+    public function testBuildUsesEmptyPathWhenRealPathIsUnavailable(): void
+    {
+        $this->answers->packageName = 'fellowship/one-ring';
+        $this->answers->copyrightHolder = 'Samwise Gamgee';
+        $this->answers->license = 'MIT';
+
+        $this->runBuildWithOneFile(
+            $this->mockery(SplFileInfo::class, [
+                'getRealPath' => false,
+                'getContents' => $this->getFile1OriginalContents(),
+            ]),
+            function (string $path, string $contents): bool {
+                $this->assertSame('', $path);
+                $this->assertNotSame('', $contents);
+
+                return true;
+            },
+        );
+    }
+
+    public function testBuildWritesEmptyContentsWhenHeaderReplacementFails(): void
+    {
+        $this->answers->packageName = 'fellowship/one-ring';
+        $this->answers->copyrightHolder = 'Samwise Gamgee';
+        $this->answers->license = 'MIT';
+
+        $file = $this->mockery(SplFileInfo::class, [
+            'getRealPath' => '/path/to/app/src/SomeClass.php',
+            'getContents' => $this->getFile1OriginalContents(),
+        ]);
+
+        $this->runBuildWithOneFile(
+            $file,
+            function (string $path, string $contents): bool {
+                $this->assertSame('/path/to/app/src/SomeClass.php', $path);
+                $this->assertSame('', $contents);
+
+                return true;
+            },
+            true,
+        );
+    }
+
+    /**
+     * @param Closure(string, string): bool $dumpFileArgs
+     */
+    private function runBuildWithOneFile(
+        SplFileInfo & MockInterface $file,
+        Closure $dumpFileArgs,
+        bool $failEveryPattern = false,
+    ): void {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Updating source file headers');
+
+        $realSetup = new Setup(
+            $this->mockery(Project::class, [
+                'getPath' => __DIR__ . '/../../../../.',
+            ]),
+            $this->mockery(Event::class),
+            $this->mockery(Filesystem::class),
+            $this->mockery(Finder::class),
+            OutputInterface::VERBOSITY_NORMAL,
+        );
+
+        $twig = $realSetup->getTwigEnvironment();
+
+        $finder = $this->mockery(Finder::class, [
+            'getIterator' => (new ArrayObject([$file]))->getIterator(),
+        ]);
+        $finder->expects()->exclude(['LibraryStarterKit'])->andReturnSelf();
+        $finder->expects()->in(['/path/to/app/src'])->andReturnSelf();
+        $finder->expects()->files()->andReturnSelf();
+        $finder->expects()->name('*.php')->andReturnSelf();
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->shouldReceive('dumpFile')->once()->withArgs($dumpFileArgs);
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFilesystem' => $filesystem,
+            'getFinder' => $finder,
+            'getTwigEnvironment' => $twig,
+        ]);
+
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $this->answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateSourceFileHeaders($task);
+
+        if (!$failEveryPattern) {
+            $builder->build();
+
+            return;
+        }
+
+        // Twig keeps each compiled template for the rest of the process, so
+        // compile it now, while regular expressions still work.
+        $twig->render('header/source-file-header.twig', $this->answers->getArrayCopy());
+
+        // A match limit of one makes every regular expression fail with an error.
+        $originalLimit = (string) ini_get('pcre.backtrack_limit');
+        ini_set('pcre.backtrack_limit', '1');
+
+        try {
+            $builder->build();
+        } finally {
+            ini_set('pcre.backtrack_limit', $originalLimit);
+        }
     }
 
     /**

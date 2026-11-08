@@ -104,6 +104,29 @@ class UpdateLicenseTest extends TestCase
                 },
             ],
             [
+                'license' => 'Apache-2.0',
+                'filename' => 'LICENSE',
+                'contents' => 'Apache-2.0 license contents',
+                'additionalChecks' => function (
+                    TwigEnvironment & MockInterface $twig,
+                    Filesystem & MockInterface $filesystem,
+                    Answers $answers,
+                ): void {
+                    $twig
+                        ->expects('render')
+                        ->with(
+                            'license' . DIRECTORY_SEPARATOR . 'Apache-2.0-NOTICE.twig',
+                            $answers->getArrayCopy(),
+                        )
+                        ->andReturns('Apache-2.0 notice contents');
+
+                    $filesystem->expects('dumpFile')->with(
+                        '/path/to/app/NOTICE',
+                        'Apache-2.0 notice contents',
+                    );
+                },
+            ],
+            [
                 'license' => 'BSD-2',
                 'filename' => 'LICENSE',
                 'contents' => 'BSD-2 license contents',

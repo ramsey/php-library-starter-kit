@@ -59,4 +59,14 @@ class CopyrightHolderTest extends QuestionTestCase
             ],
         ];
     }
+
+    public function testGetDefaultPrefersExistingCopyrightAnswer(): void
+    {
+        $question = new CopyrightHolder($this->answers);
+
+        $this->answers->copyrightHolder = 'The Fellowship';
+        $this->answers->authorName = 'Frodo Baggins';
+
+        $this->assertSame('The Fellowship', $question->getDefault());
+    }
 }

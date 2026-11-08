@@ -242,4 +242,26 @@ class AnswersTest extends TestCase
 
         $answers->saveToFile();
     }
+
+    public function testSaveToFileWritesReadableJsonWithoutEscaping(): void
+    {
+        $this->filesystem->expects()->exists('/path/to/file.json')->andReturnFalse();
+
+        $this->filesystem->shouldReceive('dumpFile')->withArgs(
+            function (string $filename, string $content) {
+                $this->assertSame('/path/to/file.json', $filename);
+                $this->assertStringContainsString("{\n    \"authorEmail\": null,\n", $content);
+                $this->assertStringContainsString('"authorName": "Frodo Baggîns"', $content);
+                $this->assertStringContainsString('"authorUrl": "https://example.com/frodo"', $content);
+
+                return true;
+            },
+        );
+
+        $answers = new Answers('/path/to/file.json', $this->filesystem);
+        $answers->authorName = 'Frodo Baggîns';
+        $answers->authorUrl = 'https://example.com/frodo';
+
+        $answers->saveToFile();
+    }
 }

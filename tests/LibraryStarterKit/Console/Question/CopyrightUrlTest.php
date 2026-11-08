@@ -59,4 +59,14 @@ class CopyrightUrlTest extends QuestionTestCase
             ],
         ];
     }
+
+    public function testGetDefaultPrefersExistingCopyrightAnswer(): void
+    {
+        $question = new CopyrightUrl($this->answers);
+
+        $this->answers->copyrightUrl = 'https://example.com/the-fellowship';
+        $this->answers->authorUrl = 'https://example.com/frodo';
+
+        $this->assertSame('https://example.com/the-fellowship', $question->getDefault());
+    }
 }

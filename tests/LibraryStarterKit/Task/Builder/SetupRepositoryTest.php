@@ -6,6 +6,7 @@ namespace Ramsey\Test\Dev\LibraryStarterKit\Task\Builder;
 
 use Closure;
 use Hamcrest\Type\IsCallable;
+use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Setup;
@@ -24,8 +25,8 @@ class SetupRepositoryTest extends TestCase
      *     configUserName: string,
      *     configUserEmail: string,
      *     configDefaultBranch: string,
-     *     authorName: string,
-     *     authorEmail: string,
+     *     authorName: string | null,
+     *     authorEmail: string | null,
      *     expectedName: string,
      *     expectedEmail: string,
      *     expectedDefaultBranch: string,
@@ -84,6 +85,16 @@ class SetupRepositoryTest extends TestCase
                 'expectedEmail' => 'jdoe@example.com',
                 'expectedDefaultBranch' => 'default',
             ],
+            [
+                'configUserName' => 'Frodo Baggins',
+                'configUserEmail' => 'frodo@example.com',
+                'configDefaultBranch' => '',
+                'authorName' => null,
+                'authorEmail' => null,
+                'expectedName' => '',
+                'expectedEmail' => '',
+                'expectedDefaultBranch' => 'main',
+            ],
         ];
     }
 
@@ -92,8 +103,8 @@ class SetupRepositoryTest extends TestCase
         string $configUserName,
         string $configUserEmail,
         string $configDefaultBranch,
-        string $authorName,
-        string $authorEmail,
+        ?string $authorName,
+        ?string $authorEmail,
         string $expectedName,
         string $expectedEmail,
         string $expectedDefaultBranch,
@@ -107,15 +118,15 @@ class SetupRepositoryTest extends TestCase
 
         $processConfigUserName = $this->mockery(Process::class);
         $processConfigUserName->expects()->run()->andReturn($configUserName ? 0 : 1);
-        $processConfigUserName->expects()->getOutput()->andReturn($configUserName);
+        $processConfigUserName->expects()->getOutput()->andReturn($configUserName . "\n");
 
         $processConfigUserEmail = $this->mockery(Process::class);
         $processConfigUserEmail->expects()->run()->andReturn($configUserEmail ? 0 : 1);
-        $processConfigUserEmail->expects()->getOutput()->andReturn($configUserEmail);
+        $processConfigUserEmail->expects()->getOutput()->andReturn($configUserEmail . "\n");
 
         $processDefaultBranch = $this->mockery(Process::class);
         $processDefaultBranch->expects()->run()->andReturn($configDefaultBranch ? 0 : 1);
-        $processDefaultBranch->expects()->getOutput()->andReturn($configDefaultBranch);
+        $processDefaultBranch->expects()->getOutput()->andReturn($configDefaultBranch . "\n");
 
         $processMustRun = $this->mockery(Process::class);
         $processMustRun->expects()->mustRun();
@@ -163,14 +174,18 @@ class SetupRepositoryTest extends TestCase
         if ($configUserName !== $authorName) {
             $environment
                 ->expects()
-                ->getProcess(['git', 'config', 'user.name', $expectedName])
+                ->getProcess(Mockery::on(
+                    fn (array $command): bool => $command === ['git', 'config', 'user.name', $expectedName],
+                ))
                 ->andReturn($processMustRunWithCallable);
         }
 
         if ($configUserEmail !== $authorEmail) {
             $environment
                 ->expects()
-                ->getProcess(['git', 'config', 'user.email', $expectedEmail])
+                ->getProcess(Mockery::on(
+                    fn (array $command): bool => $command === ['git', 'config', 'user.email', $expectedEmail],
+                ))
                 ->andReturn($processMustRunWithCallable);
         }
 

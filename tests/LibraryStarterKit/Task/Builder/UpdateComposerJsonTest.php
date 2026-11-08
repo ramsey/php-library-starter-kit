@@ -19,6 +19,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 use function file_get_contents;
+use function json_decode;
+
+use const JSON_THROW_ON_ERROR;
 
 class UpdateComposerJsonTest extends TestCase
 {
@@ -182,6 +185,69 @@ class UpdateComposerJsonTest extends TestCase
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';
         $this->answers->authorName = 'Jane Doe';
+        $this->answers->license = 'MPL-2.0';
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFilesystem' => $filesystem,
+            'getFinder' => $finder,
+        ]);
+
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getAnswers' => $this->answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateComposerJson($build);
+
+        $builder->build();
+    }
+
+    public function testBuildWithUnansweredNameAndDescriptionAndBlankContactDetails(): void
+    {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Updating composer.json');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem
+            ->shouldReceive('dumpFile')
+            ->once()
+            ->withArgs(function (string $path, string $contents) {
+                $this->assertSame('/path/to/app/composer.json', $path);
+
+                /** @var array{name: string, description: string, authors: list<array<string, string>>} $composer */
+                $composer = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+
+                $this->assertSame('', $composer['name']);
+                $this->assertSame('', $composer['description']);
+                $this->assertSame([['name' => 'Jane Doe']], $composer['authors']);
+
+                return true;
+            });
+
+        $finder = $this->mockery(Finder::class, [
+            'getIterator' => (new ArrayObject([
+                $this->mockery(SplFileInfo::class, [
+                    'getContents' => $this->composerContentsOriginalMinimal(),
+                ]),
+            ]))->getIterator(),
+        ]);
+        $finder->expects()->in('/path/to/app')->andReturnSelf();
+        $finder->expects()->files()->andReturnSelf();
+        $finder->expects()->depth('== 0')->andReturnSelf();
+        $finder->expects()->name('composer.json');
+
+        $this->answers->packageName = null;
+        $this->answers->packageDescription = null;
+        $this->answers->authorName = 'Jane Doe';
+        $this->answers->authorEmail = "  \t";
+        $this->answers->authorUrl = " \n ";
         $this->answers->license = 'MPL-2.0';
 
         $environment = $this->mockery(Setup::class, [

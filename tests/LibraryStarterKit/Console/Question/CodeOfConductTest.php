@@ -164,4 +164,39 @@ class CodeOfConductTest extends QuestionTestCase
             ],
         ];
     }
+
+    #[DataProvider('provideUnknownAnswers')]
+    public function testGetDefaultWhenAnswerIsNotAKnownChoice(string $answer): void
+    {
+        $this->answers->codeOfConduct = $answer;
+
+        $question = new CodeOfConduct($this->answers);
+
+        $this->assertSame(1, $question->getDefault());
+    }
+
+    /**
+     * @return list<array{answer: string}>
+     */
+    public static function provideUnknownAnswers(): array
+    {
+        return [
+            ['answer' => ''],
+            ['answer' => 'foo'],
+        ];
+    }
+
+    public function testNormalizerTrimsWhitespaceAroundChoiceText(): void
+    {
+        $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
+
+        $this->assertSame('None', $normalizer('  None  '));
+    }
+
+    public function testNormalizerHandlesNumericChoiceWithLeadingZero(): void
+    {
+        $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
+
+        $this->assertSame('Contributor-1.4', $normalizer('02'));
+    }
 }
