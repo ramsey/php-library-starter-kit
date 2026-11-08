@@ -20,8 +20,6 @@ use Ramsey\Dev\LibraryStarterKit\Answers;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
 use Symfony\Component\Console\Question\Question;
 
-use function assert;
-use function is_string;
 use function preg_match;
 use function strtolower;
 
@@ -51,11 +49,12 @@ class VendorName extends Question implements StarterKitQuestion
         return $this->getAnswers()->vendorName ?? $this->getAnswers()->githubUsername;
     }
 
+    /**
+     * @return callable(string | null): string
+     */
     public function getValidator(): callable
     {
-        return function (mixed $data): string {
-            assert($data === null || is_string($data));
-
+        return function (?string $data): string {
             $data = strtolower((string) $data);
 
             if (preg_match(self::VALID_PATTERN, $data)) {

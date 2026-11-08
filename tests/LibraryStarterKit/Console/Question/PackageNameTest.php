@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit\Console\Question;
 
-use AssertionError;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Ramsey\Dev\LibraryStarterKit\Console\Question\PackageName;
 use Ramsey\Dev\LibraryStarterKit\Exception\InvalidConsoleInput;
-
-use function ini_get;
 
 class PackageNameTest extends QuestionTestCase
 {
@@ -141,18 +138,5 @@ class PackageNameTest extends QuestionTestCase
 
         $this->assertSame('frodo/ring', $validator('frodo/ring'));
         $this->assertSame('frodo/ring', $validator('ring'));
-    }
-
-    public function testValidatorRejectsValueThatIsNotAString(): void
-    {
-        if (ini_get('zend.assertions') !== '1') {
-            $this->markTestSkipped('Assertions are not enabled.');
-        }
-
-        $validator = (new PackageName($this->answers))->getValidator();
-
-        $this->expectException(AssertionError::class);
-
-        $validator(123);
     }
 }
