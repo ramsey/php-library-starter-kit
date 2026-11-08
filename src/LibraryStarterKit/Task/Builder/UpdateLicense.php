@@ -51,7 +51,7 @@ class UpdateLicense extends Builder
         };
     }
 
-    private function getLicenseFilename(string $license): string
+    public static function getLicenseFilename(string $license): string
     {
         return match ($license) {
             'AGPL-3.0-or-later', 'GPL-3.0-or-later' => 'COPYING',
@@ -70,7 +70,7 @@ class UpdateLicense extends Builder
         );
 
         $this->getEnvironment()->getFilesystem()->dumpFile(
-            $this->getEnvironment()->path($this->getLicenseFilename($license)),
+            $this->getEnvironment()->path(self::getLicenseFilename($license)),
             $licenseContents,
         );
 

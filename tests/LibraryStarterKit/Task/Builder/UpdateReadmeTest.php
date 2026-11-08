@@ -65,7 +65,7 @@ class UpdateReadmeTest extends TestCase
 
         $twig
             ->expects()
-            ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
+            ->render('readme/badges.md.twig', $this->answers->getArrayCopy() + ['licenseFilename' => 'COPYRIGHT'])
             ->andReturn('badges info');
 
         $twig
@@ -154,7 +154,7 @@ class UpdateReadmeTest extends TestCase
 
         $twig
             ->expects()
-            ->render('readme/badges.md.twig', $this->answers->getArrayCopy())
+            ->render('readme/badges.md.twig', $this->answers->getArrayCopy() + ['licenseFilename' => 'COPYRIGHT'])
             ->andReturn('badges info');
 
         $twig

@@ -88,7 +88,9 @@ class UpdateReadme extends Builder
     {
         return $this->getEnvironment()->getTwigEnvironment()->render(
             'readme/badges.md.twig',
-            $this->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy() + [
+                'licenseFilename' => UpdateLicense::getLicenseFilename((string) $this->getAnswers()->license),
+            ],
         );
     }
 

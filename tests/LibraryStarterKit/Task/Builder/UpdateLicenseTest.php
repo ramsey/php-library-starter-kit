@@ -20,6 +20,32 @@ use const DIRECTORY_SEPARATOR;
 
 class UpdateLicenseTest extends TestCase
 {
+    #[DataProvider('licenseFilenames')]
+    public function testGetLicenseFilename(string $license, string $filename): void
+    {
+        $this->assertSame($filename, UpdateLicense::getLicenseFilename($license));
+    }
+
+    /**
+     * @return iterable<string, array{license: string, filename: string}>
+     */
+    public static function licenseFilenames(): iterable
+    {
+        yield 'AGPL-3.0-or-later' => ['license' => 'AGPL-3.0-or-later', 'filename' => 'COPYING'];
+        yield 'Apache-2.0' => ['license' => 'Apache-2.0', 'filename' => 'LICENSE'];
+        yield 'BSD-2-Clause' => ['license' => 'BSD-2-Clause', 'filename' => 'LICENSE'];
+        yield 'BSD-3-Clause' => ['license' => 'BSD-3-Clause', 'filename' => 'LICENSE'];
+        yield 'CC0-1.0' => ['license' => 'CC0-1.0', 'filename' => 'LICENSE'];
+        yield 'GPL-3.0-or-later' => ['license' => 'GPL-3.0-or-later', 'filename' => 'COPYING'];
+        yield 'Hippocratic-2.1' => ['license' => 'Hippocratic-2.1', 'filename' => 'LICENSE'];
+        yield 'LGPL-3.0-or-later' => ['license' => 'LGPL-3.0-or-later', 'filename' => 'COPYING.LESSER'];
+        yield 'MIT' => ['license' => 'MIT', 'filename' => 'LICENSE'];
+        yield 'MIT-0' => ['license' => 'MIT-0', 'filename' => 'LICENSE'];
+        yield 'MPL-2.0' => ['license' => 'MPL-2.0', 'filename' => 'LICENSE'];
+        yield 'Proprietary' => ['license' => 'Proprietary', 'filename' => 'COPYRIGHT'];
+        yield 'Unlicense' => ['license' => 'Unlicense', 'filename' => 'UNLICENSE'];
+    }
+
     #[DataProvider('provideLicensesForTesting')]
     public function testBuild(
         string $license,
