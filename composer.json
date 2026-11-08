@@ -18,29 +18,29 @@
     ],
     "require": {
         "php": "^8.5",
-        "symfony/console": "^8.1",
-        "symfony/filesystem": "^8.1",
-        "symfony/finder": "^8.1",
-        "symfony/process": "^8.1",
+        "symfony/console": "^8.1.11",
+        "symfony/filesystem": "^8.1.11",
+        "symfony/finder": "^8.1.11",
+        "symfony/process": "^8.1.10",
         "twig/twig": "^3.30"
     },
     "require-dev": {
-        "captainhook/plugin-composer": "^5.3",
+        "captainhook/plugin-composer": "^5.3.3",
         "ergebnis/composer-normalize": "^2.56",
-        "fakerphp/faker": "^1.24",
+        "fakerphp/faker": "^1.24.1",
         "hamcrest/hamcrest-php": "^3.0",
-        "infection/infection": "^0.35",
-        "mockery/mockery": "^1.6",
-        "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^2.3",
+        "infection/infection": "^0.35.9",
+        "mockery/mockery": "^1.6.15",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.3.5",
         "phpstan/phpstan-mockery": "^2.0",
-        "phpstan/phpstan-phpunit": "^2.1",
-        "phpunit/phpunit": "^13.4",
+        "phpstan/phpstan-phpunit": "^2.1.1",
+        "phpunit/phpunit": "^13.4.6",
         "ramsey/coding-standard": "^2.4",
-        "ramsey/composer-repl": "^1.5",
+        "ramsey/composer-repl": "^1.5.1",
         "ramsey/conventional-commits": "^1.7",
         "roave/security-advisories": "dev-latest",
-        "spatie/phpunit-snapshot-assertions": "^5.1"
+        "spatie/phpunit-snapshot-assertions": "^5.4"
     },
     "suggest": {
         "ext-pcntl": "Provides the ability to quit and resume the starter kit wizard on POSIX systems"
