@@ -65,7 +65,7 @@ When you do begin working on your feature, here are some guidelines to consider:
 
 ## Developing
 
-To develop this project, you will need [PHP] 8.2 or greater and [Composer].
+To develop this project, you will need [PHP] 8.5 or greater and [Composer].
 
 After cloning this repository locally, execute the following commands:
 
