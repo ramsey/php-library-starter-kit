@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -27,7 +32,7 @@ class PackageName extends Question implements StarterKitQuestion
 {
     use AnswersTool;
 
-    private const VALID_PATTERN = '/^[a-z0-9]([_.-]?[a-z0-9]+)*\/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$/';
+    private const string VALID_PATTERN = '/^[a-z0-9]([_.-]?[a-z0-9]+)*\/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$/';
 
     public function getName(): string
     {
@@ -47,9 +52,9 @@ class PackageName extends Question implements StarterKitQuestion
             return $this->getAnswers()->packageName;
         }
 
-        $packageName = (string) $this->getAnswers()->vendorName
+        $packageName = $this->getAnswers()->vendorName
             . '/'
-            . (string) $this->getAnswers()->projectName;
+            . $this->getAnswers()->projectName;
 
         if (trim($packageName) === '/') {
             return null;
@@ -58,6 +63,9 @@ class PackageName extends Question implements StarterKitQuestion
         return $packageName;
     }
 
+    /**
+     * @return callable(string | null): string
+     */
     public function getValidator(): callable
     {
         return function (?string $data): string {

@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -22,8 +27,8 @@ use function trim;
  */
 class SetupRepository extends Builder
 {
-    private const COMMIT_MSG = 'chore: initialize project using ramsey/php-library-starter-kit';
-    private const DEFAULT_BRANCH = 'main';
+    private const string COMMIT_MSG = 'chore: initialize project using ramsey/php-library-starter-kit';
+    private const string DEFAULT_BRANCH = 'main';
 
     public function build(): void
     {
@@ -88,7 +93,7 @@ class SetupRepository extends Builder
         return $this;
     }
 
-    private function installHooks(): self
+    private function installHooks(): void
     {
         $captainHookPath = $this->getEnvironment()->path('vendor') . '/bin/captainhook';
 
@@ -96,15 +101,13 @@ class SetupRepository extends Builder
             ->getEnvironment()
             ->getProcess([$captainHookPath, 'install', '--force', '--skip-existing'])
             ->mustRun($this->streamProcessOutput());
-
-        return $this;
     }
 
     private function cleanBuildDir(): self
     {
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'dev:build:clean'])
+            ->getProcess(['git', 'clean', '-fX', 'build/.'])
             ->mustRun();
 
         return $this;

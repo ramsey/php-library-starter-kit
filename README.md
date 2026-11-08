@@ -12,61 +12,41 @@
     <a href="https://github.com/ramsey/php-library-starter-kit/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
     <a href="https://github.com/ramsey/php-library-starter-kit/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/ramsey/php-library-starter-kit/continuous-integration.yml?branch=main&style=flat-square&logo=github" alt="Build Status"></a>
     <a href="https://codecov.io/gh/ramsey/php-library-starter-kit"><img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-starter-kit?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
-    <a href="https://shepherd.dev/github/ramsey/php-library-starter-kit"><img src="https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Fshepherd.dev%2Fgithub%2Framsey%2Fphp-library-starter-kit%2Fcoverage" alt="Psalm Type Coverage"></a>
 </p>
 <!-- BADGES_END -->
 
 <!-- DESC_START -->
 ## About
 
-ramsey/php-library-starter-kit is a package that may be used to generate a basic
-PHP library project directory structure, complete with many of the starting
-files (i.e. README, LICENSE, GitHub issue templates, PHPUnit configuration,
-etc.) that are commonly found in PHP libraries. You may use the project
-directory that's created as a starting point for creating your own PHP libraries.
+ramsey/php-library-starter-kit is a package that may be used to generate a basic PHP library project directory structure, complete with many of the starting files (i.e. README, LICENSE, GitHub issue templates, PHPUnit configuration, etc.) that are commonly found in PHP libraries. You may use the project directory that's created as a starting point for creating your own PHP libraries.
 <!-- DESC_END -->
 
 <!-- COC_START -->
-This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
-By participating in this project and its community, you are expected to
-uphold this code.
+This project adheres to a [code of conduct](CODE_OF_CONDUCT.md). By participating in this project and its community, you are expected to uphold this code.
 <!-- COC_END -->
 
 <!-- USAGE_START -->
 ## Usage
 
-``` bash
+```bash
 composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME
 ```
 
-Running this command will create a new repository containing the same files
-and structure as this repository. Afterward, it will run the
-`Ramsey\Dev\LibraryStarterKit\Wizard::start()` method to set up the project, which will
-walk you through a series of questions and make changes to files based on your
-answers. When complete, it will remove the `./src/LibraryStarterKit` and `./tests/LibraryStarterKit`
-directories, leaving everything else in place with an initial commit.
+Running this command will create a new repository containing the same files and structure as this repository. Afterward, it will run the `Ramsey\Dev\LibraryStarterKit\Wizard::start()` method to set up the project, which will walk you through a series of questions and make changes to files based on your answers. When complete, it will remove the `./src/LibraryStarterKit` and `./tests/LibraryStarterKit` directories, leaving everything else in place with an initial commit.
 
-### Using An Existing Answers File
+### Using an existing answers file
 
-When executing `create-project`, if you exit the program while in the middle of
-the question prompts, you might notice it creates a `.starter-kit-answers` file
-in the project directory. When you return later and run `composer starter-kit`,
-it will use this file to pre-fill any questions you've already answered. Once
-finished, the starter kit removes this file.
+When executing `create-project`, if you exit the program while in the middle of the question prompts, you might notice it creates a `.starter-kit-answers` file in the project directory. When you return later and run `composer starter-kit`, it will use this file to pre-fill any questions you've already answered. Once finished, the starter kit removes this file.
 
-You may also use an existing answers file to provide all your answers to the
-prompts, including skipping the question prompts. To do this, set an environment
-variable with the path to your answers file:
+You may also use an existing answers file to provide all your answers to the prompts, including skipping the question prompts. To do this, set an environment variable with the path to your answers file:
 
-```shell
+```bash
 STARTER_KIT_ANSWERS_FILE=/path/to/starter-kit-answers.json
 ```
 
-To skip the question prompts, make sure you include the `skipPrompts` property
-in the answers file, and set it to `true`.
+To skip the question prompts, make sure you include the `skipPrompts` property in the answers file, and set it to `true`.
 
-The answers file is a JSON object, consisting of all the public properties found
-in `Ramsey\Dev\LibraryStarterKit\Answers`.
+The answers file is a JSON object, consisting of all the public properties found in `Ramsey\Dev\LibraryStarterKit\Answers`.
 
 For example:
 
@@ -106,16 +86,12 @@ For example:
 
 ## Contributing
 
-Contributions are welcome! To contribute, please familiarize yourself with
-[CONTRIBUTING.md](CONTRIBUTING.md).
+Contributions are welcome! To contribute, please familiarize yourself with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <!-- SECURITY_START -->
-## Coordinated Disclosure
+## Coordinated vulnerability disclosure policy
 
-Keeping user information safe and secure is a top priority, and we welcome the
-contribution of external security researchers. If you believe you've found a
-security issue in software that is maintained in this repository, please read
-[SECURITY.md](SECURITY.md) for instructions on submitting a vulnerability report.
+Keeping user information safe and secure is a top priority, and we welcome the contribution of external security researchers. If you believe you've found a security issue in software that is maintained in this repository, please read [SECURITY.md](SECURITY.md) for instructions on submitting a vulnerability report.
 <!-- SECURITY_END -->
 
 <!-- FAQ_START -->
@@ -123,16 +99,11 @@ security issue in software that is maintained in this repository, please read
 
 ### Why did you include package/tool *x* and not *y*?
 
-I created this project starter kit for my own uses, and these are the
-common files, packages, and tools I use in my PHP libraries. If you like what
-you see, feel free to use it. If you like some of it but not all, fork it and
-customize it to fit your needs. I hope you find it helpful!
+I created this project starter kit for my own uses, and these are the common files, packages, and tools I use in my PHP libraries. If you like what you see, feel free to use it. If you like some of it but not all, fork it and customize it to fit your needs. I hope you find it helpful!
 <!-- FAQ_END -->
 
 <!-- COPYRIGHT_START -->
-## Copyright and License
+## Copyright and license
 
-ramsey/php-library-starter-kit is copyright © [Ben Ramsey](https://benramsey.com)
-and licensed for use under the terms of the
-MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
+ramsey/php-library-starter-kit is copyright © [Ben Ramsey](https://ben.ramsey.dev) and licensed for use under the terms of the MIT License (MIT). Please see [LICENSE](LICENSE) for more information.
 <!-- COPYRIGHT_END -->

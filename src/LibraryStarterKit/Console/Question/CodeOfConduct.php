@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -29,22 +34,24 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
 {
     use AnswersTool;
 
-    public const DEFAULT = 'None';
+    public const string DEFAULT = 'None';
 
-    public const CHOICES = [
+    public const array CHOICES = [
         1 => self::DEFAULT,
         2 => 'Contributor Covenant Code of Conduct, version 1.4',
         3 => 'Contributor Covenant Code of Conduct, version 2.0',
         4 => 'Contributor Covenant Code of Conduct, version 2.1',
         5 => 'Citizen Code of Conduct, version 2.3',
+        6 => 'Contributor Covenant Code of Conduct, version 3.0',
     ];
 
-    public const CHOICE_IDENTIFIER_MAP = [
+    public const array CHOICE_IDENTIFIER_MAP = [
         1 => self::DEFAULT,
         2 => 'Contributor-1.4',
         3 => 'Contributor-2.0',
         4 => 'Contributor-2.1',
         5 => 'Citizen-2.3',
+        6 => 'Contributor-3.0',
     ];
 
     public function getName(): string
@@ -71,11 +78,13 @@ class CodeOfConduct extends ChoiceQuestion implements StarterKitQuestion
         $choiceMap = array_combine(self::CHOICES, self::CHOICE_IDENTIFIER_MAP);
 
         return function (?string $value) use ($choiceMap): string {
-            if (ctype_digit((string) $value)) {
-                return (string) (self::CHOICE_IDENTIFIER_MAP[(int) $value] ?? $value);
+            $choice = (string) $value;
+
+            if (ctype_digit($choice)) {
+                return self::CHOICE_IDENTIFIER_MAP[(int) $choice] ?? $choice;
             }
 
-            return (string) ($choiceMap[trim((string) $value)] ?? $value);
+            return $choiceMap[trim($choice)] ?? $choice;
         };
     }
 

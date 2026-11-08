@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -17,7 +22,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use function array_filter;
 use function array_keys;
 use function array_shift;
-use function array_values;
 use function explode;
 use function implode;
 use function iterator_to_array;
@@ -32,7 +36,7 @@ class UpdateNamespace extends Builder
     {
         $this->getConsole()->section('Updating namespace');
 
-        $packageName = (string) $this->getAnswers()->packageName;
+        $packageName = $this->getAnswers()->packageName ?? '';
         $namespaceParts = explode(
             '\\',
             (string) $this->getAnswers()->packageNamespace,
@@ -103,7 +107,7 @@ class UpdateNamespace extends Builder
 
         $updatedContents = str_replace(
             array_keys($replacements),
-            array_values($replacements),
+            $replacements,
             $contents,
         );
 

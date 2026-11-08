@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -25,7 +30,7 @@ class VendorName extends Question implements StarterKitQuestion
 {
     use AnswersTool;
 
-    private const VALID_PATTERN = '/^[a-z0-9]([_.-]?[a-z0-9]+)*$/';
+    private const string VALID_PATTERN = '/^[a-z0-9]([_.-]?[a-z0-9]+)*$/';
 
     public function getName(): string
     {
@@ -44,6 +49,9 @@ class VendorName extends Question implements StarterKitQuestion
         return $this->getAnswers()->vendorName ?? $this->getAnswers()->githubUsername;
     }
 
+    /**
+     * @return callable(string | null): string
+     */
     public function getValidator(): callable
     {
         return function (?string $data): string {

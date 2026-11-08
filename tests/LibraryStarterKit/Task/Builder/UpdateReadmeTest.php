@@ -21,6 +21,8 @@ use Symfony\Component\Finder\SplFileInfo;
 use Twig\Environment as TwigEnvironment;
 
 use function file_get_contents;
+use function ini_get;
+use function ini_set;
 
 class UpdateReadmeTest extends TestCase
 {
@@ -201,6 +203,69 @@ class UpdateReadmeTest extends TestCase
         $builder = new UpdateReadme($task);
 
         $builder->build();
+    }
+
+    public function testBuildWritesEmptyReadmeWhenReplacementFails(): void
+    {
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Updating README.md');
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem
+            ->shouldReceive('dumpFile')
+            ->once()
+            ->withArgs(function (string $path, mixed $contents) {
+                $this->assertSame('/path/to/app/README.md', $path);
+                $this->assertSame('', $contents);
+
+                return true;
+            });
+
+        $finder = $this->mockery(Finder::class, [
+            'getIterator' => (new ArrayObject(
+                [$this->mockery(SplFileInfo::class, ['getContents' => $this->readmeContentsOriginal()])],
+            ))->getIterator(),
+        ]);
+        $finder->expects()->in('/path/to/app')->andReturnSelf();
+        $finder->expects()->files()->andReturnSelf();
+        $finder->expects()->depth('== 0')->andReturnSelf();
+        $finder->expects()->name('README.md');
+
+        $this->answers->codeOfConduct = 'Contributor-1.4';
+        $this->answers->packageName = 'a-vendor/package-name';
+
+        $twig = $this->mockery(TwigEnvironment::class);
+        $twig->shouldReceive('render')->andReturn('rendered');
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFilesystem' => $filesystem,
+            'getFinder' => $finder,
+            'getTwigEnvironment' => $twig,
+        ]);
+
+        $environment
+            ->shouldReceive('path')
+            ->andReturnUsing(fn (string $path): string => '/path/to/app/' . $path);
+
+        /** @var Build & MockInterface $task */
+        $task = $this->mockery(Build::class, [
+            'getAnswers' => $this->answers,
+            'getConsole' => $console,
+            'getSetup' => $environment,
+        ]);
+
+        $builder = new UpdateReadme($task);
+
+        // A match limit of one makes every regular expression fail with an error.
+        $originalLimit = (string) ini_get('pcre.backtrack_limit');
+        ini_set('pcre.backtrack_limit', '1');
+
+        try {
+            $builder->build();
+        } finally {
+            ini_set('pcre.backtrack_limit', $originalLimit);
+        }
     }
 
     public function testBuildThrowsExceptionWhenReadmeCannotBeFound(): void

@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -24,7 +29,7 @@ class FixStyle extends Builder
 
         $this
             ->getEnvironment()
-            ->getProcess(['composer', 'dev:lint:fix'])
+            ->getProcess(['composer', 'fix'])
             ->mustRun($this->streamProcessOutput());
     }
 }

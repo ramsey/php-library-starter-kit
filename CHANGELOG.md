@@ -2,220 +2,132 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 3.5.6 - 2025-03-07
+## [Unreleased]
+
+## [4.0.0] - 2026-11-08
 
 ### Added
 
-- Nothing.
+- Add mutation testing with [Infection](https://infection.github.io) to generated projects, including a `composer mutation` script, an `infection.json5.dist` file, and a GitHub Actions job.
+- Add an SPDX license identifier to the source file headers of generated projects, except when the license is proprietary.
+- Start the generated CHANGELOG.md with an Unreleased section and a link that compares the latest release with `HEAD`.
 
 ### Changed
 
-- Nothing.
-
-### Deprecated
-
-- Nothing.
+- Require PHP 8.5 or greater, Symfony 8.1 or greater, and PHPUnit 13 or greater.
+- Replace ramsey/devtools with [PHPStan](https://phpstan.org), [PHPUnit](https://phpunit.de), [PHP_CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer), and the [Ramsey coding standard](https://github.com/ramsey/coding-standard) in generated projects. The `dev:*` Composer commands become the `analyze`, `coverage`, `coverage-ci`, `fix`, `lint`, `mutation`, and `test` scripts.
+- Run `composer lint`, `composer test`, and `composer fix`, in place of the `dev:*` commands, while setting up a project.
+- Replace the `@copyright` and `@license` tags in the source file headers of generated projects with a copyright line and a license notice, wrapped at 80 characters.
+- Use © instead of (c) in the copyright statements of generated license files and source file headers.
+- Simplify the generated GitHub Actions workflow to lint, coverage, mutation, and test jobs that run on Ubuntu.
+- Stop hard-wrapping paragraphs in the generated README.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, and SECURITY.md, and use sentence case in the generated README.md headings.
+- Wrap the reporting email address in the generated Contributor Covenant 1.4 code of conduct in angle brackets so it renders as a link.
 
 ### Removed
 
-- Nothing.
+- Remove support for PHP 8.2, 8.3, and 8.4.
+- Remove Psalm and ramsey/devtools from generated projects, along with the Psalm configuration, the Shepherd badge, and the Psalm entries in `.gitattributes`.
+- Remove "All rights reserved" from the generated BSD 2-Clause and BSD 3-Clause licenses, and the CC0 button image from the generated README.md.
+
+### Fixed
+
+- Use `addCommand()` when the installed Symfony Console provides it, and `add()` otherwise.
+
+## [3.6.0] - 2026-11-07
+
+### Added
+
+- Add an option to use the Contributor Covenant 3.0 as the code of conduct.
+
+### Changed
+
+- Bump the minimum PHP version to 8.2.
+- Update the generated CONTRIBUTING.md to reference the PER Coding Style (PER-CS) instead of PSR-12, and to require PHP 8.2 or greater for development.
+- Update the PHP_CodeSniffer repository link in CONTRIBUTING.md to point to PHPCSStandards/PHP_CodeSniffer.
+
+### Removed
+
+- Remove support for PHP 8.1.
+
+### Fixed
+
+- Use the GitHub username and project name, instead of the Composer package name, when building GitHub URLs in the generated CONTRIBUTING.md and HackerOne security policy.
+
+## [3.5.6] - 2025-03-07
 
 ### Fixed
 
 - Partially revert commit dbec32c337e4bab527ca829db3d8cef3e7f08536; the attempt to define the full Symfony Question interface on the custom StarterKitQuestion interface caused problems when using older versions of symfony/console.
 
-## 3.5.5 - 2025-03-07
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.5.5] - 2025-03-07
 
 ### Fixed
 
 - Modernize and update type declarations and annotations throughout (no BC breaks).
-
 - Ensure all tests and static analysis tools pass on PHP 8.3 and 8.4.
-
 - Update symfony/finder dependency to `^6.4 || ^7.2`.
-
 - Update twig/twig dependency to `^3.20`.
 
-## 3.5.4 - 2023-10-31
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.5.4] - 2023-10-31
 
 ### Fixed
 
 - Add missing instructions for creating `MERGE_TOKEN` to `merge-me.yml` GitHub Action file.
 
-## 3.5.3 - 2023-10-31
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.5.3] - 2023-10-31
 
 ### Fixed
 
 - By default, assign permissions to upload security reports
 
-## 3.5.2 - 2023-05-25
+## [3.5.2] - 2023-05-25
 
 ### Added
 
 - Add comment about permissions for security events to continuous integration workflow file.
 
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
 ### Fixed
 
 - Disable rendering Code of Conduct messages if None selected.
 
-## 3.5.1 - 2023-04-27
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.5.1] - 2023-04-27
 
 ### Fixed
 
 - Remove code supporting old versions of symfony/process.
-
 - Improve checks for line-endings.
 
-## 3.5.0 - 2023-04-27
+## [3.5.0] - 2023-04-27
 
 ### Added
 
 - Add an option for version 2.1 of the Contributor Covenant
-
 - Update GitHub workflows to support auto-merging of Dependabot pull requests
 
 ### Changed
 
 - Update ramsey/devtools to version 2.0
-
 - Increase minimum PHP version to 8.1
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
 
 ### Fixed
 
 - Stop passing `starter-kit` command name to avoid confusing newer versions of symfony/console.
 
-## 3.4.2 - 2022-01-27
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.4.2] - 2022-01-27
 
 ### Fixed
 
 - Use a new instance of the Symfony Finder for each use.
 
-## 3.4.1 - 2022-01-02
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.4.1] - 2022-01-02
 
 ### Fixed
 
 - Bump codecov/codecov-action to v2.1.0
 
-## 3.4.0 - 2022-01-02
+## [3.4.0] - 2022-01-02
 
 ### Added
 
@@ -227,20 +139,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove "deps" as a type from conventional commits configuration.
 
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
 ### Fixed
 
 - Use v2 of ramsey/composer-install.
 - Fix a few package compatibility issues with PHP 8.1.
 
-## 3.3.0 - 2021-09-26
+## [3.3.0] - 2021-09-26
 
 ### Added
 
@@ -250,45 +154,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   For example:
 
-  ```shell
+  ```bash
   STARTER_KIT_ANSWERS_FILE=/path/to/answers.json composer create-project ramsey/php-library-starter-kit YOUR-PROJECT-NAME
   ```
 
 - Include a builder task (`Ramsey\Dev\LibraryStarterKit\Task\Builder\FixStyle`) that fixes any style issues before instantiating the new repository. This avoids coding standards errors caused by out-of-order `use` statements, etc.
 
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 3.2.2 - 2021-08-11
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.2.2] - 2021-08-11
 
 ### Fixed
 
@@ -297,164 +169,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use https in URLs
 - Use the correct branch name in GitHub URLs
 
-## 3.2.1 - 2021-08-07
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.2.1] - 2021-08-07
 
 ### Fixed
 
 - Fix link to SECURITY.md
 
-## 3.2.0 - 2021-08-06
+## [3.2.0] - 2021-08-06
 
 ### Added
 
 - Provide Creative Commons Zero v1.0 Universal as a license option
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
 
 ### Fixed
 
 - Write a Coordinated Disclosure section to the README if choosing to include a security policy
 - Move the pull request template so that GitHub will use it
 
-## 3.1.1 - 2021-08-05
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.1.1] - 2021-08-05
 
 ### Fixed
 
 - Detect author name and email using Git config
 
-## 3.1.0 - 2021-08-05
+## [3.1.0] - 2021-08-05
 
 ### Added
 
 - Use the author name and email address for git config, if necessary
 - Require the author email address
 
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
 ### Fixed
 
 - Set the branch name *after* the initial commit to avoid errors on older versions of Git
 
-## 3.0.3 - 2021-08-04
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.0.3] - 2021-08-04
 
 ### Fixed
 
 - Support older versions of Git that do not implement the `-b` option for `git init`
 - Improve exception handling to aid with debugging
 
-## 3.0.2 - 2021-07-18
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.0.2] - 2021-07-18
 
 ### Fixed
 
 - Add missing newline to end of generated composer.json file
 
-## 3.0.1 - 2021-07-18
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [3.0.1] - 2021-07-18
 
 ### Fixed
 
 - Make sure CaptainHook installation runs after the repository initialization
 
-## 3.0.0 - 2021-07-14
+## [3.0.0] - 2021-07-14
 
 ### Added
 
@@ -476,10 +244,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename from ramsey/php-library-skeleton to ramsey/php-library-starter-kit
 - Major re-working of the library to use [symfony/console](https://symfony.com/doc/current/components/console.html)
 
-### Deprecated
-
-- Nothing.
-
 ### Removed
 
 - Remove dependencies on NodeJS and npm packages
@@ -488,191 +252,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove Travis CI configuration, in favor of GitHub Actions
 - Remove Coveralls configuration, in favor of Codecov
 
-### Fixed
-
-- Nothing.
-
-## 2.1.4 - 2020-05-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [2.1.4] - 2020-05-29
 
 ### Fixed
 
 - Remove package name from license file, since it caused conflicts with GitHub's automatic license-detection software
 
-## 2.1.3 - 2020-05-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [2.1.3] - 2020-05-29
 
 ### Fixed
 
 - Fix case of incorrect license used in generated package.json
 
-## 2.1.2 - 2020-05-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [2.1.2] - 2020-05-29
 
 ### Fixed
 
 - Fix typo in `export-ignore` directives in `.gitattributes`
 
-## 2.1.1 - 2020-05-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [2.1.1] - 2020-05-29
 
 ### Fixed
 
 - Fix links to code of conduct and contributing guide
 
-## 2.1.0 - 2020-05-29
-
-### Added
-
-- Nothing.
+## [2.1.0] - 2020-05-29
 
 ### Changed
 
 - Rename phpstan.neon to phpstan.neon.dist
 
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 2.0.1 - 2020-05-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [2.0.1] - 2020-05-29
 
 ### Fixed
 
 - Fix typo in CONTRIBUTING.md.
 
-## 2.0.0 - 2020-05-29
-
-### Added
-
-- Nothing.
+## [2.0.0] - 2020-05-29
 
 ### Changed
 
 - Pretty much a full re-write
 
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.1.1 - 2019-10-23
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [1.1.1] - 2019-10-23
 
 ### Fixed
 
 - Fixed PSR-12 coding standards violations.
 
-## 1.1.0 - 2019-05-27
-
-### Added
-
-- Nothing.
+## [1.1.0] - 2019-05-27
 
 ### Changed
 
@@ -682,98 +310,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - PHPUnit `^8`
 - Now using `--no-suggest` when installing packages after finishing the wizard.
 
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 1.0.2 - 2019-01-03
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [1.0.2] - 2019-01-03
 
 ### Fixed
 
 - The `.gitattributes` file continues to be problematic when using the zip distribution, so this release removes the file entirely.
 
-## 1.0.1 - 2019-01-03
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## [1.0.1] - 2019-01-03
 
 ### Fixed
 
 - Fixed a problem where using `composer create-project` was not properly creating a project from the 1.0.0 release because the `.gitattributes` file was too liberal, failing to include important skeleton files in the release zip bundle.
 
-## 1.0.0 - 2019-01-02
+## [1.0.0] - 2019-01-02
 
-This is the initial release of ramsey/php-library-starter-kit, with the ability to
-quickly generate a PHP library including all the starting files that I
-([@ramsey][]) prefer to have in my projects. Future versions of this project may
-expand on this and allow for more generic options.
+This is the initial release of ramsey/php-library-starter-kit, with the ability to quickly generate a PHP library including all the starting files that I ([@ramsey]) prefer to have in my projects. Future versions of this project may expand on this and allow for more generic options.
 
-To create the starting point for a PHP library using this project, run the
-following:
+To create the starting point for a PHP library using this project, run the following:
 
-``` bash
+```bash
 composer create-project --remove-vcs ramsey/php-library-starter-kit target-directory
 ```
 
-You will be walked through a series of questions, and your PHP library source
-files will be located in `target-directory`, when completed. Change to that
-directory, `git init`, and off you go!
+You will be walked through a series of questions, and your PHP library source files will be located in `target-directory`, when completed. Change to that directory, `git init`, and off you go!
 
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
+[unreleased]: https://github.com/ramsey/php-library-starter-kit/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.6.0...4.0.0
+[3.6.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.6...3.6.0
+[3.5.6]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.5...3.5.6
+[3.5.5]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.4...3.5.5
+[3.5.4]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.3...3.5.4
+[3.5.3]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.2...3.5.3
+[3.5.2]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.1...3.5.2
+[3.5.1]: https://github.com/ramsey/php-library-starter-kit/compare/3.5.0...3.5.1
+[3.5.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.4.2...3.5.0
+[3.4.2]: https://github.com/ramsey/php-library-starter-kit/compare/3.4.1...3.4.2
+[3.4.1]: https://github.com/ramsey/php-library-starter-kit/compare/3.4.0...3.4.1
+[3.4.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.3.0...3.4.0
+[3.3.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.2.2...3.3.0
+[3.2.2]: https://github.com/ramsey/php-library-starter-kit/compare/3.2.1...3.2.2
+[3.2.1]: https://github.com/ramsey/php-library-starter-kit/compare/3.2.0...3.2.1
+[3.2.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.1.1...3.2.0
+[3.1.1]: https://github.com/ramsey/php-library-starter-kit/compare/3.1.0...3.1.1
+[3.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/3.0.3...3.1.0
+[3.0.3]: https://github.com/ramsey/php-library-starter-kit/compare/3.0.2...3.0.3
+[3.0.2]: https://github.com/ramsey/php-library-starter-kit/compare/3.0.1...3.0.2
+[3.0.1]: https://github.com/ramsey/php-library-starter-kit/compare/3.0.0...3.0.1
+[3.0.0]: https://github.com/ramsey/php-library-starter-kit/compare/2.1.4...3.0.0
+[2.1.4]: https://github.com/ramsey/php-library-starter-kit/compare/2.1.3...2.1.4
+[2.1.3]: https://github.com/ramsey/php-library-starter-kit/compare/2.1.2...2.1.3
+[2.1.2]: https://github.com/ramsey/php-library-starter-kit/compare/2.1.1...2.1.2
+[2.1.1]: https://github.com/ramsey/php-library-starter-kit/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/2.0.1...2.1.0
+[2.0.1]: https://github.com/ramsey/php-library-starter-kit/compare/2.0.0...2.0.1
+[2.0.0]: https://github.com/ramsey/php-library-starter-kit/compare/1.1.1...2.0.0
+[1.1.1]: https://github.com/ramsey/php-library-starter-kit/compare/1.1.0...1.1.1
+[1.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.2...1.1.0
+[1.0.2]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.1...1.0.2
+[1.0.1]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.0...1.0.1
+[1.0.0]: https://github.com/ramsey/php-library-starter-kit/releases/tag/1.0.0
 [@ramsey]: https://github.com/ramsey

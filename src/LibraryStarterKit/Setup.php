@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -22,6 +27,7 @@ use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
 use function preg_replace;
+use function wordwrap;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -140,6 +146,14 @@ class Setup
             fn (string $s, string $p, string $r): string => (string) preg_replace($p, $r, $s),
         );
 
+        $wordwrapFilter = new TwigFilter(
+            'wordwrap',
+            /**
+             * @param positive-int $width
+             */
+            fn (string $s, int $width = 75): string => wordwrap($s, $width, "\n", false),
+        );
+
         $twig = new TwigEnvironment(
             new FilesystemLoader($this->getProject()->getPath() . '/resources/templates'),
             [
@@ -150,6 +164,7 @@ class Setup
         );
 
         $twig->addFilter($pregReplaceFilter);
+        $twig->addFilter($wordwrapFilter);
 
         return $twig;
     }

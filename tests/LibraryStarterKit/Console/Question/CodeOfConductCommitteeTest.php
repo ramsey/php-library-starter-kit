@@ -65,6 +65,10 @@ class CodeOfConductCommitteeTest extends QuestionTestCase
                 'expected' => true,
             ],
             [
+                'choice' => 'Contributor-3.0',
+                'expected' => true,
+            ],
+            [
                 'choice' => 'Citizen-2.3',
                 'expected' => false,
             ],

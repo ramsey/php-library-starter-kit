@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -30,6 +35,7 @@ use Throwable;
 use function basename;
 use function dirname;
 use function getenv;
+use function method_exists;
 use function preg_replace;
 use function realpath;
 use function sprintf;
@@ -38,7 +44,7 @@ use function trim;
 
 class Wizard extends Command
 {
-    private const ANSWERS_FILE = '.starter-kit-answers';
+    private const string ANSWERS_FILE = '.starter-kit-answers';
 
     public static ?Application $application = null;
 
@@ -75,7 +81,6 @@ class Wizard extends Command
 
     public function getAnswersFile(): string
     {
-        /** @psalm-suppress RiskyTruthyFalsyComparison */
         return getenv('STARTER_KIT_ANSWERS_FILE') ?: $this->setup->path(self::ANSWERS_FILE);
     }
 
@@ -254,7 +259,7 @@ class Wizard extends Command
         $appPath = dirname($vendorDir);
 
         $projectName = strtolower(basename((string) realpath($appPath)));
-        $projectName = (string) preg_replace('/[^a-z0-9]/', '-', $projectName);
+        $projectName = preg_replace('/[^a-z0-9]/', '-', $projectName) ?? '';
 
         $project = new Project($projectName, $appPath);
         $setup = new Setup($project, $event, new Filesystem(), new Finder(), self::determineVerbosityLevel($event));
@@ -262,7 +267,13 @@ class Wizard extends Command
         $command = new self($setup);
 
         $application = self::newApplication();
-        $application->add($command);
+
+        if (method_exists($application, 'addCommand')) { /** @phpstan-ignore function.alreadyNarrowedType */
+            $application->addCommand($command);
+        } else {
+            $application->add($command); /** @phpstan-ignore method.notFound */
+        }
+
         $application->setDefaultCommand((string) $command->getName(), true);
 
         $application->run(new StringInput(''));

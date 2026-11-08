@@ -50,6 +50,7 @@ class CodeOfConductTest extends QuestionTestCase
                 3 => 'Contributor Covenant Code of Conduct, version 2.0',
                 4 => 'Contributor Covenant Code of Conduct, version 2.1',
                 5 => 'Citizen Code of Conduct, version 2.3',
+                6 => 'Contributor Covenant Code of Conduct, version 3.0',
             ],
             $question->getChoices(),
         );
@@ -74,12 +75,14 @@ class CodeOfConductTest extends QuestionTestCase
             ['value' => '3', 'expected' => 'Contributor-2.0'],
             ['value' => '4', 'expected' => 'Contributor-2.1'],
             ['value' => '5', 'expected' => 'Citizen-2.3'],
+            ['value' => '6', 'expected' => 'Contributor-3.0'],
             ['value' => 'None', 'expected' => 'None'],
             ['value' => 'Contributor Covenant Code of Conduct, version 1.4', 'expected' => 'Contributor-1.4'],
             ['value' => 'Contributor Covenant Code of Conduct, version 2.0', 'expected' => 'Contributor-2.0'],
             ['value' => 'Contributor Covenant Code of Conduct, version 2.1', 'expected' => 'Contributor-2.1'],
+            ['value' => 'Contributor Covenant Code of Conduct, version 3.0', 'expected' => 'Contributor-3.0'],
             ['value' => 'Citizen Code of Conduct, version 2.3', 'expected' => 'Citizen-2.3'],
-            ['value' => '6', 'expected' => '6'],
+            ['value' => '7', 'expected' => '7'],
             ['value' => null, 'expected' => ''],
             ['value' => 'foo', 'expected' => 'foo'],
         ];
@@ -114,6 +117,10 @@ class CodeOfConductTest extends QuestionTestCase
             [
                 'value' => 'Contributor-2.1',
                 'expected' => 'Contributor-2.1',
+            ],
+            [
+                'value' => 'Contributor-3.0',
+                'expected' => 'Contributor-3.0',
             ],
             [
                 'value' => 'Citizen-2.3',
@@ -152,9 +159,44 @@ class CodeOfConductTest extends QuestionTestCase
                 'message' => '"foo" is not a valid code of conduct choice.',
             ],
             [
-                'value' => '6',
-                'message' => '"6" is not a valid code of conduct choice.',
+                'value' => '7',
+                'message' => '"7" is not a valid code of conduct choice.',
             ],
         ];
+    }
+
+    #[DataProvider('provideUnknownAnswers')]
+    public function testGetDefaultWhenAnswerIsNotAKnownChoice(string $answer): void
+    {
+        $this->answers->codeOfConduct = $answer;
+
+        $question = new CodeOfConduct($this->answers);
+
+        $this->assertSame(1, $question->getDefault());
+    }
+
+    /**
+     * @return list<array{answer: string}>
+     */
+    public static function provideUnknownAnswers(): array
+    {
+        return [
+            ['answer' => ''],
+            ['answer' => 'foo'],
+        ];
+    }
+
+    public function testNormalizerTrimsWhitespaceAroundChoiceText(): void
+    {
+        $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
+
+        $this->assertSame('None', $normalizer('  None  '));
+    }
+
+    public function testNormalizerHandlesNumericChoiceWithLeadingZero(): void
+    {
+        $normalizer = (new CodeOfConduct($this->answers))->getNormalizer();
+
+        $this->assertSame('Contributor-1.4', $normalizer('02'));
     }
 }

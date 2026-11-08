@@ -162,4 +162,39 @@ class LicenseTest extends QuestionTestCase
             ],
         ];
     }
+
+    #[DataProvider('provideUnknownAnswers')]
+    public function testGetDefaultWhenAnswerIsNotAKnownChoice(?string $answer): void
+    {
+        $this->answers->license = $answer;
+
+        $question = new License($this->answers);
+
+        $this->assertSame(1, $question->getDefault());
+    }
+
+    /**
+     * @return list<array{answer: string | null}>
+     */
+    public static function provideUnknownAnswers(): array
+    {
+        return [
+            ['answer' => null],
+            ['answer' => 'foo'],
+        ];
+    }
+
+    public function testNormalizerTrimsWhitespaceAroundChoiceText(): void
+    {
+        $normalizer = (new License($this->answers))->getNormalizer();
+
+        $this->assertSame('Proprietary', $normalizer('  Proprietary  '));
+    }
+
+    public function testNormalizerHandlesNumericChoiceWithLeadingZero(): void
+    {
+        $normalizer = (new License($this->answers))->getNormalizer();
+
+        $this->assertSame('Apache-2.0', $normalizer('02'));
+    }
 }

@@ -64,4 +64,21 @@ class VendorNameTest extends QuestionTestCase
             ['value' => 'foo/bar'],
         ];
     }
+
+    public function testGetDefaultPrefersExistingVendorName(): void
+    {
+        $question = new VendorName($this->answers);
+
+        $this->answers->vendorName = 'fellowship';
+        $this->answers->githubUsername = 'frodo';
+
+        $this->assertSame('fellowship', $question->getDefault());
+    }
+
+    public function testValidatorLowercasesValue(): void
+    {
+        $validator = (new VendorName($this->answers))->getValidator();
+
+        $this->assertSame('foo-bar', $validator('Foo-BAR'));
+    }
 }

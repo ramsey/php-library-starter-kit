@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -26,7 +31,7 @@ class CopyrightYear extends Question implements StarterKitQuestion
 {
     use AnswersTool;
 
-    private const VALID_PATTERN = '/^\d{4}$/';
+    private const string VALID_PATTERN = '/^\d{4}$/';
 
     public function getName(): string
     {
@@ -51,8 +56,10 @@ class CopyrightYear extends Question implements StarterKitQuestion
     public function getValidator(): callable
     {
         return function (?string $data): string {
-            if (preg_match(self::VALID_PATTERN, trim((string) $data)) === 1) {
-                return (string) $data;
+            $year = (string) $data;
+
+            if (preg_match(self::VALID_PATTERN, trim($year)) === 1) {
+                return $year;
             }
 
             throw new InvalidConsoleInput('You must enter a valid, 4-digit year.');

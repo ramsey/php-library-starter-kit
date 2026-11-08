@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ramsey\Test\Dev\LibraryStarterKit;
 
+use Closure;
 use Composer\Script\Event;
 use Hamcrest\Core\IsInstanceOf;
 use Hamcrest\Core\IsTypeOf;
@@ -19,6 +20,7 @@ use Ramsey\Dev\LibraryStarterKit\Filesystem;
 use Ramsey\Dev\LibraryStarterKit\Project;
 use Ramsey\Dev\LibraryStarterKit\Setup;
 use Ramsey\Dev\LibraryStarterKit\Wizard;
+use ReflectionProperty;
 use RuntimeException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,13 +30,40 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Process\Process;
 
+use function basename;
 use function dirname;
+use function function_exists;
 use function get_class;
+use function mkdir;
+use function pcntl_signal;
+use function pcntl_signal_get_handler;
+use function preg_replace;
 use function putenv;
 use function realpath;
+use function rmdir;
+use function strtolower;
+use function sys_get_temp_dir;
+use function uniqid;
+
+use const SIGINT;
+use const SIGTERM;
+use const SIG_DFL;
 
 class WizardTest extends TestCase
 {
+    private const string INTRO_BLOCK = 'I\'ll ask you a series of questions about the library '
+        . 'you\'re creating. When finished, I\'ll set up a repository with '
+        . 'an initial set of files that you may customize to suit your '
+        . 'needs.';
+
+    private const string SKIP_PROMPTS_BLOCK = 'You\'ve provided an answers file with \'skipPrompts: true\', '
+        . 'so I won\'t ask any questions. Instead, I\'ll go ahead and '
+        . 'start setting up a repository with an initial set of files '
+        . 'that you may customize to suit your needs.';
+
+    private const string ERROR_BLOCK_URL = 'Please go here and click the "New issue" button to report this error: '
+        . 'https://github.com/ramsey/php-library-starter-kit/issues';
+
     public function testGetSetup(): void
     {
         /** @var Setup & MockInterface $setup */
@@ -151,16 +180,28 @@ class WizardTest extends TestCase
         $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
-        $console->shouldReceive('title')->once();
-        $console->shouldReceive('block');
-        $console->shouldReceive('text');
-        $console->shouldReceive('newLine');
+        $console->expects()->title('Welcome to the PHP Library Starter Kit!');
+        $console->expects()->block(self::INTRO_BLOCK);
+        $console->expects()->block([
+            'I\'ve saved your progress. When you\'re ready to return to the '
+            . 'starter kit wizard, enter:',
+        ]);
+        $console->expects()->text([
+            '    <info>cd /path/to/app</info>',
+            '    <info>composer starter-kit</info>',
+        ]);
+        $console->expects()->newLine();
         $console->shouldReceive('success')->never();
 
         $console
-            ->shouldReceive('askQuestion')
-            ->with(new IsInstanceOf(ConfirmationQuestion::class))
-            ->andReturnFalse();
+            ->expects()
+            ->askQuestion(new IsInstanceOf(ConfirmationQuestion::class))
+            ->andReturnUsing(function (ConfirmationQuestion $question): bool {
+                $this->assertSame('Are you ready to get started?', $question->getQuestion());
+                $this->assertFalse($question->getDefault());
+
+                return false;
+            });
 
         $wizard = new Wizard($setup, $styleFactory);
 
@@ -218,8 +259,8 @@ class WizardTest extends TestCase
         $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
-        $console->shouldReceive('title')->once();
-        $console->shouldReceive('block');
+        $console->expects()->title('Welcome to the PHP Library Starter Kit!');
+        $console->expects()->block(self::INTRO_BLOCK);
         $console->expects()->success([
             'Congratulations! Your project, my-package/name, is ready!',
             'Your project is available at /my/project/path.',
@@ -289,8 +330,8 @@ class WizardTest extends TestCase
         $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
-        $console->shouldReceive('title')->once();
-        $console->shouldReceive('block');
+        $console->expects()->title('Welcome to the PHP Library Starter Kit!');
+        $console->expects()->block(self::SKIP_PROMPTS_BLOCK);
         $console->expects()->success([
             'Congratulations! Your project, fellowship/ring, is ready!',
             'Your project is available at /my/project/path.',
@@ -304,6 +345,184 @@ class WizardTest extends TestCase
 
         // Remove the environment variable to avoid affecting other tests.
         putenv('STARTER_KIT_ANSWERS_FILE');
+    }
+
+    public function testGitUserNameAndEmailAreTrimmed(): void
+    {
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class);
+        $setup->shouldReceive('getProject->getName')->andReturn('foo-project');
+        $setup->expects()->path('.starter-kit-answers')->andReturn('/path/to/.starter-kit-answers');
+
+        $nameProcess = $this->mockery(Process::class);
+        $nameProcess->expects()->run();
+        $nameProcess->expects()->getOutput()->andReturn("  Jane Doe \n");
+        $emailProcess = $this->mockery(Process::class);
+        $emailProcess->expects()->run();
+        $emailProcess->expects()->getOutput()->andReturn("\n jane@example.com\n");
+        $setup->expects()->getProcess(['git', 'config', 'user.name'])->andReturn($nameProcess);
+        $setup->expects()->getProcess(['git', 'config', 'user.email'])->andReturn($emailProcess);
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->exists('/path/to/.starter-kit-answers')->andReturnFalse();
+        $setup->expects()->getFilesystem()->andReturn($filesystem);
+
+        $wizard = new Wizard($setup);
+
+        $answers = (new ReflectionProperty(Wizard::class, 'answers'))->getValue($wizard);
+
+        $this->assertInstanceOf(Answers::class, $answers);
+        $this->assertSame('Jane Doe', $answers->authorName);
+        $this->assertSame('jane@example.com', $answers->authorEmail);
+    }
+
+    public function testRunRegistersInterruptHandlers(): void
+    {
+        if (!function_exists('pcntl_signal')) {
+            $this->markTestSkipped('The pcntl extension is not available');
+        }
+
+        pcntl_signal(SIGINT, SIG_DFL);
+        pcntl_signal(SIGTERM, SIG_DFL);
+
+        /** @var InputInterface & MockInterface $input */
+        $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
+
+        /** @var OutputInterface & MockInterface $output */
+        $output = $this->mockery(OutputInterface::class);
+        $output->shouldReceive('setVerbosity');
+
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
+        $console->shouldReceive('title');
+        $console->shouldReceive('block');
+        $console->shouldReceive('success');
+
+        $project = new Project('my-project', '/my/project/path');
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class, ['getProject' => $project]);
+        $setup->shouldReceive('getVerbosity')->andReturn(OutputInterface::VERBOSITY_NORMAL);
+        $setup->shouldReceive('run');
+        $setup->shouldReceive('path')->andReturn('/path/to/.starter-kit-answers');
+        $setup->shouldReceive('getFilesystem')->andReturn(new Filesystem());
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->shouldReceive('run');
+        $nullProcess->shouldReceive('getOutput')->andReturn('');
+        $setup->shouldReceive('getProcess')->andReturn($nullProcess);
+
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
+        $styleFactory->shouldReceive('factory')->andReturn($console);
+
+        putenv('STARTER_KIT_ANSWERS_FILE=' . __DIR__ . '/answers-test.json');
+
+        try {
+            $wizard = new Wizard($setup, $styleFactory);
+            $wizard->run($input, $output);
+
+            $this->assertInstanceOf(Closure::class, pcntl_signal_get_handler(SIGINT));
+            $this->assertInstanceOf(Closure::class, pcntl_signal_get_handler(SIGTERM));
+        } finally {
+            putenv('STARTER_KIT_ANSWERS_FILE');
+            pcntl_signal(SIGINT, SIG_DFL);
+            pcntl_signal(SIGTERM, SIG_DFL);
+        }
+    }
+
+    public function testRunUsesIntegerValueOfStringExceptionCode(): void
+    {
+        /** @var InputInterface & MockInterface $input */
+        $input = $this->mockery(InputInterface::class)->shouldIgnoreMissing();
+
+        /** @var OutputInterface & MockInterface $output */
+        $output = $this->mockery(OutputInterface::class);
+        $output->shouldReceive('setVerbosity');
+
+        /** @var Style & MockInterface $console */
+        $console = $this->mockery(Style::class);
+        $console->shouldReceive('title');
+        $console->shouldReceive('block');
+        $console->shouldReceive('newLine');
+        $console->shouldReceive('error');
+        $console->shouldReceive('getVerbosity')->andReturn(OutputInterface::VERBOSITY_NORMAL);
+
+        // PDOException is the usual source of a string code.
+        $exception = new RuntimeException('a test exception message');
+        (new ReflectionProperty(RuntimeException::class, 'code'))->setValue($exception, '7');
+
+        $project = new Project('my-project', '/my/project/path');
+
+        /** @var Setup & MockInterface $setup */
+        $setup = $this->mockery(Setup::class, ['getProject' => $project]);
+        $setup->shouldReceive('getVerbosity')->andReturn(OutputInterface::VERBOSITY_NORMAL);
+        $setup->shouldReceive('run')->andThrow($exception);
+        $setup->shouldReceive('path')->andReturn('/path/to/.starter-kit-answers');
+        $setup->shouldReceive('getFilesystem')->andReturn(new Filesystem());
+
+        $nullProcess = $this->mockery(Process::class);
+        $nullProcess->shouldReceive('run');
+        $nullProcess->shouldReceive('getOutput')->andReturn('');
+        $setup->shouldReceive('getProcess')->andReturn($nullProcess);
+
+        /** @var StyleFactory & MockInterface $styleFactory */
+        $styleFactory = $this->mockery(StyleFactory::class);
+        $styleFactory->shouldReceive('factory')->andReturn($console);
+
+        putenv('STARTER_KIT_ANSWERS_FILE=' . __DIR__ . '/answers-test.json');
+
+        try {
+            $wizard = new Wizard($setup, $styleFactory);
+
+            $this->assertSame(7, $wizard->run($input, $output));
+        } finally {
+            putenv('STARTER_KIT_ANSWERS_FILE');
+        }
+    }
+
+    public function testStartDerivesProjectNameFromDirectoryName(): void
+    {
+        $appPath = sys_get_temp_dir() . '/Starter_Kit.Test' . uniqid();
+        mkdir($appPath . '/vendor', 0o777, true);
+
+        /** @var Event & MockInterface $event */
+        $event = $this->mockery(Event::class, [
+            'getIO->isDebug' => false,
+            'getIO->isVeryVerbose' => false,
+            'getIO->isVerbose' => false,
+        ]);
+        $event
+            ->shouldReceive('getComposer->getConfig->get')
+            ->with('vendor-dir')
+            ->once()
+            ->andReturn($appPath . '/vendor');
+
+        $expectedName = (string) preg_replace('/[^a-z0-9]/', '-', strtolower(basename((string) realpath($appPath))));
+
+        /** @var Application & MockInterface $application */
+        $application = $this->mockery(Application::class);
+        $application
+            ->shouldReceive('addCommand')
+            ->once()
+            ->withArgs(function (Wizard $command) use ($expectedName): bool {
+                $this->assertSame($expectedName, $command->getSetup()->getProject()->getName());
+                $this->assertStringStartsWith('starter-kit-test', $command->getSetup()->getProject()->getName());
+
+                return true;
+            });
+        $application->expects()->setDefaultCommand('starter-kit', true);
+        $application->expects()->run(new IsInstanceOf(StringInput::class));
+
+        Wizard::$application = $application;
+
+        try {
+            Wizard::start($event);
+        } finally {
+            Wizard::$application = null;
+            rmdir($appPath . '/vendor');
+            rmdir($appPath);
+        }
     }
 
     public function testNewApplicationReturnsAnInstanceOfApplication(): void
@@ -332,7 +551,7 @@ class WizardTest extends TestCase
         $application = $this->mockery(Application::class);
 
         $application
-            ->shouldReceive('add')
+            ->shouldReceive('addCommand')
             ->once()
             ->withArgs(function (Wizard $command) use ($vendorDir): bool {
                 $this->assertSame('php-library-starter-kit', $command->getSetup()->getProject()->getName());
@@ -394,9 +613,10 @@ class WizardTest extends TestCase
         $styleFactory = $this->mockery(StyleFactory::class);
         $styleFactory->expects()->factory($input, $output)->andReturn($console);
 
-        $console->shouldReceive('block');
-        $console->shouldReceive('newLine');
-        $console->shouldReceive('title')->once();
+        $console->expects()->block(self::INTRO_BLOCK);
+        $console->expects()->block(['Oops! I encountered an error.', self::ERROR_BLOCK_URL]);
+        $console->expects()->newLine();
+        $console->expects()->title('Welcome to the PHP Library Starter Kit!');
         $console->shouldReceive('success')->never();
         $console->shouldReceive('getVerbosity')->andReturn($verbosity);
 

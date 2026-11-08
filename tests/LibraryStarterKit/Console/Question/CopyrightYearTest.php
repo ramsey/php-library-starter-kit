@@ -67,4 +67,11 @@ class CopyrightYearTest extends QuestionTestCase
             ['value' => '21201'],
         ];
     }
+
+    public function testValidatorReturnsValueWithSurroundingWhitespace(): void
+    {
+        $validator = (new CopyrightYear($this->answers))->getValidator();
+
+        $this->assertSame(' 2017 ', $validator(' 2017 '));
+    }
 }

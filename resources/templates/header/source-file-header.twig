@@ -1,9 +1,15 @@
 {% set headerTemplate %}header/{{ license }}.twig{% endset %}
-{% set copyright %}Copyright (c) {{ copyrightHolder }}{% if copyrightEmail %} <{{ copyrightEmail }}>{% elseif copyrightUrl %} <{{ copyrightUrl }}>{% endif %}{% endset %}
+{% set copyright %}Copyright © {{ copyrightHolder }}{% if copyrightEmail %} <{{ copyrightEmail }}>{% elseif copyrightUrl %} <{{ copyrightUrl }}>{% endif %}{% endset %}
 {% set licenseStatement %}{{ include(headerTemplate) }}{% endset %}
 
 /**
  * This file is part of {{ packageName }}
+{% if licenseStatement|trim %}
  *
- {{ licenseStatement|preg_replace('/^/m', ' * ')|preg_replace('/\\s+$/m', '')|trim }}
+ {{ licenseStatement|preg_replace('/(?<!\\n)\\n(?!\\n)/', ' ')|wordwrap(77)|preg_replace('/^/m', ' * ')|preg_replace('/\\s+$/m', '')|trim }}
+{% endif %}
+{% if license != 'Proprietary' %}
+ *
+ * SPDX-License-Identifier: {{ license }}
+{% endif %}
  */

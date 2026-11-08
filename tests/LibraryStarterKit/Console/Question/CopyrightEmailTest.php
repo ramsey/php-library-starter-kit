@@ -59,4 +59,14 @@ class CopyrightEmailTest extends QuestionTestCase
             ],
         ];
     }
+
+    public function testGetDefaultPrefersExistingCopyrightAnswer(): void
+    {
+        $question = new CopyrightEmail($this->answers);
+
+        $this->answers->copyrightEmail = 'fellowship@example.com';
+        $this->answers->authorEmail = 'frodo@example.com';
+
+        $this->assertSame('fellowship@example.com', $question->getDefault());
+    }
 }

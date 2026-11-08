@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -32,7 +37,7 @@ class PackageNamespace extends Question implements StarterKitQuestion
 {
     use AnswersTool;
 
-    private const VALID_PATTERN = '/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/';
+    private const string VALID_PATTERN = '/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*$/';
 
     public function getName(): string
     {
@@ -69,7 +74,6 @@ class PackageNamespace extends Question implements StarterKitQuestion
             return null;
         }
 
-        $packageName = str_replace('/', '\\', $packageName);
         $packageNameParts = explode('\\', $packageName);
 
         /** @var string[] $packageNameParts */
@@ -78,10 +82,14 @@ class PackageNamespace extends Question implements StarterKitQuestion
         return implode('\\', $packageNameParts);
     }
 
+    /**
+     * @return callable(string | null): string
+     */
     public function getValidator(): callable
     {
         return function (?string $data): string {
-            $packageNameParts = explode('\\', (string) $data);
+            $namespace = (string) $data;
+            $packageNameParts = explode('\\', $namespace);
 
             foreach ($packageNameParts as $namePart) {
                 if (!preg_match(self::VALID_PATTERN, $namePart)) {
@@ -91,7 +99,7 @@ class PackageNamespace extends Question implements StarterKitQuestion
                 }
             }
 
-            return (string) $data;
+            return $namespace;
         };
     }
 

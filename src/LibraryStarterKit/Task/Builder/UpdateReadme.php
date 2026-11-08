@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -16,7 +21,6 @@ use Ramsey\Dev\LibraryStarterKit\Task\Builder;
 use RuntimeException;
 
 use function array_keys;
-use function array_values;
 use function preg_replace;
 
 /**
@@ -31,7 +35,7 @@ class UpdateReadme extends Builder
         $readmeContents = $this->getReadmeContents();
 
         $replacements = [
-            '/<!-- NAME_START -->(.*)<!-- NAME_END -->/s' => $this->getAnswers()->packageName,
+            '/<!-- NAME_START -->(.*)<!-- NAME_END -->/s' => $this->getAnswers()->packageName ?? '',
             '/<!-- BADGES_START -->(.*)<!-- BADGES_END -->/s' => $this->getBadges(),
             '/<!-- DESC_START -->(.*)<!-- DESC_END -->/s' => $this->getDescription(),
             '/<!-- COC_START -->(.*)<!-- COC_END -->/s' => $this->getCodeOfConduct(),
@@ -44,12 +48,9 @@ class UpdateReadme extends Builder
         /** @var non-empty-string[] $searches */
         $searches = array_keys($replacements);
 
-        /** @var string[] $replaces */
-        $replaces = array_values($replacements);
-
         $readme = (string) preg_replace(
             $searches,
-            $replaces,
+            $replacements,
             $readmeContents,
         );
 

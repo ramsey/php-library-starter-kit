@@ -77,4 +77,46 @@ class RenameTemplatesTest extends TestCase
 
         $renameTemplates->build();
     }
+
+    public function testBuildUsesEmptyPathWhenRealPathIsUnavailable(): void
+    {
+        $newPath = DIRECTORY_SEPARATOR;
+
+        $console = $this->mockery(SymfonyStyle::class);
+        $console->expects()->section('Renaming template files');
+        $console->expects()->text("<comment>  - Renaming '' to '{$newPath}'.</comment>");
+
+        $filesystem = $this->mockery(Filesystem::class);
+        $filesystem->expects()->rename('', $newPath);
+
+        $file = $this->mockery(SplFileInfo::class, [
+            'getRealPath' => false,
+        ]);
+
+        $finder = $this->mockery(Finder::class, [
+            'getIterator' => (new ArrayObject([$file]))->getIterator(),
+        ]);
+
+        $finder->expects()->ignoreDotFiles(false)->andReturnSelf();
+        $finder->expects()->exclude(['build', 'vendor'])->andReturnSelf();
+        $finder->expects()->in('/path/to/app')->andReturnSelf();
+        $finder->expects()->name('*.template')->andReturnSelf();
+        $finder->expects()->name('.*.template');
+
+        $environment = $this->mockery(Setup::class, [
+            'getAppPath' => '/path/to/app',
+            'getFileSystem' => $filesystem,
+            'getFinder' => $finder,
+        ]);
+
+        /** @var Build & MockInterface $build */
+        $build = $this->mockery(Build::class, [
+            'getSetup' => $environment,
+            'getConsole' => $console,
+        ]);
+
+        $renameTemplates = new RenameTemplates($build);
+
+        $renameTemplates->build();
+    }
 }

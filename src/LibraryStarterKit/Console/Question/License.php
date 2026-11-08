@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -29,9 +34,9 @@ class License extends ChoiceQuestion implements StarterKitQuestion
 {
     use AnswersTool;
 
-    public const DEFAULT = 'Proprietary';
+    public const string DEFAULT = 'Proprietary';
 
-    public const CHOICES = [
+    public const array CHOICES = [
         1 => self::DEFAULT,
         2 => 'Apache License 2.0',
         3 => 'BSD 2-Clause "Simplified" License',
@@ -47,7 +52,7 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         13 => 'Unlicense',
     ];
 
-    public const CHOICE_IDENTIFIER_MAP = [
+    public const array CHOICE_IDENTIFIER_MAP = [
         1 => self::DEFAULT,
         2 => 'Apache-2.0',
         3 => 'BSD-2-Clause',
@@ -87,11 +92,13 @@ class License extends ChoiceQuestion implements StarterKitQuestion
         $choiceMap = array_combine(self::CHOICES, self::CHOICE_IDENTIFIER_MAP);
 
         return function (?string $value) use ($choiceMap): string {
-            if (ctype_digit((string) $value)) {
-                return (string) (self::CHOICE_IDENTIFIER_MAP[(int) $value] ?? $value);
+            $choice = (string) $value;
+
+            if (ctype_digit($choice)) {
+                return self::CHOICE_IDENTIFIER_MAP[(int) $choice] ?? $choice;
             }
 
-            return (string) ($choiceMap[trim((string) $value)] ?? $value);
+            return $choiceMap[trim($choice)] ?? $choice;
         };
     }
 
@@ -101,14 +108,14 @@ class License extends ChoiceQuestion implements StarterKitQuestion
     public function getValidator(): callable
     {
         return function (?string $value): string {
-            if (!in_array($value, self::CHOICE_IDENTIFIER_MAP)) {
+            if ($value === null || !in_array($value, self::CHOICE_IDENTIFIER_MAP)) {
                 throw new InvalidConsoleInput(sprintf(
                     '"%s" is not a valid license choice.',
                     (string) $value,
                 ));
             }
 
-            return (string) $value;
+            return $value;
         };
     }
 }

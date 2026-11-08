@@ -69,4 +69,14 @@ class PackageNamespaceTest extends QuestionTestCase
 
         $validator('1Foo');
     }
+
+    public function testValidatorThrowsExceptionForNull(): void
+    {
+        $validator = (new PackageNamespace($this->answers))->getValidator();
+
+        $this->expectException(InvalidConsoleInput::class);
+        $this->expectExceptionMessage('You must enter a valid library namespace.');
+
+        $validator(null);
+    }
 }

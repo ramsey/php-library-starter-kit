@@ -113,4 +113,30 @@ class PackageNameTest extends QuestionTestCase
             ],
         ];
     }
+
+    public function testDefaultWithBlankVendorNameAndNoProjectName(): void
+    {
+        $question = new PackageName($this->answers);
+
+        $this->answers->vendorName = ' ';
+
+        $this->assertNull($question->getDefault());
+    }
+
+    public function testValidatorLowercasesValue(): void
+    {
+        $validator = (new PackageName($this->answers))->getValidator();
+
+        $this->assertSame('foo/bar', $validator('Foo/BAR'));
+    }
+
+    public function testValidatorLowercasesVendorPrefix(): void
+    {
+        $validator = (new PackageName($this->answers))->getValidator();
+
+        $this->answers->vendorName = 'Frodo';
+
+        $this->assertSame('frodo/ring', $validator('frodo/ring'));
+        $this->assertSame('frodo/ring', $validator('ring'));
+    }
 }

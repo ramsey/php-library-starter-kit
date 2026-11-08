@@ -3,8 +3,13 @@
 /**
  * This file is part of ramsey/php-library-starter-kit
  *
- * @copyright Copyright (c) Ben Ramsey <ben@benramsey.com>
- * @license https://opensource.org/licenses/MIT MIT License
+ * Copyright © Ben Ramsey <ben@ramsey.dev>
+ *
+ * Licensed under the MIT License (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License
+ * at <https://opensource.org/license/MIT>.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 declare(strict_types=1);
@@ -40,33 +45,21 @@ class UpdateLicense extends Builder
 
     private function hasNoticeFile(string $license): bool
     {
-        switch ($license) {
-            case 'AGPL-3.0-or-later':
-            case 'Apache-2.0':
-            case 'GPL-3.0-or-later':
-            case 'LGPL-3.0-or-later':
-            case 'MPL-2.0':
-                return true;
-            default:
-                return false;
-        }
+        return match ($license) {
+            'AGPL-3.0-or-later', 'Apache-2.0', 'GPL-3.0-or-later', 'LGPL-3.0-or-later', 'MPL-2.0' => true,
+            default => false,
+        };
     }
 
     private function getLicenseFilename(string $license): string
     {
-        switch ($license) {
-            case 'AGPL-3.0-or-later':
-            case 'GPL-3.0-or-later':
-                return 'COPYING';
-            case 'LGPL-3.0-or-later':
-                return 'COPYING.LESSER';
-            case 'Proprietary':
-                return 'COPYRIGHT';
-            case 'Unlicense':
-                return 'UNLICENSE';
-            default:
-                return 'LICENSE';
-        }
+        return match ($license) {
+            'AGPL-3.0-or-later', 'GPL-3.0-or-later' => 'COPYING',
+            'LGPL-3.0-or-later' => 'COPYING.LESSER',
+            'Proprietary' => 'COPYRIGHT',
+            'Unlicense' => 'UNLICENSE',
+            default => 'LICENSE',
+        };
     }
 
     private function handleLicenseFile(string $license): void

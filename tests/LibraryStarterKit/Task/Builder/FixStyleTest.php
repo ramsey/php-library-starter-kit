@@ -27,7 +27,7 @@ class FixStyleTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['composer', 'dev:lint:fix'])
+            ->getProcess(['composer', 'fix'])
             ->andReturn($process);
 
         /** @var Build & MockInterface $build */
