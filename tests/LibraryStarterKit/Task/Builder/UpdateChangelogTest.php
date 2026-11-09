@@ -35,11 +35,12 @@ class UpdateChangelogTest extends TestCase
 
         $twig
             ->expects()
-            ->render('CHANGELOG.md.twig', $this->answers->getArrayCopy())
+            ->render('CHANGELOG.md.twig', $this->answers->getArrayCopy() + ['defaultBranch' => 'main'])
             ->andReturn('changelogContents');
 
         $environment = $this->mockery(Setup::class, [
             'getAppPath' => '/path/to/app',
+            'getDefaultBranch' => 'main',
             'getFilesystem' => $filesystem,
             'getTwigEnvironment' => $twig,
         ]);

@@ -29,7 +29,7 @@ class UpdateChangelog extends Builder
 
         $changelog = $this->getEnvironment()->getTwigEnvironment()->render(
             'CHANGELOG.md.twig',
-            $this->getAnswers()->getArrayCopy(),
+            $this->getAnswers()->getArrayCopy() + ['defaultBranch' => $this->getEnvironment()->getDefaultBranch()],
         );
 
         $this->getEnvironment()->getFilesystem()->dumpFile(

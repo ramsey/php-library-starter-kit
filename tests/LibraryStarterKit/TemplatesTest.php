@@ -132,6 +132,23 @@ class TemplatesTest extends TestCase
         yield 'Unlicense' => ['license' => 'Unlicense', 'filename' => 'UNLICENSE'];
     }
 
+    public function testChangelogLinksUnreleasedToTheDefaultBranchCommits(): void
+    {
+        $this->answers->githubUsername = 'acme';
+        $this->answers->projectName = 'awesome';
+        $this->answers->packageName = 'acme/awesome';
+
+        $rendered = $this->twig->render(
+            'CHANGELOG.md.twig',
+            $this->answers->getArrayCopy() + ['defaultBranch' => 'trunk'],
+        );
+
+        $this->assertStringEndsWith(
+            "## [Unreleased]\n\n[unreleased]: https://github.com/acme/awesome/commits/trunk/\n",
+            $rendered,
+        );
+    }
+
     public function testContributingNamesTheMinimumPhpVersion(): void
     {
         $this->answers->githubUsername = 'acme';

@@ -24,7 +24,6 @@ class SetupRepositoryTest extends TestCase
      * @return list<array{
      *     configUserName: string,
      *     configUserEmail: string,
-     *     configDefaultBranch: string,
      *     authorName: string | null,
      *     authorEmail: string | null,
      *     expectedName: string,
@@ -38,7 +37,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => 'Jane Doe',
                 'configUserEmail' => 'jdoe@example.com',
-                'configDefaultBranch' => '',
                 'authorName' => 'Jane Doe',
                 'authorEmail' => 'jdoe@example.com',
                 'expectedName' => 'Jane Doe',
@@ -48,7 +46,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => '',
                 'configUserEmail' => '',
-                'configDefaultBranch' => 'my-custom-branch-name',
                 'authorName' => 'Jane Doe',
                 'authorEmail' => 'jdoe@example.com',
                 'expectedName' => 'Jane Doe',
@@ -58,7 +55,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => 'Frodo Baggins',
                 'configUserEmail' => '',
-                'configDefaultBranch' => '',
                 'authorName' => 'Jane Doe',
                 'authorEmail' => 'jdoe@example.com',
                 'expectedName' => 'Jane Doe',
@@ -68,7 +64,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => '',
                 'configUserEmail' => 'frodo@example.com',
-                'configDefaultBranch' => '',
                 'authorName' => 'Jane Doe',
                 'authorEmail' => 'jdoe@example.com',
                 'expectedName' => 'Jane Doe',
@@ -78,7 +73,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => 'Samwise Gamgee',
                 'configUserEmail' => 'samwise@example.com',
-                'configDefaultBranch' => 'default',
                 'authorName' => 'Jane Doe',
                 'authorEmail' => 'jdoe@example.com',
                 'expectedName' => 'Jane Doe',
@@ -88,7 +82,6 @@ class SetupRepositoryTest extends TestCase
             [
                 'configUserName' => 'Frodo Baggins',
                 'configUserEmail' => 'frodo@example.com',
-                'configDefaultBranch' => '',
                 'authorName' => null,
                 'authorEmail' => null,
                 'expectedName' => '',
@@ -102,7 +95,6 @@ class SetupRepositoryTest extends TestCase
     public function testBuild(
         string $configUserName,
         string $configUserEmail,
-        string $configDefaultBranch,
         ?string $authorName,
         ?string $authorEmail,
         string $expectedName,
@@ -123,10 +115,6 @@ class SetupRepositoryTest extends TestCase
         $processConfigUserEmail = $this->mockery(Process::class);
         $processConfigUserEmail->expects()->run()->andReturn($configUserEmail ? 0 : 1);
         $processConfigUserEmail->expects()->getOutput()->andReturn($configUserEmail . "\n");
-
-        $processDefaultBranch = $this->mockery(Process::class);
-        $processDefaultBranch->expects()->run()->andReturn($configDefaultBranch ? 0 : 1);
-        $processDefaultBranch->expects()->getOutput()->andReturn($configDefaultBranch . "\n");
 
         $processMustRun = $this->mockery(Process::class);
         $processMustRun->expects()->mustRun();
@@ -153,8 +141,8 @@ class SetupRepositoryTest extends TestCase
 
         $environment
             ->expects()
-            ->getProcess(['git', 'config', 'init.defaultBranch'])
-            ->andReturn($processDefaultBranch);
+            ->getDefaultBranch()
+            ->andReturn($expectedDefaultBranch);
 
         $processMustRunWritesOutput = $this->mockery(Process::class);
         $processMustRunWritesOutput

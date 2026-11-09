@@ -27,12 +27,15 @@ use Twig\Loader\FilesystemLoader;
 use Twig\TwigFilter;
 
 use function preg_replace;
+use function trim;
 use function wordwrap;
 
 use const DIRECTORY_SEPARATOR;
 
 class Setup
 {
+    private const string DEFAULT_BRANCH = 'main';
+
     /**
      * @phpstan-param OutputInterface::VERBOSITY_* $verbosity
      */
@@ -51,6 +54,20 @@ class Setup
     public function getAppPath(): string
     {
         return $this->project->getPath();
+    }
+
+    /**
+     * Returns the name Git gives the first branch of a new repository: the
+     * value of init.defaultBranch, or "main" when none is configured
+     */
+    public function getDefaultBranch(): string
+    {
+        $process = $this->getProcess(['git', 'config', 'init.defaultBranch']);
+        $process->run();
+
+        $defaultBranch = trim($process->getOutput());
+
+        return $defaultBranch ?: self::DEFAULT_BRANCH;
     }
 
     /**

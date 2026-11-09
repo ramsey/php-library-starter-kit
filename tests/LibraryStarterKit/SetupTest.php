@@ -231,6 +231,56 @@ class SetupTest extends TestCase
         $this->assertInstanceOf(Process::class, $process);
     }
 
+    public function testGetDefaultBranchReturnsTheConfiguredName(): void
+    {
+        $process = $this->mockery(Process::class);
+        $process->expects()->run()->andReturn(0);
+        $process->expects()->getOutput()->andReturn("trunk\n");
+
+        $setup = $this->partialSetup();
+        $setup->expects()->getProcess(['git', 'config', 'init.defaultBranch'])->andReturn($process);
+
+        $this->assertSame('trunk', $setup->getDefaultBranch());
+    }
+
+    public function testGetDefaultBranchIsMainWhenNoneIsConfigured(): void
+    {
+        $process = $this->mockery(Process::class);
+        $process->expects()->run()->andReturn(1);
+        $process->expects()->getOutput()->andReturn('');
+
+        $setup = $this->partialSetup();
+        $setup->expects()->getProcess(['git', 'config', 'init.defaultBranch'])->andReturn($process);
+
+        $this->assertSame('main', $setup->getDefaultBranch());
+    }
+
+    /**
+     * Returns a Setup whose getProcess() may be given expectations while every
+     * other method runs as written
+     *
+     * @return Setup & MockInterface
+     */
+    private function partialSetup(): MockInterface
+    {
+        /** @var Event & MockInterface $event */
+        $event = $this->mockery(Event::class, [
+            'getIO' => $this->mockery(IOInterface::class),
+        ]);
+
+        $setup = $this->mockery(Setup::class, [
+            new Project('a-project-name', $this->appPath),
+            $event,
+            $this->mockery(Filesystem::class),
+            $this->mockery(Finder::class),
+            OutputInterface::VERBOSITY_NORMAL,
+        ]);
+
+        $setup->makePartial();
+
+        return $setup;
+    }
+
     public function testPath(): void
     {
         $this->assertSame(
