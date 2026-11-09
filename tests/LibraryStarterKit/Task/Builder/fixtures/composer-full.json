@@ -88,7 +88,7 @@
             "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
             "@analyze"
         ],
-        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0 --formatter=progress",
+        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0",
         "starter-kit": "Ramsey\\Dev\\LibraryStarterKit\\Wizard::start",
         "test": "vendor/bin/phpunit --colors=always"
     },

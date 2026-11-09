@@ -68,7 +68,7 @@
             "vendor/bin/phpcs --colors --cache=build/phpcs-cache",
             "@analyze"
         ],
-        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0 --formatter=progress",
+        "mutation": "XDEBUG_MODE=coverage vendor/bin/infection --show-mutations=0",
         "test": "vendor/bin/phpunit --colors=always"
     },
     "scripts-descriptions": {
