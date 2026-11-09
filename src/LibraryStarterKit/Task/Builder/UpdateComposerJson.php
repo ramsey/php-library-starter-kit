@@ -24,6 +24,8 @@ use function array_filter;
 use function in_array;
 use function json_decode;
 use function json_encode;
+use function sprintf;
+use function trim;
 
 use const ARRAY_FILTER_USE_KEY;
 use const JSON_PRETTY_PRINT;
@@ -36,12 +38,17 @@ use const JSON_UNESCAPED_UNICODE;
  * @phpstan-type ComposerAutoloadType array{
  *     "psr-4"?: array<string, string>,
  * }
+ * @phpstan-type ComposerSupportType array{
+ *     issues: string,
+ *     security?: string,
+ * }
  * @phpstan-type ComposerType array{
  *     name: string,
  *     description: string,
  *     type: string,
  *     keywords?: string[],
  *     license: string | null,
+ *     support?: ComposerSupportType,
  *     require?: array<string, string>,
  *     require-dev?: array<string, string>,
  *     autoload?: ComposerAutoloadType,
@@ -119,6 +126,7 @@ class UpdateComposerJson extends Builder
             ? 'proprietary'
             : $this->getAnswers()->license;
 
+        $this->buildSupport($composer);
         $this->buildRequire($composer);
         $this->buildRequireDev($composer);
         $this->buildAutoload($composer);
@@ -166,6 +174,31 @@ class UpdateComposerJson extends Builder
         }
 
         return $composerContents;
+    }
+
+    /**
+     * @param ComposerType $composer
+     */
+    private function buildSupport(array &$composer): void
+    {
+        $owner = trim((string) $this->getAnswers()->githubUsername);
+        $repository = trim((string) $this->getAnswers()->projectName);
+
+        // Without an owner and a repository name, there is no GitHub
+        // repository to link to.
+        if ($owner === '' || $repository === '') {
+            unset($composer['support']);
+
+            return;
+        }
+
+        $url = sprintf('https://github.com/%s/%s', $owner, $repository);
+
+        $composer['support'] = ['issues' => $url . '/issues'];
+
+        if ($this->getAnswers()->securityPolicy) {
+            $composer['support']['security'] = $url . '/security/policy';
+        }
     }
 
     /**

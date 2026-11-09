@@ -7,6 +7,10 @@
         "package"
     ],
     "license": "Apache-2.0",
+    "support": {
+        "issues": "https://github.com/a-vendor/package-name/issues",
+        "security": "https://github.com/a-vendor/package-name/security/policy"
+    },
     "require": {
         "php": "^8.5"
     },

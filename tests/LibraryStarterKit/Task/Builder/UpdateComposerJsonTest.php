@@ -60,6 +60,8 @@ class UpdateComposerJsonTest extends TestCase
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';
         $this->answers->packageKeywords = ['test', 'package'];
+        $this->answers->githubUsername = 'a-vendor';
+        $this->answers->projectName = 'package-name';
         $this->answers->license = 'Apache-2.0';
 
         $environment = $this->mockery(Setup::class, [
@@ -293,6 +295,52 @@ class UpdateComposerJsonTest extends TestCase
         $this->answers->packageKeywords = ['foo', 'bar'];
 
         $this->assertSame(['foo', 'bar'], $this->buildComposerJson()['keywords']);
+    }
+
+    public function testBuildWritesTheSupportLinks(): void
+    {
+        $this->answers->license = 'MIT';
+        $this->answers->githubUsername = 'a-vendor';
+        $this->answers->projectName = 'package-name';
+        $this->answers->securityPolicy = true;
+
+        $this->assertSame(
+            [
+                'issues' => 'https://github.com/a-vendor/package-name/issues',
+                'security' => 'https://github.com/a-vendor/package-name/security/policy',
+            ],
+            $this->buildComposerJson()['support'],
+        );
+    }
+
+    public function testBuildLeavesOutTheSecurityLinkWithoutASecurityPolicy(): void
+    {
+        $this->answers->license = 'MIT';
+        $this->answers->githubUsername = 'a-vendor';
+        $this->answers->projectName = 'package-name';
+        $this->answers->securityPolicy = false;
+
+        $this->assertSame(
+            ['issues' => 'https://github.com/a-vendor/package-name/issues'],
+            $this->buildComposerJson()['support'],
+        );
+    }
+
+    #[TestWith([null, 'package-name'])]
+    #[TestWith([' ', 'package-name'])]
+    #[TestWith(['a-vendor', null])]
+    #[TestWith(['a-vendor', ' '])]
+    public function testBuildLeavesOutSupportWithoutAGitHubRepository(
+        ?string $githubUsername,
+        ?string $projectName,
+    ): void {
+        $this->answers->license = 'MIT';
+        $this->answers->githubUsername = $githubUsername;
+        $this->answers->projectName = $projectName;
+
+        // The fixture has the starter kit's own support links, which must
+        // not be left in the generated file.
+        $this->assertArrayNotHasKey('support', $this->buildComposerJson());
     }
 
     /**

@@ -7,5 +7,9 @@
         "package",
         "library"
     ],
-    "license": "MIT"
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/ramsey/php-library-starter-kit/issues",
+        "security": "https://github.com/ramsey/php-library-starter-kit/security/policy"
+    }
 }

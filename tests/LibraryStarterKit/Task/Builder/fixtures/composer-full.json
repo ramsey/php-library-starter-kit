@@ -10,6 +10,10 @@
         "template"
     ],
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/ramsey/php-library-starter-kit/issues",
+        "security": "https://github.com/ramsey/php-library-starter-kit/security/policy"
+    },
     "require": {
         "php": "^8.5",
         "symfony/console": "^8.1",

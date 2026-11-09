@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Added
 
 - Describe in the generated `CONTRIBUTING.md` how the changelog's release headings link to GitHub: the first release to the commits up to its tag, and every later release to the comparison with the previous tag.
+- Add a `support` property to the generated `composer.json` that links to the GitHub repository's issues and, when the project has a security policy, to its security policy.
 
 ### Changed
 
