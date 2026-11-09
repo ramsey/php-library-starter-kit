@@ -14,6 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 - Link the generated `CHANGELOG.md`'s Unreleased heading to the commits of the default branch, in place of a comparison with a `0.0.0` tag that does not exist.
 
+### Removed
+
+- Leave `authors` out of a generated `composer.json`.
+
 ## [4.1.0] - 2026-11-08
 
 ### Added

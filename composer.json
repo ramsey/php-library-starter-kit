@@ -10,12 +10,6 @@
         "skeleton",
         "template"
     ],
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "homepage": "https://ben.ramsey.dev"
-        }
-    ],
     "require": {
         "php": "^8.5",
         "symfony/console": "^8.1.11",

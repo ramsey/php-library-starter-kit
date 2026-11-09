@@ -7,12 +7,5 @@
         "package",
         "library"
     ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "email": "ben@benramsey.com",
-            "homepage": "https://benramsey.com"
-        }
-    ]
+    "license": "MIT"
 }

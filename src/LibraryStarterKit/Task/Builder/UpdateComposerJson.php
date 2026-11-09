@@ -24,7 +24,6 @@ use function array_filter;
 use function in_array;
 use function json_decode;
 use function json_encode;
-use function trim;
 
 use const ARRAY_FILTER_USE_KEY;
 use const JSON_PRETTY_PRINT;
@@ -34,11 +33,6 @@ use const JSON_UNESCAPED_UNICODE;
 /**
  * Updates values in the composer.json file
  *
- * @phpstan-type ComposerAuthorType array{
- *     name: string,
- *     email?: string | null,
- *     homepage?: string | null,
- * }
  * @phpstan-type ComposerAutoloadType array{
  *     "psr-4"?: array<string, string>,
  * }
@@ -48,7 +42,6 @@ use const JSON_UNESCAPED_UNICODE;
  *     type: string,
  *     keywords?: string[],
  *     license: string | null,
- *     authors: ComposerAuthorType[],
  *     require?: array<string, string>,
  *     require-dev?: array<string, string>,
  *     autoload?: ComposerAutoloadType,
@@ -126,7 +119,6 @@ class UpdateComposerJson extends Builder
             ? 'proprietary'
             : $this->getAnswers()->license;
 
-        $this->buildAuthors($composer);
         $this->buildRequire($composer);
         $this->buildRequireDev($composer);
         $this->buildAutoload($composer);
@@ -174,25 +166,6 @@ class UpdateComposerJson extends Builder
         }
 
         return $composerContents;
-    }
-
-    /**
-     * @param ComposerType $composer
-     */
-    private function buildAuthors(array &$composer): void
-    {
-        /** @var ComposerAuthorType $author */
-        $author = ['name' => $this->getAnswers()->authorName];
-
-        if (trim((string) $this->getAnswers()->authorEmail) !== '') {
-            $author['email'] = $this->getAnswers()->authorEmail;
-        }
-
-        if (trim((string) $this->getAnswers()->authorUrl) !== '') {
-            $author['homepage'] = $this->getAnswers()->authorUrl;
-        }
-
-        $composer['authors'] = [$author];
     }
 
     /**

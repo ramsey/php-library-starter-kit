@@ -10,13 +10,6 @@
         "template"
     ],
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Ben Ramsey",
-            "email": "ben@benramsey.com",
-            "homepage": "https://benramsey.com"
-        }
-    ],
     "require": {
         "php": "^8.5",
         "symfony/console": "^8.1",

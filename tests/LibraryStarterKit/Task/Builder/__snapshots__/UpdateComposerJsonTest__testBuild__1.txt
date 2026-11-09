@@ -7,13 +7,6 @@
         "package"
     ],
     "license": "Apache-2.0",
-    "authors": [
-        {
-            "name": "Jane Doe",
-            "email": "jdoe@example.com",
-            "homepage": "https://example.com/jane"
-        }
-    ],
     "require": {
         "php": "^8.5"
     },

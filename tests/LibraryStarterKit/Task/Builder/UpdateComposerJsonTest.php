@@ -60,9 +60,6 @@ class UpdateComposerJsonTest extends TestCase
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';
         $this->answers->packageKeywords = ['test', 'package'];
-        $this->answers->authorName = 'Jane Doe';
-        $this->answers->authorEmail = 'jdoe@example.com';
-        $this->answers->authorUrl = 'https://example.com/jane';
         $this->answers->license = 'Apache-2.0';
 
         $environment = $this->mockery(Setup::class, [
@@ -185,7 +182,6 @@ class UpdateComposerJsonTest extends TestCase
 
         $this->answers->packageName = 'a-vendor/package-name';
         $this->answers->packageDescription = 'This is a test package.';
-        $this->answers->authorName = 'Jane Doe';
         $this->answers->license = 'MPL-2.0';
 
         $environment = $this->mockery(Setup::class, [
@@ -210,7 +206,7 @@ class UpdateComposerJsonTest extends TestCase
         $builder->build();
     }
 
-    public function testBuildWithUnansweredNameAndDescriptionAndBlankContactDetails(): void
+    public function testBuildWithUnansweredNameAndDescriptionAndNoAuthors(): void
     {
         $console = $this->mockery(SymfonyStyle::class);
         $console->expects()->section('Updating composer.json');
@@ -222,12 +218,12 @@ class UpdateComposerJsonTest extends TestCase
             ->withArgs(function (string $path, string $contents) {
                 $this->assertSame('/path/to/app/composer.json', $path);
 
-                /** @var array{name: string, description: string, authors: list<array<string, string>>} $composer */
+                /** @var array<string, mixed> $composer */
                 $composer = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 
                 $this->assertSame('', $composer['name']);
                 $this->assertSame('', $composer['description']);
-                $this->assertSame([['name' => 'Jane Doe']], $composer['authors']);
+                $this->assertArrayNotHasKey('authors', $composer);
 
                 return true;
             });
@@ -246,9 +242,6 @@ class UpdateComposerJsonTest extends TestCase
 
         $this->answers->packageName = null;
         $this->answers->packageDescription = null;
-        $this->answers->authorName = 'Jane Doe';
-        $this->answers->authorEmail = "  \t";
-        $this->answers->authorUrl = " \n ";
         $this->answers->license = 'MPL-2.0';
 
         $environment = $this->mockery(Setup::class, [

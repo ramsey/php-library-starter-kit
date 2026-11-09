@@ -2,10 +2,5 @@
     "name": "a-vendor/package-name",
     "type": "library",
     "description": "This is a test package.",
-    "license": "MPL-2.0",
-    "authors": [
-        {
-            "name": "Jane Doe"
-        }
-    ]
+    "license": "MPL-2.0"
 }
