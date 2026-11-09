@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
+### Added
+
+- Describe in the generated `CONTRIBUTING.md` how the changelog's release headings link to GitHub: the first release to the commits up to its tag, and every later release to the comparison with the previous tag.
+
+### Changed
+
+- Link the generated `CHANGELOG.md`'s Unreleased heading to the commits of the default branch, in place of a comparison with a `0.0.0` tag that does not exist.
+
 ## [4.1.0] - 2026-11-08
 
 ### Added
@@ -384,5 +392,5 @@ You will be walked through a series of questions, and your PHP library source fi
 [1.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/ramsey/php-library-starter-kit/compare/1.0.0...1.0.1
-[1.0.0]: https://github.com/ramsey/php-library-starter-kit/releases/tag/1.0.0
+[1.0.0]: https://github.com/ramsey/php-library-starter-kit/commits/1.0.0/
 [@ramsey]: https://github.com/ramsey
