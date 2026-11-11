@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
 ## [4.2.1] - 2026-11-11
 
 ### Changed
@@ -368,6 +370,7 @@ composer create-project --remove-vcs ramsey/php-library-starter-kit target-direc
 
 You will be walked through a series of questions, and your PHP library source files will be located in `target-directory`, when completed. Change to that directory, `git init`, and off you go!
 
+[unreleased]: https://github.com/ramsey/php-library-starter-kit/compare/4.2.1...HEAD
 [4.2.1]: https://github.com/ramsey/php-library-starter-kit/compare/4.2.0...4.2.1
 [4.2.0]: https://github.com/ramsey/php-library-starter-kit/compare/4.1.0...4.2.0
 [4.1.0]: https://github.com/ramsey/php-library-starter-kit/compare/4.0.0...4.1.0
