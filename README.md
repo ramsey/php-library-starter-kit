@@ -6,12 +6,12 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ramsey/php-library-starter-kit"><img src="http://img.shields.io/badge/source-ramsey/php--library--starter--kit-blue.svg?style=flat-square" alt="Source Code"></a>
-    <a href="https://packagist.org/packages/ramsey/php-library-starter-kit"><img src="https://img.shields.io/packagist/v/ramsey/php-library-starter-kit.svg?style=flat-square&label=release" alt="Download Package"></a>
-    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=%238892BF" alt="PHP Programming Language"></a>
-    <a href="https://github.com/ramsey/php-library-starter-kit/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-starter-kit.svg?style=flat-square&colorB=darkcyan" alt="Read License"></a>
-    <a href="https://github.com/ramsey/php-library-starter-kit/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/ramsey/php-library-starter-kit/continuous-integration.yml?branch=main&style=flat-square&logo=github" alt="Build Status"></a>
-    <a href="https://codecov.io/gh/ramsey/php-library-starter-kit"><img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-starter-kit?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
+    <a href="https://github.com/ramsey/php-library-starter-kit"><img src="http://img.shields.io/badge/source-ramsey/php--library--starter--kit-blue.svg" alt="Source Code"></a>
+    <a href="https://packagist.org/packages/ramsey/php-library-starter-kit"><img src="https://img.shields.io/packagist/v/ramsey/php-library-starter-kit.svg?label=release" alt="Download Package"></a>
+    <a href="https://php.net"><img src="https://img.shields.io/packagist/php-v/ramsey/php-library-starter-kit.svg?colorB=%238892BF" alt="PHP Programming Language"></a>
+    <a href="https://github.com/ramsey/php-library-starter-kit/blob/main/LICENSE"><img src="https://img.shields.io/packagist/l/ramsey/php-library-starter-kit.svg?colorB=darkcyan" alt="Read License"></a>
+    <a href="https://github.com/ramsey/php-library-starter-kit/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/ramsey/php-library-starter-kit/continuous-integration.yml?branch=main&logo=github" alt="Build Status"></a>
+    <a href="https://codecov.io/gh/ramsey/php-library-starter-kit"><img src="https://img.shields.io/codecov/c/gh/ramsey/php-library-starter-kit?label=codecov&logo=codecov" alt="Codecov Code Coverage"></a>
 </p>
 <!-- BADGES_END -->
 
